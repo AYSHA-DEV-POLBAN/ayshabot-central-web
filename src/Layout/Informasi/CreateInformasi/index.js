@@ -62,7 +62,7 @@ const CreateInfomasi = () => {
 
   const handleClose = () => {
     if (!isSave) {
-      navigate('/master-company')
+      navigate('/informasi')
     }
     setOpen(false)
   }

@@ -62,7 +62,7 @@ const CreateUser = () => {
 
   const handleClose = () => {
     if (!isSave) {
-      navigate('/master-company')
+      navigate('/user')
     }
     setOpen(false)
   }

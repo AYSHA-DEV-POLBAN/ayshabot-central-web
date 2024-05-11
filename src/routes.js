@@ -11,7 +11,9 @@ const Informasi = lazy(() => import("./Layout/Informasi"))
 const CreateInfomasi = lazy(() => import("./Layout/Informasi/CreateInformasi"))
 const LogActivity = lazy(() => import("./Layout/LogActivity"))
 const Prompting = lazy(() => import("./Layout/Prompting"))
+const CreatePrompting = lazy(() => import("./Layout/Prompting/CreatePrompting"))
 const User = lazy(() => import("./Layout/User"))
+const CreateUser = lazy(() => import("./Layout/User/CreateUser"))
 
 
 export const closedRoutes = () => [
@@ -46,18 +48,22 @@ export const closedRoutes = () => [
     icon: <CodeOutlinedIcon />,
   },
   {
+    path: "/prompting/create",
+    element: <CreatePrompting />,
+    key: "create prompting",
+  },
+  {
     path: "/user",
     element: <User />,
     name: "User",
     key: "user",
     icon: <GroupOutlinedIcon />,
   },
-  
-//   {
-//     path: "/overtime/detail-overtime",
-//     element: <ViewOvertime />,
-//     key: "working report",
-//   },
+  {
+    path: "/user/create",
+    element: <CreateUser />,
+    key: "create user",
+  },
 ];
 
 

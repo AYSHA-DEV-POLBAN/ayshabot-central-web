@@ -3,6 +3,7 @@ import { Grid } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { PieChart } from '@mui/x-charts/PieChart';
+import Header from '../../Component/Header';
 
 
 const Dashboard = () => {
@@ -45,6 +46,7 @@ const Dashboard = () => {
   return (
     <div>
       <SideBar>
+        <Header judul='Dashboard' />
         <Grid container spacing={4}>
           <Grid item md={4} sm={6} xs={12}>
             <LineChart

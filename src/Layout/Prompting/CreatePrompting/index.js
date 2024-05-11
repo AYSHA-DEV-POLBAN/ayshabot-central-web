@@ -60,7 +60,7 @@ const CreatePrompting = () => {
 
   const handleClose = () => {
     if (!isSave) {
-      navigate('/master-company')
+      navigate('/prompting')
     }
     setOpen(false)
   }

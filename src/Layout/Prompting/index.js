@@ -3,7 +3,7 @@ import DataTable from '../../Component/DataTable';
 import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import Rating from '@mui/material/Rating';
-// import { useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 // import client from "../../global/client";
 // import { AlertContext } from "../../context";
 
@@ -38,7 +38,7 @@ const Prompting = () => {
 
   const [open, setOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [data, setData] = useState([
     { id:1, no: 1, commandName: '/Dasada', commandResponse: 'UGD' },
     { id:2, no: 2, commandName: '/raes', commandResponse: 'Poliklinik' },
@@ -136,7 +136,7 @@ const Prompting = () => {
   
   
   const onAdd = () => {
-    // navigate("/masterbacklog/create");
+    navigate("/prompting/create");
   }
 
   const onFilter = (dataFilter) => {

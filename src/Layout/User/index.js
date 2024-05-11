@@ -3,7 +3,7 @@ import DataTable from '../../Component/DataTable';
 import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import Rating from '@mui/material/Rating';
-// import { useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 // import client from "../../global/client";
 // import { AlertContext } from "../../context";
 
@@ -44,7 +44,7 @@ const User = () => {
 
   const [open, setOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [data, setData] = useState([
     { id: 1, no: 1, name: 'John Doe', username: 'johndoe', email: 'john@example.com', password: '123456' },
     { id: 2, no: 2, name: 'Jane Smith', username: 'janesmith', email: 'jane@example.com', password: 'password' },
@@ -143,8 +143,7 @@ const User = () => {
   
   
   const onAdd = () => {
-    // navigate("/masterbacklog/create");
-    // navigate("/user/create")
+    navigate("/user/create")
   }
 
   const onFilter = (dataFilter) => {
