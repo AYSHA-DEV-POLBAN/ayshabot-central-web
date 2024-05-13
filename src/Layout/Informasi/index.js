@@ -32,6 +32,12 @@ const Informasi = () => {
       headerName: 'File',
       flex: 1 ,
       minWidth: 240
+    },
+    {
+      field: 'informationStatus',
+      headerName: 'Status',
+      flex: 1 ,
+      minWidth: 240
     }
   ];
 
@@ -39,8 +45,8 @@ const Informasi = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const navigate = useNavigate();
   const [data, setData] = useState([
-    { id:1, no: 1, informationName: 'Fasilitas', desc: 'UGD', file: 'abcd.pdf' },
-    { id:2, no: 2, informationName: 'Fasilitas', desc: 'Poliklinik', file: 'abds.pdf' },
+    { id:1, no: 1, informationName: 'Fasilitas', desc: 'UGD', file: 'abcd.pdf', informationStatus: 'active' },
+    { id:2, no: 2, informationName: 'Fasilitas', desc: 'Poliklinik', file: 'abds.pdf', informationStatus: 'active' },
   ]);
   const [idHapus,setidHapus] = useState();
   const [totalData, setTotalData] = useState();
@@ -48,7 +54,7 @@ const Informasi = () => {
   const [filter, setFilter] = useState({
     page: 0,
     size: 10,
-    sortName: 'taskName',
+    sortName: 'informationName',
     sortType: 'asc',
     search: ''
   })
@@ -66,7 +72,7 @@ const Informasi = () => {
   const getData = async () => {
     // const res = await client.requestAPI({
     //   method: 'GET',
-    //   endpoint: `/backlog?page=${filter.page}&size=${filter.size}&sort=${filter.sortName},${filter.sortType}&search=${filter.search}`
+    //   endpoint: ``
     // })
     // rebuildData(res)
   }
@@ -78,12 +84,6 @@ const Informasi = () => {
       return {
         no: number + (index + 1),
         id: value.id,
-        projectName: value.attributes.projectName,
-        taskCode: value.attributes.taskCode,
-        taskName: value.attributes.taskName,
-        priority: value.attributes.priority,
-        status: value.attributes.status,
-        assignedTo: value.attributes.assignedTo
       }
     })    
     setData([...temp])
@@ -93,7 +93,7 @@ const Informasi = () => {
   const deleteData = async (id) => {
     // const res = await client.requestAPI({
     //   method: 'DELETE',
-    //   endpoint: `/backlog/${id}`
+    //   endpoint: ``
     // })
     // setOpenAlert(true);
     // getData()
@@ -117,7 +117,7 @@ const Informasi = () => {
 
   const handleDetail = async (id) => {
     // localStorage.setItem('idBacklog', id)
-    // navigate("/masterbacklog/detail");
+    navigate("/informasi/detail");
   };
 
   const handleClose = () => {
@@ -156,8 +156,8 @@ const Informasi = () => {
           title='Informasi'
           data={data}
           columns={columns}
-          placeSearch="Project Name, task code, etc"
-          searchTitle="Search By"
+          // placeSearch="Project Name, task code, etc"
+          // searchTitle="Search By"
           onAdd={() => onAdd()}
           onFilter={(dataFilter => onFilter(dataFilter))}
           handleChangeSearch={handleChangeSearch}

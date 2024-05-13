@@ -21,18 +21,18 @@ const CreateUser = () => {
 //   const { setDataAlert } = useContext(AlertContext)
 //   const dataBread = [
 //     {
-//       href: "/dashboard",
+//       href: "/",
 //       title: "Dashboard",
 //       current: false,
 //     },
 //     {
-//       href: "/master-company",
-//       title: "Company",
+//       href: "/user",
+//       title: "User",
 //       current: false,
 //     },
 //     {
-//       href: "/master-company/create",
-//       title: "Create New Company",
+//       href: "/user/create",
+//       title: "Create New User",
 //       current: true,
 //     },
 //   ];

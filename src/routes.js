@@ -5,15 +5,17 @@ import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import { useNavigate } from "react-router-dom";
 
-// const LoginScreen = lazy(() => import("./Layouts/Login"));
 const Dashboard = lazy(() => import("./Layout/Dashboard"));
 const Informasi = lazy(() => import("./Layout/Informasi"))
 const CreateInfomasi = lazy(() => import("./Layout/Informasi/CreateInformasi"))
+const DetailInformasi = lazy(() => import("./Layout/Informasi/DetailInformasi"))
 const LogActivity = lazy(() => import("./Layout/LogActivity"))
 const Prompting = lazy(() => import("./Layout/Prompting"))
 const CreatePrompting = lazy(() => import("./Layout/Prompting/CreatePrompting"))
+const DetailPrompting = lazy(() => import("./Layout/Prompting/DetailPrompting"))
 const User = lazy(() => import("./Layout/User"))
 const CreateUser = lazy(() => import("./Layout/User/CreateUser"))
+const DetailUser = lazy(() => import("./Layout/User/DetailUser"))
 
 
 export const closedRoutes = () => [
@@ -32,6 +34,11 @@ export const closedRoutes = () => [
     path: "/informasi/create",
     element: <CreateInfomasi />,
     key: "create informasi",
+  },
+  {
+    path: "/informasi/detail",
+    element: <DetailInformasi />,
+    key: "detail informasi",
   },
   {
     path: "/logActivity",
@@ -53,6 +60,11 @@ export const closedRoutes = () => [
     key: "create prompting",
   },
   {
+    path: "/prompting/detail",
+    element: <DetailPrompting />,
+    key: "detail prompting",
+  },
+  {
     path: "/user",
     element: <User />,
     name: "User",
@@ -63,6 +75,11 @@ export const closedRoutes = () => [
     path: "/user/create",
     element: <CreateUser />,
     key: "create user",
+  },
+  {
+    path: "/user/detail",
+    element: <DetailUser />,
+    key: "detail user",
   },
 ];
 

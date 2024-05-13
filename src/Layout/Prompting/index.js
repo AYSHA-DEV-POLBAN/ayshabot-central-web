@@ -19,29 +19,29 @@ const Prompting = () => {
     {
       field: 'commandName',
       headerName: 'Command Name',
-      flex: 0.7,
+      flex: 1,
       minWidth: 200,
     },
     {
       field: 'commandResponse',
       headerName: 'Command Response',
-      flex: 0.7,
+      flex: 1,
       minWidth: 200,
     },
-    // {
-    //   field: 'taskName',
-    //   headerName: 'Task Name',
-    //   flex: 1 ,
-    //   minWidth: 240
-    // },
+    {
+      field: 'commandStatus',
+      headerName: 'Status',
+      flex: 1 ,
+      minWidth: 240
+    },
   ];
 
   const [open, setOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const navigate = useNavigate();
   const [data, setData] = useState([
-    { id:1, no: 1, commandName: '/Dasada', commandResponse: 'UGD' },
-    { id:2, no: 2, commandName: '/raes', commandResponse: 'Poliklinik' },
+    { id:1, no: 1, commandName: '/Dasada', commandResponse: 'UGD', commandStatus: 'active' },
+    { id:2, no: 2, commandName: '/raes', commandResponse: 'Poliklinik', commandStatus:'avtive' },
   ]);
   const [idHapus,setidHapus] = useState();
   const [totalData, setTotalData] = useState();
@@ -49,14 +49,14 @@ const Prompting = () => {
   const [filter, setFilter] = useState({
     page: 0,
     size: 10,
-    sortName: 'taskName',
+    sortName: 'commandName',
     sortType: 'asc',
     search: ''
   })
 
   const handleClickOpen = async (id) => {
     //setId
-    // setidHapus(id)
+    setidHapus(id)
     setOpen(true)
   };
 
@@ -118,7 +118,7 @@ const Prompting = () => {
 
   const handleDetail = async (id) => {
     // localStorage.setItem('idBacklog', id)
-    // navigate("/masterbacklog/detail");
+    navigate("/prompting/detail");
   };
 
   const handleClose = () => {

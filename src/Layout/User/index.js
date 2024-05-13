@@ -31,13 +31,25 @@ const User = () => {
     {
       field: 'email',
       headerName: 'Email',
-      flex: 1 ,
+      flex: 0.7 ,
       minWidth: 240
     },
     {
       field: 'password',
       headerName: 'Password',
-      flex: 1 ,
+      flex: 0.7 ,
+      minWidth: 240
+    },
+    {
+      field: 'userLevel',
+      headerName: 'Level',
+      flex: 0.7 ,
+      minWidth: 240
+    },
+    {
+      field: 'userStatus',
+      headerName: 'Status',
+      flex: 0.7 ,
       minWidth: 240
     },
   ];
@@ -46,8 +58,8 @@ const User = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const navigate = useNavigate();
   const [data, setData] = useState([
-    { id: 1, no: 1, name: 'John Doe', username: 'johndoe', email: 'john@example.com', password: '123456' },
-    { id: 2, no: 2, name: 'Jane Smith', username: 'janesmith', email: 'jane@example.com', password: 'password' },
+    { id: 1, no: 1, name: 'John Doe', username: 'johndoe', email: 'john@example.com', password: '123456', userLevel: 'Admin', userStatus: 'active' },
+    { id: 2, no: 2, name: 'Jane Smith', username: 'janesmith', email: 'jane@example.com', password: 'password', userLevel: 'Admin', userStatus: 'active' },
   ]);
   const [idHapus,setidHapus] = useState();
   const [totalData, setTotalData] = useState();
@@ -63,7 +75,7 @@ const User = () => {
 
   const handleClickOpen = async (id) => {
     //setId
-    // setidHapus(id)
+    setidHapus(id)
     setOpen(true)
   };
 
@@ -74,7 +86,7 @@ const User = () => {
   const getData = async () => {
     // const res = await client.requestAPI({
     //   method: 'GET',
-    //   endpoint: `/backlog?page=${filter.page}&size=${filter.size}&sort=${filter.sortName},${filter.sortType}&search=${filter.search}`
+    //   endpoint: ``
     // })
     // rebuildData(res)
   }
@@ -101,7 +113,7 @@ const User = () => {
   const deleteData = async (id) => {
     // const res = await client.requestAPI({
     //   method: 'DELETE',
-    //   endpoint: `/backlog/${id}`
+    //   endpoint: ``
     // })
     // setOpenAlert(true);
     // getData()
@@ -125,7 +137,7 @@ const User = () => {
 
   const handleDetail = async (id) => {
     // localStorage.setItem('idBacklog', id)
-    // navigate("/masterbacklog/detail");
+    navigate("/user/detail");
   };
 
   const handleClose = () => {
