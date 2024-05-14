@@ -5,7 +5,7 @@ import SideBar from '../../Component/Sidebar';
 import Rating from '@mui/material/Rating';
 import { useNavigate } from "react-router";
 // import client from "../../global/client";
-// import { AlertContext } from "../../context";
+import { AlertContext } from "../../Context";
 
 
 const Prompting = () => {
@@ -19,20 +19,20 @@ const Prompting = () => {
     {
       field: 'commandName',
       headerName: 'Command Name',
-      flex: 1,
-      minWidth: 200,
+      flex: 0.7,
+      minWidth: 180,
     },
     {
       field: 'commandResponse',
       headerName: 'Command Response',
       flex: 1,
-      minWidth: 200,
+      minWidth: 240,
     },
     {
       field: 'commandStatus',
       headerName: 'Status',
       flex: 1 ,
-      minWidth: 240
+      minWidth: 100
     },
   ];
 
@@ -45,7 +45,7 @@ const Prompting = () => {
   ]);
   const [idHapus,setidHapus] = useState();
   const [totalData, setTotalData] = useState();
-//   const { setDataAlert } = useContext(AlertContext)
+  const { setDataAlert } = useContext(AlertContext)
   const [filter, setFilter] = useState({
     page: 0,
     size: 10,
@@ -156,7 +156,7 @@ const Prompting = () => {
           title='Prompting'
           data={data}
           columns={columns}
-          placeSearch="Project Name, task code, etc"
+          placeSearch="Command Name, Status, etc"
           searchTitle="Search By"
           onAdd={() => onAdd()}
           onFilter={(dataFilter => onFilter(dataFilter))}

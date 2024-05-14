@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Grid from "@mui/material/Grid";
 import SideBar from '../../../Component/Sidebar';
-// import Breadcrumbs from "../../../Component/BreadCumb";
+import Breadcrumbs from "../../../Component/DataBread";
 import Header from '../../../Component/Header'
-import { Dialog, Button, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Avatar, IconButton } from '@mui/material';
+import { Dialog, Button, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, IconButton } from '@mui/material';
 import '../../../App.css'
 import { useNavigate } from 'react-router';
 // import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,7 +13,7 @@ import FormInputText from '../../../Component/FormInputText';
 // import client from '../../../global/client';
 // import uploadFile from '../../../global/uploadFile';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-// import { AlertContext } from '../../../context';
+import { AlertContext } from '../../../Context';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import PreviewIcon from "@mui/icons-material/Preview";  
 import Autocomplete from '@mui/material/Autocomplete';
@@ -25,29 +25,29 @@ const DetailInformasi = () => {
   const [open, setOpen] = useState(false)
   const [sendData, setData] = useState({})
   const [isSave, setIsSave] = useState(false)
-//   const { setDataAlert } = useContext(AlertContext)
+  const { setDataAlert } = useContext(AlertContext)
   const [file, setFile] = useState('')
 //   const [companyId, setCompanyId] = useState(null)
   const [isEdit, setIsEdit] = useState(false)
   const [dataDetail, setDataDetail] = useState({})
 //   const [filePath, setFilePath] = useState('')
-//   const dataBread = [
-//     {
-//       href: "/",
-//       title: "Dashboard",
-//       current: false,
-//     },
-//     {
-//       href: "/informasi",
-//       title: "Informasi",
-//       current: false,
-//     },
-//     {
-//       href: "/informasi/detail",
-//       title: isEdit ? "Edit Informasi" : "Detail Informasi",
-//       current: true,
-//     },
-//   ];
+  const dataBread = [
+    {
+      href: "/",
+      title: "Dashboard",
+      current: false,
+    },
+    {
+      href: "/informasi",
+      title: "Informasi",
+      current: false,
+    },
+    {
+      href: "/informasi/detail",
+      title: isEdit ? "Edit Informasi" : "Detail Informasi",
+      current: true,
+    },
+  ];
 
 const optStatus = [
   {label: 'Active'},
@@ -75,27 +75,10 @@ const optStatus = [
     }
   })
 
-  const [filter, setFilter] = useState({
-    sortName: "informationName",
-    sortType: "desc",
-    search: "",
-  });
-
-  const onFilter = (dataFilter) => {
-    setFilter({
-      sortName:
-        dataFilter.sorting.field !== ""
-          ? dataFilter.sorting[0].field
-          : "",
-      sortType:
-        dataFilter.sorting.sort !== "" ? dataFilter.sorting[0].sort : "desc",
-      search: "",
-    });
-  };
 
   useEffect(() => {
     getDataDetail()
-  }, [filter])
+  }, [])
 
   const getDataDetail = async () => {
     // const id = localStorage.getItem('companyId')
@@ -216,7 +199,7 @@ const optStatus = [
 
   return (
     <SideBar>
-      {/* <Breadcrumbs breadcrumbs={dataBread} /> */}
+      <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           <Grid item xs={12} sm={8}>
             <Header judul={isEdit ? 'Edit Informasi' : 'Detail Informasi'} />
@@ -245,9 +228,6 @@ const optStatus = [
                       xs={12}
                     >
                       <Grid item container xs={12}>
-                        {/* <Grid item mr={2}>
-                          <Avatar src={file} className="image-upload" />
-                        </Grid> */}
                         {isEdit &&
                           <Grid item xs={12} sm={12} mt={2} className='custom-file-upload'>
                             <label className='class-label-upload'>Upload File</label>

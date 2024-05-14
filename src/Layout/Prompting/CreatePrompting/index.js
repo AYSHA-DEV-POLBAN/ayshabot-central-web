@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import Grid from "@mui/material/Grid";
 import SideBar from '../../../Component/Sidebar';
-// import Breadcrumbs from "../../../Component/BreadCumb";
+import Breadcrumbs from "../../../Component/DataBread";
 import Header from '../../../Component/Header'
-import { Dialog, Button, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Avatar, IconButton } from '@mui/material';
+import { Dialog, Button, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import '../../../App.css'
 import { useNavigate } from 'react-router';
 // import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,7 +11,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import FormInputText from '../../../Component/FormInputText';
 // import schemacompany from '../shema';
 // import client from '../../../global/client';
-// import { AlertContext } from '../../../context';
+import { AlertContext } from '../../../Context';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
@@ -20,25 +20,25 @@ const CreatePrompting = () => {
   const [open, setOpen] = useState(false)
   const [sendData, setData] = useState({})
   const [isSave, setIsSave] = useState(false)
-//   const { setDataAlert } = useContext(AlertContext)
+  const { setDataAlert } = useContext(AlertContext)
 
-//   const dataBread = [
-//     {
-//       href: "/dashboard",
-//       title: "Dashboard",
-//       current: false,
-//     },
-//     {
-//       href: "/master-company",
-//       title: "Company",
-//       current: false,
-//     },
-//     {
-//       href: "/master-company/create",
-//       title: "Create New Company",
-//       current: true,
-//     },
-//   ];
+  const dataBread = [
+    {
+      href: "/",
+      title: "Dashboard",
+      current: false,
+    },
+    {
+      href: "/prompting",
+      title: "Prompting",
+      current: false,
+    },
+    {
+      href: "/prompting/create",
+      title: "Create New Prompting",
+      current: true,
+    },
+  ];
 
 
   const optStatus = [
@@ -109,14 +109,13 @@ const CreatePrompting = () => {
 
   return (
     <SideBar>
-      {/* <Breadcrumbs breadcrumbs={dataBread} /> */}
+      <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           <Grid item xs={12} sm={6} pb={2}>
             <Header judul='Create New Prompting' />
           </Grid>
           <Grid item xs={12}>
             <FormProvider {...methods}>
-            {/* <FormProvider> */}
               {/* <form onSubmit={methods.handleSubmit(confirmSave)}> */}
                 <div className='card-container'>
                     <Grid 

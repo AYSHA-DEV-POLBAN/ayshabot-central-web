@@ -3,6 +3,7 @@ import FolderCopyOutlinedIcon from '@mui/icons-material/FolderCopyOutlined';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = lazy(() => import("./Layout/Dashboard"));
@@ -22,6 +23,9 @@ export const closedRoutes = () => [
   {
     path: "/",
     element: <Dashboard />,
+    name: "Dashboard",
+    key: "dashboard",
+    icon: <DashboardOutlinedIcon />,
   },
   {
     path: "/informasi",

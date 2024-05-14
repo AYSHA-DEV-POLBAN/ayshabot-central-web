@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Grid from "@mui/material/Grid";
 import SideBar from '../../../Component/Sidebar';
-// import Breadcrumbs from "../../../Component/BreadCumb";
+import Breadcrumbs from "../../../Component/DataBread";
 import Header from '../../../Component/Header'
-import { Dialog, Button, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Avatar, IconButton } from '@mui/material';
+import { Dialog, Button, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography } from '@mui/material';
 import '../../../App.css'
 import { useNavigate } from 'react-router';
 // import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,82 +11,37 @@ import { FormProvider, useForm } from "react-hook-form";
 import FormInputText from '../../../Component/FormInputText';
 // import schemacompany from '../shema';
 // import client from '../../../global/client';
-// import uploadFile from '../../../global/uploadFile';
-// import TableNative from '../../../Component/DataTable/Native';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-// import { AlertContext } from '../../../context';
-import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
-import PreviewIcon from "@mui/icons-material/Preview";  
+import { AlertContext } from '../../../Context';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
 const DetailPrompting = () => {
-  const [dataProject, setDataProject] = useState([]) 
-  const [loading, setLoading] = useState(false)
-  
-  const getDetailProject =  (id) => {
-    setLoading(true)
-    // localStorage.setItem("projectId", id)
-    // navigate("/master-project/detail")
-  }
-
-
-  const columnsProject = [
-    {
-      field: "informationName",
-      headerName: "Information Name",
-      flex: 1,
-      minWidth: 250,
-    },
-    {
-      field: "projectType",
-      headerName: "Project Type",
-      flex: 1,
-      minWidth: 150
-    },
-    {
-      field: "projectDesc",
-      headerName: "Detail Project",
-      flex: 1,
-      minWidth: 140,
-      renderCell: (data) => {
-        return(
-          <div>
-            <IconButton 
-              onClick={(id) => getDetailProject(data.id)}>
-              <PreviewIcon />
-            </IconButton>
-          </div>
-        )
-      }
-    },
-  ]
-
+  const [dataProject, setDataProject] = useState([])
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [sendData, setData] = useState({})
   const [isSave, setIsSave] = useState(false)
-//   const { setDataAlert } = useContext(AlertContext)
-  const [file, setFile] = useState('')
+  const { setDataAlert } = useContext(AlertContext)
   const [isEdit, setIsEdit] = useState(false)
   const [dataDetail, setDataDetail] = useState({})
-//   const dataBread = [
-//     {
-//       href: "/",
-//       title: "Dashboard",
-//       current: false,
-//     },
-//     {
-//       href: "/prompting",
-//       title: "Prompting",
-//       current: false,
-//     },
-//     {
-//       href: "/prompting/detail",
-//       title: isEdit ? "Edit Prompting" : "Detail Prompting",
-//       current: true,
-//     },
-//   ];
+  const dataBread = [
+    {
+      href: "/",
+      title: "Dashboard",
+      current: false,
+    },
+    {
+      href: "/prompting",
+      title: "Prompting",
+      current: false,
+    },
+    {
+      href: "/prompting/detail",
+      title: isEdit ? "Edit Prompting" : "Detail Prompting",
+      current: true,
+    },
+  ];
 
   const optStatus = [
     {label: 'Active'},
@@ -114,27 +69,9 @@ const DetailPrompting = () => {
     }
   })
 
-  const [filter, setFilter] = useState({
-    sortName: "commandName",
-    sortType: "desc",
-    search: "",
-  });
-
-  const onFilter = (dataFilter) => {
-    setFilter({
-      sortName:
-        dataFilter.sorting.field !== ""
-          ? dataFilter.sorting[0].field
-          : "",
-      sortType:
-        dataFilter.sorting.sort !== "" ? dataFilter.sorting[0].sort : "desc",
-      search: "",
-    });
-  };
-
   useEffect(() => {
     getDataDetail()
-  }, [filter])
+  }, [])
 
   const getDataDetail = async () => {
     // const id = localStorage.getItem('companyId')
@@ -218,7 +155,7 @@ const DetailPrompting = () => {
 
   return (
     <SideBar>
-      {/* <Breadcrumbs breadcrumbs={dataBread} /> */}
+      <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           <Grid item xs={12} sm={8}>
             <Header judul={isEdit ? 'Edit Propmpting' : 'Detail Prompting'} />

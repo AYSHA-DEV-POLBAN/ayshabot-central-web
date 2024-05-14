@@ -47,8 +47,8 @@ const Dashboard = () => {
     <div>
       <SideBar>
         <Header judul='Dashboard' />
-        <Grid container spacing={4}>
-          <Grid item md={4} sm={6} xs={12}>
+        <Grid container>
+          <Grid container item md={4} sm={6} xs={12} className='card-container'>
             <LineChart
               xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
               series={[
@@ -59,22 +59,22 @@ const Dashboard = () => {
               width={500}
               height={300}
             />
-        </Grid>
-        </Grid>
-        <Grid>
-        <PieChart
-          series={[
-            {
-              data: [
-                { id: 0, value: 10, label: 'series A' },
-                { id: 1, value: 15, label: 'series B' },
-                { id: 2, value: 20, label: 'series C' },
-              ],
-            },
-          ]}
-          width={400}
-          height={200}
-        />
+          </Grid>
+          <Grid container item md={4} sm={6} xs={12} marginLeft={3} className='card-container'>
+            <PieChart
+              series={[
+                {
+                  data: [
+                    { id: 0, value: 10, label: 'series A' },
+                    { id: 1, value: 15, label: 'series B' },
+                    { id: 2, value: 20, label: 'series C' },
+                  ],
+                },
+              ]}
+              width={400}
+              height={200}
+            />
+          </Grid>
         </Grid>
       </SideBar>
     </div>

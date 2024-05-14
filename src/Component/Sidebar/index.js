@@ -102,7 +102,7 @@ export default function SideBar({ children }) {
     };
     localStorage.setItem("currentMenu", JSON.stringify(obj));
     setSelectedIndex(idx);
-    // navigate(path);
+    navigate(path);
   };
   const location = useLocation();
 
@@ -148,12 +148,14 @@ export default function SideBar({ children }) {
                         <Grid item container xs={8} overflow="hidden">
                           <Grid item container xs={12} style={{maxWidth:"150px"}}>
                             <Typography variant="drawerNameUser" textOverflow="ellipsis" noWrap overflow="hidden">
-                              {username}
+                              {/* {username} */}
+                              Reyna
                             </Typography>
                           </Grid>
                           <Grid item container xs={12}>
                             <Typography variant="drawerPostion">
-                              {position}
+                              {/* {position} */}
+                              Admin
                             </Typography>
                           </Grid>
                         </Grid>

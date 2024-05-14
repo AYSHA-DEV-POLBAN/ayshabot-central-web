@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
-import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
-import Rating from '@mui/material/Rating';
 import { useNavigate } from "react-router";
 // import client from "../../global/client";
-// import { AlertContext } from "../../context";
+import { AlertContext } from "../../Context";
 
 
 const User = () => {
@@ -63,7 +62,7 @@ const User = () => {
   ]);
   const [idHapus,setidHapus] = useState();
   const [totalData, setTotalData] = useState();
-//   const { setDataAlert } = useContext(AlertContext)
+  const { setDataAlert } = useContext(AlertContext)
   const [filter, setFilter] = useState({
     page: 0,
     size: 10,
@@ -74,13 +73,12 @@ const User = () => {
   
 
   const handleClickOpen = async (id) => {
-    //setId
     setidHapus(id)
     setOpen(true)
   };
 
   useEffect(() => {
-    // getData()
+    getData()
   }, [])
 
   const getData = async () => {
@@ -98,12 +96,6 @@ const User = () => {
       return {
         no: number + (index + 1),
         id: value.id,
-        projectName: value.attributes.projectName,
-        taskCode: value.attributes.taskCode,
-        taskName: value.attributes.taskName,
-        priority: value.attributes.priority,
-        status: value.attributes.status,
-        assignedTo: value.attributes.assignedTo
       }
     })    
     setData([...temp])
@@ -136,7 +128,8 @@ const User = () => {
   
 
   const handleDetail = async (id) => {
-    // localStorage.setItem('idBacklog', id)
+    localStorage.setItem('id', id)
+    console.log(id)
     navigate("/user/detail");
   };
 
@@ -175,7 +168,7 @@ const User = () => {
           title='User'
           data={data}
           columns={columns}
-          placeSearch="Project Name, task code, etc"
+          placeSearch="Name, Username, Status, etc"
           searchTitle="Search By"
           onAdd={() => onAdd()}
           onFilter={(dataFilter => onFilter(dataFilter))}

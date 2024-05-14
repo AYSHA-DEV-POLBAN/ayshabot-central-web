@@ -4,7 +4,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { Route, Routes, useLocation, useNavigate } from 'react-router';
 import globalTheme from './Theme';
 import { closedRoutes, finalRoutes } from './routes';
-// import { AlertContext } from './context';
+import { AlertContext } from './Context';
 
 const App = () => {
   const navigate = useNavigate()
@@ -50,7 +50,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={globalTheme}>
-      {/* <AlertContext.Provider value={value}> */}
+      <AlertContext.Provider value={value}>
         <Suspense fallback={<p>Loading...</p>}>
           <Routes>
             {closedRoutes().map((res, idx) => {
@@ -58,7 +58,7 @@ const App = () => {
             })}
           </Routes>
         </Suspense>
-      {/* </AlertContext.Provider> */}
+      </AlertContext.Provider>
     </ThemeProvider>
   );
 }

@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, B
 import SideBar from '../../Component/Sidebar';
 import { useNavigate } from "react-router";
 // import client from "../../global/client";
-// import { AlertContext } from "../../context";
+import { AlertContext } from "../../Context";
 
 
 const Informasi = () => {
@@ -19,25 +19,25 @@ const Informasi = () => {
       field: 'informationName',
       headerName: 'Information Name',
       flex: 0.7,
-      minWidth: 200,
+      minWidth: 180,
     },
     {
       field: 'desc',
       headerName: 'Description',
       flex: 0.7,
-      minWidth: 200,
+      minWidth: 240,
     },
     {
       field: 'file',
       headerName: 'File',
       flex: 1 ,
-      minWidth: 240
+      minWidth: 180
     },
     {
       field: 'informationStatus',
       headerName: 'Status',
       flex: 1 ,
-      minWidth: 240
+      minWidth: 100
     }
   ];
 
@@ -50,7 +50,7 @@ const Informasi = () => {
   ]);
   const [idHapus,setidHapus] = useState();
   const [totalData, setTotalData] = useState();
-//   const { setDataAlert } = useContext(AlertContext)
+  const { setDataAlert } = useContext(AlertContext)
   const [filter, setFilter] = useState({
     page: 0,
     size: 10,
@@ -95,7 +95,7 @@ const Informasi = () => {
     //   method: 'DELETE',
     //   endpoint: ``
     // })
-    // setOpenAlert(true);
+    setOpenAlert(true);
     // getData()
     // if (!res.isError) {
     //   setDataAlert({
@@ -116,7 +116,7 @@ const Informasi = () => {
   
 
   const handleDetail = async (id) => {
-    // localStorage.setItem('idBacklog', id)
+    // localStorage.setItem('id', id)
     navigate("/informasi/detail");
   };
 
@@ -135,7 +135,6 @@ const Informasi = () => {
   
   
   const onAdd = () => {
-    // navigate("/masterbacklog/create");
     navigate("/informasi/create");
   }
 
@@ -156,8 +155,8 @@ const Informasi = () => {
           title='Informasi'
           data={data}
           columns={columns}
-          // placeSearch="Project Name, task code, etc"
-          // searchTitle="Search By"
+          placeSearch="Information Name, File, Status, etc"
+          searchTitle="Search By"
           onAdd={() => onAdd()}
           onFilter={(dataFilter => onFilter(dataFilter))}
           handleChangeSearch={handleChangeSearch}

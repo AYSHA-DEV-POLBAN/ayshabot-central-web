@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { Typography, Button, IconButton, TextField } from "@mui/material";
-// import SearchBar from "../Searchbar";
+import SearchBar from "../Searchbar";
 import AddIcon from "@mui/icons-material/Add";
 import { DataGrid } from "@mui/x-data-grid";
 import PreviewIcon from "@mui/icons-material/Preview";
@@ -130,11 +130,11 @@ const DataTable = ({
       >
         {!onUpload ? (
           <Grid item xs={12} sm={4} alignSelf="center" sx={{textAlign: {xs: "start", sm:"end"}}}>
-            {/* <SearchBar
+            <SearchBar
               placeholder={placeSearch}
               label={searchTitle}
               onChange={handleChangeSearch}
-            /> */}
+            />
           </Grid>
         ) : (
           <Grid
@@ -258,7 +258,6 @@ const DataTable = ({
           <DataGrid
             rows={data}
             columns={dataColumns}
-            // className="MuiDataGrid-cellContent"
             disableRowSelectionOnClick
             pageSizeOptions={[10, 25, 50, 100]}
             paginationMode="server"

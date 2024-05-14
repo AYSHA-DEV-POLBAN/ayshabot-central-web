@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import Grid from "@mui/material/Grid";
 import SideBar from '../../../Component/Sidebar';
-// import Breadcrumbs from "../../../Component/BreadCumb";
+import Breadcrumbs from "../../../Component/DataBread";
 import Header from '../../../Component/Header'
-import { Dialog, Button, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography, Avatar, IconButton } from '@mui/material';
+import { Dialog, Button, DialogTitle, DialogContent, DialogContentText, DialogActions, IconButton } from '@mui/material';
 import '../../../App.css'
 import { useNavigate } from 'react-router';
 // import { yupResolver } from '@hookform/resolvers/yup';
@@ -14,33 +14,33 @@ import TextField from '@mui/material/TextField';
 // import schemacompany from '../shema';
 // import client from '../../../global/client';
 // import uploadFile from '../../../global/uploadFile';
-// import { AlertContext } from '../../../context';
+import { AlertContext } from '../../../Context';
 
 const CreateInfomasi = () => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [sendData, setData] = useState({})
   const [isSave, setIsSave] = useState(false)
-//   const { setDataAlert } = useContext(AlertContext)
+  const { setDataAlert } = useContext(AlertContext)
   const [file, setFile] = useState('')
   const [filePath, setFilePath] = useState('')
-//   const dataBread = [
-//     {
-//       href: "/dashboard",
-//       title: "Dashboard",
-//       current: false,
-//     },
-//     {
-//       href: "/master-company",
-//       title: "Company",
-//       current: false,
-//     },
-//     {
-//       href: "/master-company/create",
-//       title: "Create New Company",
-//       current: true,
-//     },
-//   ];
+  const dataBread = [
+    {
+      href: "/",
+      title: "Dashboard",
+      current: false,
+    },
+    {
+      href: "/informasi",
+      title: "Informasi",
+      current: false,
+    },
+    {
+      href: "/informasi/create",
+      title: "Create New Informasi",
+      current: true,
+    },
+  ];
 
 
   const optStatus = [
@@ -152,14 +152,13 @@ const CreateInfomasi = () => {
 
   return (
     <SideBar>
-      {/* <Breadcrumbs breadcrumbs={dataBread} /> */}
+      <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           <Grid item xs={12} sm={6} pb={2}>
             <Header judul='Create New Informasi' />
           </Grid>
           <Grid item xs={12}>
             <FormProvider {...methods}>
-            {/* <FormProvider> */}
               {/* <form onSubmit={methods.handleSubmit(confirmSave)}> */}
                 <div className='card-container'>
                     <Grid 
@@ -210,18 +209,6 @@ const CreateInfomasi = () => {
                           }}
                         />
                       </Grid>
-                      {/* <Grid item xs={12} sm={6}>
-                        <FormInputText
-                          focused
-                          name='informationStatus'
-                          className='input-field-crud'
-                          placeholder='e.g '
-                          label='Information Status*'
-                          inputProps={{
-                            maxLength: 25,
-                          }}
-                        />
-                      </Grid> */}
                       <Grid item xs={12} sm={12}>  
                         <Autocomplete                    
                             disablePortal
