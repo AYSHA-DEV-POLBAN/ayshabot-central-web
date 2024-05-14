@@ -7,7 +7,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import PreviewIcon from "@mui/icons-material/Preview";
 import DeleteIcon from "@mui/icons-material/Delete";
 // import blanktable from "../../assets/blanktable.png";
-import "../../App.css";
+// import "../../App.css";
+import "../../App.css"
 import SyncOutlinedIcon from "@mui/icons-material/SyncOutlined";
 import { EditOutlined, UploadFileOutlined } from "@mui/icons-material";
 // import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -257,6 +258,7 @@ const DataTable = ({
           <DataGrid
             rows={data}
             columns={dataColumns}
+            // className="MuiDataGrid-cellContent"
             disableRowSelectionOnClick
             pageSizeOptions={[10, 25, 50, 100]}
             paginationMode="server"

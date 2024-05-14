@@ -16,6 +16,8 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 // import { AlertContext } from '../../../context';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import PreviewIcon from "@mui/icons-material/Preview";  
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 const DetailInformasi = () => {
   const [loading, setLoading] = useState(false)
@@ -46,6 +48,11 @@ const DetailInformasi = () => {
 //       current: true,
 //     },
 //   ];
+
+const optStatus = [
+  {label: 'Active'},
+  {label: 'Non Active'}
+]
 
   const cancelData = () => {
     setIsSave(false)
@@ -237,7 +244,38 @@ const DetailInformasi = () => {
                       rowSpacing={3.79}
                       xs={12}
                     >
-                      <Grid item xs={12} sm={6}>
+                      <Grid item container xs={12}>
+                        {/* <Grid item mr={2}>
+                          <Avatar src={file} className="image-upload" />
+                        </Grid> */}
+                        {isEdit &&
+                          <Grid item xs={12} sm={12} mt={2} className='custom-file-upload'>
+                            <label className='class-label-upload'>Upload File</label>
+                            <input
+                              type="file"
+                              accept=".pdf"
+                              className="custom-file-input"
+                              // onChange={handleChange}
+                            />
+                            {/* {file !== '' ?
+                            <IconButton
+                              onClick={clearPhoto}>
+                              <ClearOutlinedIcon  item xs={2} className='button-clear'
+                                // style={{marginLeft: '50px'}}
+                              />
+                            </IconButton>
+                            : ''} */}
+                          </Grid>
+                        }
+                        {isEdit && 
+                          <Grid item xs={12} mt={1}>
+                            {/* <Typography variant='titleTextWarningUpload'>
+                              Single upload file should not be more 3MB. Only the .png/jpg file types are allowed
+                            </Typography> */}
+                          </Grid>
+                        }
+                      </Grid>
+                      <Grid item xs={12} sm={12}>
                         {isEdit ? (
                           <FormInputText
                             focused
@@ -251,7 +289,7 @@ const DetailInformasi = () => {
                           />
                         ) : (
                           <Grid container>
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={12} sm={12}>
                               <Typography variant='labelHeaderDetail'>Information Name</Typography>
                             </Grid>
                             <Grid item xs={12}>
@@ -261,7 +299,7 @@ const DetailInformasi = () => {
                           </Grid>
                         )}
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid item xs={12} sm={12}>
                         {isEdit ? (
                           <FormInputText
                             focused
@@ -275,7 +313,7 @@ const DetailInformasi = () => {
                           />
                         ) : (
                           <Grid container>
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={12} sm={12}>
                               <Typography variant='labelHeaderDetail'>Description</Typography>
                             </Grid>
                             <Grid item xs={12}>
@@ -285,45 +323,33 @@ const DetailInformasi = () => {
                           </Grid>
                         )}
                       </Grid>
-                      <Grid item xs={12} sm={6}>
-                        {isEdit ? (
-                          <FormInputText
-                            focused
-                            name='file'
-                            className='input-field-crud'
-                            placeholder='e.g adbs.pdf'
-                            label='File *'
-                            inputProps={{
-                              maxLength: 100,
-                            }}
-                          />
+                      <Grid item xs={12} sm={12}>
+                        {isEdit ? ( 
+                          <Autocomplete                    
+                              disablePortal
+                              id="combo-box-demo"
+                              name="informationStatus"
+                              options={optStatus}
+                              sx={{ width: "100%", marginTop: "8px" }}
+                              // value={selectedRole}
+                              // getOptionLabel={(option) => option.name}
+                              // onChange={(event, newValue) => setSelectedRoles(newValue)}
+                              // isOptionEqualToValue={(option, value) => option.value === value.value}
+                              renderInput={(params) => (
+                                <TextField 
+                                {...params} 
+                                InputLabelProps={{ shrink: true }}   
+                                label="Status *" 
+                                placeholder="Select Status" 
+                                // {...register('role')}
+                                // error={errors.role !== undefined}
+                                // helperText={errors.role ? errors.role.message : ''}
+                                />
+                              )}
+                            />
                         ) : (
                           <Grid container>
-                            <Grid item xs={12} sm={6}>
-                              <Typography variant='labelHeaderDetail'>File</Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Typography>adbs.pdf</Typography>
-                              {/* <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{dataDetail.companyEmail}</Typography> */}
-                            </Grid>
-                          </Grid>
-                        )}
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        {isEdit ? (
-                          <FormInputText
-                            focused
-                            name='informationStatus'
-                            className='input-field-crud'
-                            placeholder='e.g '
-                            label='Information Status *'
-                            inputProps={{
-                              maxLength: 25,
-                            }}
-                          />
-                        ) : (
-                          <Grid container>
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={12} sm={12}>
                               <Typography variant='labelHeaderDetail'>Information Status</Typography>
                             </Grid>
                             <Grid item xs={12}>

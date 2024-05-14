@@ -19,38 +19,38 @@ const User = () => {
     {
       field: 'name',
       headerName: 'Name',
-      flex: 0.7,
-      minWidth: 200,
+      flex: 0.5,
+      minWidth: 180,
     },
     {
       field: 'username',
       headerName: 'Username',
-      flex: 0.7,
-      minWidth: 200,
+      flex: 0.5,
+      minWidth: 150,
     },
     {
       field: 'email',
       headerName: 'Email',
       flex: 0.7 ,
-      minWidth: 240
+      minWidth: 180
     },
     {
       field: 'password',
       headerName: 'Password',
       flex: 0.7 ,
-      minWidth: 240
+      minWidth: 150
     },
     {
       field: 'userLevel',
       headerName: 'Level',
-      flex: 0.7 ,
-      minWidth: 240
+      flex: 0.3 ,
+      minWidth: 100
     },
     {
       field: 'userStatus',
       headerName: 'Status',
-      flex: 0.7 ,
-      minWidth: 240
+      flex: 0.3 ,
+      minWidth: 100
     },
   ];
 

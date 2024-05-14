@@ -12,6 +12,8 @@ import FormInputText from '../../../Component/FormInputText';
 // import schemacompany from '../shema';
 // import client from '../../../global/client';
 // import { AlertContext } from '../../../context';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 const CreateUser = () => {
   const navigate = useNavigate()
@@ -36,6 +38,16 @@ const CreateUser = () => {
 //       current: true,
 //     },
 //   ];
+
+  const optStatus = [
+    {label: "Active"},
+    {label: "Non Active"}
+  ]
+
+  const optLevel = [
+    {label: "Admin"},
+    {label: "Operator"}
+  ]
 
   const cancelData = () => {
     setIsSave(false)
@@ -167,29 +179,53 @@ const CreateUser = () => {
                           }}
                         />
                       </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <FormInputText
-                          focused
-                          name='userLevel'
-                          className='input-field-crud'
-                          placeholder='e.g '
-                          label='User Level*'
-                          inputProps={{
-                            maxLength: 25,
-                          }}
-                        />
+                      <Grid item xs={12} sm={6}>  
+                        <Autocomplete                    
+                            disablePortal
+                            id="combo-box-demo"
+                            name="userLevel"
+                            options={optLevel}
+                            sx={{ width: "100%", marginTop: "8px" }}
+                            // value={selectedRole}
+                            // getOptionLabel={(option) => option.name}
+                            // onChange={(event, newValue) => setSelectedRoles(newValue)}
+                            // isOptionEqualToValue={(option, value) => option.value === value.value}
+                            renderInput={(params) => (
+                              <TextField 
+                              {...params} 
+                              InputLabelProps={{ shrink: true }}   
+                              label="Level *" 
+                              placeholder="Select Level" 
+                              // {...register('role')}
+                              // error={errors.role !== undefined}
+                              // helperText={errors.role ? errors.role.message : ''}
+                              />
+                            )}
+                          />      
                       </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <FormInputText
-                          focused
-                          name='userStatus'
-                          className='input-field-crud'
-                          placeholder='e.g '
-                          label='User Status*'
-                          inputProps={{
-                            maxLength: 25,
-                          }}
-                        />
+                      <Grid item xs={12} sm={6}>  
+                        <Autocomplete                    
+                            disablePortal
+                            id="combo-box-demo"
+                            name="userStatus"
+                            options={optStatus}
+                            sx={{ width: "100%", marginTop: "4px" }}
+                            // value={selectedRole}
+                            // getOptionLabel={(option) => option.name}
+                            // onChange={(event, newValue) => setSelectedRoles(newValue)}
+                            // isOptionEqualToValue={(option, value) => option.value === value.value}
+                            renderInput={(params) => (
+                              <TextField 
+                              {...params} 
+                              InputLabelProps={{ shrink: true }}   
+                              label="Status *" 
+                              placeholder="Select Status" 
+                              // {...register('role')}
+                              // error={errors.role !== undefined}
+                              // helperText={errors.role ? errors.role.message : ''}
+                              />
+                            )}
+                          />      
                       </Grid>
                     </Grid>
                     

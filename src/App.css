@@ -50,7 +50,7 @@
   color: #004881;
 }
 
-.MuiDataGrid-cellContent {
+.MuiDataGrid-cell {
   font-family: "Poppins", sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -181,6 +181,7 @@
 .css-xiftjp-MuiDataGrid-root .MuiDataGrid-cell:focus {
   outline: none !important;
 }
+
 
 .dialog-delete>.MuiDialog-container>.MuiPaper-root,
 .dialog-info>.MuiDialog-container>.MuiPaper-root {

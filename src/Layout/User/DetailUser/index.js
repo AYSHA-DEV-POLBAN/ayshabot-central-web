@@ -16,6 +16,8 @@ import FormInputText from '../../../Component/FormInputText';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 // import { AlertContext } from '../../../context';
 import PreviewIcon from "@mui/icons-material/Preview";  
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 const DetailUser = () => {
   const [dataProject, setDataProject] = useState([]) 
@@ -84,6 +86,17 @@ const DetailUser = () => {
 //       current: true,
 //     },
 //   ];
+
+
+  const optStatus = [
+    {label: "Active"},
+    {label: "Non Active"}
+  ]
+
+  const optLevel = [
+    {label: "Admin"},
+    {label: "Operator"}
+  ]
 
   const cancelData = () => {
     setIsSave(false)
@@ -337,17 +350,29 @@ const DetailUser = () => {
                         )}
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        {isEdit ? (
-                          <FormInputText
-                            focused
-                            name='userLevel'
-                            className='input-field-crud'
-                            placeholder='e.g Admin'
-                            label='User Level *'
-                            inputProps={{
-                              maxLength: 25,
-                            }}
-                          />
+                        {isEdit ? ( 
+                          <Autocomplete                    
+                              disablePortal
+                              id="combo-box-demo"
+                              name="userLevel"
+                              options={optLevel}
+                              sx={{ width: "100%", marginTop: "8px" }}
+                              // value={selectedRole}
+                              // getOptionLabel={(option) => option.name}
+                              // onChange={(event, newValue) => setSelectedRoles(newValue)}
+                              // isOptionEqualToValue={(option, value) => option.value === value.value}
+                              renderInput={(params) => (
+                                <TextField 
+                                {...params} 
+                                InputLabelProps={{ shrink: true }}   
+                                label="Level *" 
+                                placeholder="Select Status" 
+                                // {...register('role')}
+                                // error={errors.role !== undefined}
+                                // helperText={errors.role ? errors.role.message : ''}
+                                />
+                              )}
+                            />
                         ) : (
                           <Grid container>
                             <Grid item xs={12} sm={6}>
@@ -362,16 +387,28 @@ const DetailUser = () => {
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         {isEdit ? (
-                          <FormInputText
-                            focused
-                            name='userStatuss'
-                            className='input-field-crud'
-                            placeholder='e.g Active'
-                            label='User Status *'
-                            inputProps={{
-                              maxLength: 25,
-                            }}
-                          />
+                          <Autocomplete                    
+                              disablePortal
+                              id="combo-box-demo"
+                              name="userStatus"
+                              options={optStatus}
+                              sx={{ width: "100%", marginTop: "8px" }}
+                              // value={selectedRole}
+                              // getOptionLabel={(option) => option.name}
+                              // onChange={(event, newValue) => setSelectedRoles(newValue)}
+                              // isOptionEqualToValue={(option, value) => option.value === value.value}
+                              renderInput={(params) => (
+                                <TextField 
+                                {...params} 
+                                InputLabelProps={{ shrink: true }}   
+                                label="Status *" 
+                                placeholder="Select Status" 
+                                // {...register('role')}
+                                // error={errors.role !== undefined}
+                                // helperText={errors.role ? errors.role.message : ''}
+                                />
+                              )}
+                            />
                         ) : (
                           <Grid container>
                             <Grid item xs={12} sm={6}>

@@ -17,6 +17,8 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 // import { AlertContext } from '../../../context';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import PreviewIcon from "@mui/icons-material/Preview";  
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 const DetailPrompting = () => {
   const [dataProject, setDataProject] = useState([]) 
@@ -85,6 +87,11 @@ const DetailPrompting = () => {
 //       current: true,
 //     },
 //   ];
+
+  const optStatus = [
+    {label: 'Active'},
+    {label: 'Non Active'}
+  ]
 
   const cancelData = () => {
     setIsSave(false)
@@ -239,7 +246,7 @@ const DetailPrompting = () => {
                       rowSpacing={3.79}
                       xs={12}
                     >
-                      <Grid item xs={12} sm={6}>
+                      <Grid item xs={12} sm={12}>
                         {isEdit ? (
                           <FormInputText
                             focused
@@ -263,7 +270,7 @@ const DetailPrompting = () => {
                           </Grid>
                         )}
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid item xs={12} sm={12}>
                         {isEdit ? (
                           <FormInputText
                             focused
@@ -287,18 +294,30 @@ const DetailPrompting = () => {
                           </Grid>
                         )}
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid item xs={12} sm={12}>
                         {isEdit ? (
-                          <FormInputText
-                            focused
-                            name='commandStatus'
-                            className='input-field-crud'
-                            placeholder='e.g '
-                            label='Command Status *'
-                            inputProps={{
-                              maxLength: 25,
-                            }}
-                          />
+                          <Autocomplete                    
+                              disablePortal
+                              id="combo-box-demo"
+                              name="commandStatus"
+                              options={optStatus}
+                              sx={{ width: "100%", marginTop: "4px" }}
+                              // value={selectedRole}
+                              // getOptionLabel={(option) => option.name}
+                              // onChange={(event, newValue) => setSelectedRoles(newValue)}
+                              // isOptionEqualToValue={(option, value) => option.value === value.value}
+                              renderInput={(params) => (
+                                <TextField 
+                                {...params} 
+                                InputLabelProps={{ shrink: true }}   
+                                label="Status *" 
+                                placeholder="Select Status" 
+                                // {...register('role')}
+                                // error={errors.role !== undefined}
+                                // helperText={errors.role ? errors.role.message : ''}
+                                />
+                              )}
+                            />
                         ) : (
                           <Grid container>
                             <Grid item xs={12} sm={6}>

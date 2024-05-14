@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router';
 // import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from "react-hook-form";
 import FormInputText from '../../../Component/FormInputText';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 // import schemacompany from '../shema';
 // import client from '../../../global/client';
 // import uploadFile from '../../../global/uploadFile';
@@ -39,6 +41,12 @@ const CreateInfomasi = () => {
 //       current: true,
 //     },
 //   ];
+
+
+  const optStatus = [
+    {label: 'Active'},
+    {label: 'Non Active'}
+  ]
 
   const cancelData = () => {
     setIsSave(false)
@@ -111,6 +119,36 @@ const CreateInfomasi = () => {
     }
   }
 
+  // const MAX_SIZE_FILE = 3145728;
+  // const handleChange = async (e) => {
+  //   if (e.target.files.length > 0) {
+  //     const uploadedFile = e.target.files[0];
+  //     if (uploadedFile.size <= MAX_SIZE_FILE) {
+  //       if (
+  //         uploadedFile.type === "file/pdf"
+  //       ) {
+  //         const tempFilePath = await uploadFile(uploadedFile, 'company');
+  //         setFilePath(tempFilePath);
+  //         setFile(URL.createObjectURL(uploadedFile));
+  //       } else {
+  //         console.error("Tipe file tidak valid.");
+  //         setDataAlert({
+  //           severity: 'error',
+  //           message: "Invalid type file",
+  //           open: true
+  //         })
+  //       }
+  //     } else {
+  //       console.error("File terlalu besar.");
+  //       setDataAlert({
+  //         severity: 'error',
+  //         message: "Company Image can't more than 3MB",
+  //         open: true
+  //       })
+  //     }
+  //   }
+  // }
+
 
   return (
     <SideBar>
@@ -131,7 +169,24 @@ const CreateInfomasi = () => {
                       rowSpacing={3.79}
                       xs={12}
                     >
-                        <Grid item xs={12} sm={6}>
+                      <Grid item xs={12} sm={12} mt={2} className='custom-file-upload'>
+                        <label className='class-label-upload'>Upload File</label>
+                        <input
+                          type="file"
+                          accept=".pdf"
+                          className="custom-file-input"
+                          name='file'
+                          // onChange={handleChange}
+                        />
+                        {/* {file !== '' ?
+                        <IconButton
+                          onClick={clearPhoto}>
+                          <ClearOutlinedIcon  item xs={2} className='button-clear'
+                          />
+                        </IconButton>
+                        : ''} */}
+                      </Grid>
+                      <Grid item xs={12} sm={12}>
                         <FormInputText
                           focused
                           name='informationName'
@@ -143,7 +198,7 @@ const CreateInfomasi = () => {
                           }}
                         />
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid item xs={12} sm={12}>
                         <FormInputText
                           focused
                           name='desc'
@@ -155,7 +210,7 @@ const CreateInfomasi = () => {
                           }}
                         />
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      {/* <Grid item xs={12} sm={6}>
                         <FormInputText
                           focused
                           name='informationStatus'
@@ -166,6 +221,30 @@ const CreateInfomasi = () => {
                             maxLength: 25,
                           }}
                         />
+                      </Grid> */}
+                      <Grid item xs={12} sm={12}>  
+                        <Autocomplete                    
+                            disablePortal
+                            id="combo-box-demo"
+                            name="informationStatus"
+                            options={optStatus}
+                            sx={{ width: "100%", marginTop: "8px" }}
+                            // value={selectedRole}
+                            // getOptionLabel={(option) => option.name}
+                            // onChange={(event, newValue) => setSelectedRoles(newValue)}
+                            // isOptionEqualToValue={(option, value) => option.value === value.value}
+                            renderInput={(params) => (
+                              <TextField 
+                              {...params} 
+                              InputLabelProps={{ shrink: true }}   
+                              label="Status *" 
+                              placeholder="Select Status" 
+                              // {...register('role')}
+                              // error={errors.role !== undefined}
+                              // helperText={errors.role ? errors.role.message : ''}
+                              />
+                            )}
+                          />      
                       </Grid>
                     </Grid>
                     

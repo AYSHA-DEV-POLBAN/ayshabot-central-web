@@ -12,6 +12,8 @@ import FormInputText from '../../../Component/FormInputText';
 // import schemacompany from '../shema';
 // import client from '../../../global/client';
 // import { AlertContext } from '../../../context';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 const CreatePrompting = () => {
   const navigate = useNavigate()
@@ -37,6 +39,12 @@ const CreatePrompting = () => {
 //       current: true,
 //     },
 //   ];
+
+
+  const optStatus = [
+    {label: 'Active'},
+    {label: 'Non Active'}
+  ]
 
   const cancelData = () => {
     setIsSave(false)
@@ -142,17 +150,29 @@ const CreatePrompting = () => {
                           }}
                         />
                       </Grid>
-                      <Grid item xs={12} sm={12}>
-                        <FormInputText
-                          focused
-                          name='commandStatus'
-                          className='input-field-crud'
-                          placeholder='e.g '
-                          label='Command Status*'
-                          inputProps={{
-                            maxLength: 25,
-                          }}
-                        />
+                      <Grid item xs={12} sm={12}>  
+                        <Autocomplete                    
+                            disablePortal
+                            id="combo-box-demo"
+                            name="commandStatus"
+                            options={optStatus}
+                            sx={{ width: "100%", marginTop: "4px" }}
+                            // value={selectedRole}
+                            // getOptionLabel={(option) => option.name}
+                            // onChange={(event, newValue) => setSelectedRoles(newValue)}
+                            // isOptionEqualToValue={(option, value) => option.value === value.value}
+                            renderInput={(params) => (
+                              <TextField 
+                              {...params} 
+                              InputLabelProps={{ shrink: true }}   
+                              label="Status *" 
+                              placeholder="Select Status" 
+                              // {...register('role')}
+                              // error={errors.role !== undefined}
+                              // helperText={errors.role ? errors.role.message : ''}
+                              />
+                            )}
+                          />      
                       </Grid>
                     </Grid>
                     
