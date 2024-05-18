@@ -31,7 +31,7 @@ function BreadCumbComp({ breadcrumbs }) {
             color="inherit"
             onClick={() => navigateUrl(res.href)}
             // href={res.href}
-            style={{ fontSize: "120%", color: res.current && "#2196F3" }}
+            style={{ fontSize: "100%", color: res.current && "#2196F3" }}
           >
             {res.title}
           </Link>

@@ -197,13 +197,21 @@ const optStatus = [
 //     setFile()
 //   }
 
+  const [openSide, setOpenSide] = useState(false);
+  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
+    setOpenSide(!openSide);
+  };
+
   return (
-    <SideBar>
+    // <SideBar>
+    <div>
+      <Header title='Information' handleDrawerClose={handleDrawerClose} open={openSide} /> {/* Mengirimkan prop */}
+        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}> {/* Mengirimkan prop */}
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
-          <Grid item xs={12} sm={8}>
+          {/* <Grid item xs={12} sm={8}>
             <Header judul={isEdit ? 'Edit Informasi' : 'Detail Informasi'} />
-          </Grid>
+          </Grid> */}
           {!isEdit && 
             <Grid item xs={12} sm={4} alignSelf='center' sx={{ textAlign: { xs:'start', sm:'end'}}}>
               <Button
@@ -269,11 +277,11 @@ const optStatus = [
                           />
                         ) : (
                           <Grid container>
-                            <Grid item xs={12} sm={12}>
-                              <Typography variant='labelHeaderDetail'>Information Name</Typography>
+                            <Grid item xs={6} sm={6}>
+                              <Typography variant='labelHeaderDetail'>Information Name :</Typography>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Typography>Ini informasi poliklinik</Typography>
+                            <Grid item xs={6}>
+                                <Typography variant='textDetail'>Ini informasi poliklinik</Typography>
                               {/* <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{dataDetail.companyName}</Typography> */}
                             </Grid>
                           </Grid>
@@ -293,11 +301,11 @@ const optStatus = [
                           />
                         ) : (
                           <Grid container>
-                            <Grid item xs={12} sm={12}>
-                              <Typography variant='labelHeaderDetail'>Description</Typography>
+                            <Grid item xs={6} sm={6}>
+                              <Typography variant='labelHeaderDetail'>Description :</Typography>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Typography>Ini informasi poliklinik</Typography>
+                            <Grid item xs={6}>
+                                <Typography variant='textDetail'>Ini informasi poliklinik</Typography>
                               {/* <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{dataDetail.companyEmail}</Typography> */}
                             </Grid>
                           </Grid>
@@ -329,11 +337,11 @@ const optStatus = [
                             />
                         ) : (
                           <Grid container>
-                            <Grid item xs={12} sm={12}>
-                              <Typography variant='labelHeaderDetail'>Information Status</Typography>
+                            <Grid item xs={6} sm={6}>
+                              <Typography variant='labelHeaderDetail'>Information Status :</Typography>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Typography>Ini informasi poliklinik</Typography>
+                            <Grid item xs={6}>
+                                <Typography variant='textDetail'>Ini informasi poliklinik</Typography>
                               {/* <Typography variant='inputDetail'>{dataDetail.npwp}</Typography> */}
                             </Grid>
                           </Grid>
@@ -387,7 +395,9 @@ const optStatus = [
             <Button onClick={onSave} variant='saveButton'>{isSave ? 'Save Data' : 'Back'}</Button>
           </DialogActions>
         </Dialog>
-    </SideBar>
+        </SideBar>
+      </div>
+    
   )
 
 }

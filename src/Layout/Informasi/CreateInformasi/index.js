@@ -150,13 +150,18 @@ const CreateInfomasi = () => {
   // }
 
 
+  const [openSide, setOpenSide] = useState(false);
+  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
+    setOpenSide(!openSide);
+  };
+
+
   return (
-    <SideBar>
+    <div>
+      <Header title='Information' handleDrawerClose={handleDrawerClose} open={openSide} /> {/* Mengirimkan prop */}
+        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}> {/* Mengirimkan prop */}
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
-          <Grid item xs={12} sm={6} pb={2}>
-            <Header judul='Create New Informasi' />
-          </Grid>
           <Grid item xs={12}>
             <FormProvider {...methods}>
               {/* <form onSubmit={methods.handleSubmit(confirmSave)}> */}
@@ -280,7 +285,8 @@ const CreateInfomasi = () => {
             <Button onClick={onSave} variant='saveButton'>{isSave ? 'Save Data' : 'Back'}</Button>
           </DialogActions>
         </Dialog>
-    </SideBar>
+        </SideBar>
+      </div>
   )
 
 }

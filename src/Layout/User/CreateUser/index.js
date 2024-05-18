@@ -110,14 +110,22 @@ const CreateUser = () => {
     }
   }
 
+  const [openSide, setOpenSide] = useState(false);
+  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
+    setOpenSide(!openSide);
+  };
 
   return (
-    <SideBar>
+    // <SideBar>
+    <div>
+      <Header title='User' handleDrawerClose={handleDrawerClose} open={openSide} /> {/* Mengirimkan prop */}
+        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}> {/* Mengirimkan prop */}
+        
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
-          <Grid item xs={12} sm={6} pb={2}>
+          {/* <Grid item xs={12} sm={6} pb={2}>
             <Header judul='Create New User' />
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
             <FormProvider {...methods}>
               {/* <form onSubmit={methods.handleSubmit(confirmSave)}> */}
@@ -273,7 +281,8 @@ const CreateUser = () => {
             <Button onClick={onSave} variant='saveButton'>{isSave ? 'Save Data' : 'Back'}</Button>
           </DialogActions>
         </Dialog>
-    </SideBar>
+     </SideBar>
+        </div>
   )
 
 }

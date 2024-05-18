@@ -151,15 +151,22 @@ const DetailPrompting = () => {
 
   }
 
-
+  const [openSide, setOpenSide] = useState(false);
+  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
+    setOpenSide(!openSide);
+  };
 
   return (
-    <SideBar>
+    // <SideBar>
+    <div>
+      <Header title='Prompting' handleDrawerClose={handleDrawerClose} open={openSide} /> {/* Mengirimkan prop */}
+        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}> {/* Mengirimkan prop */}
+        
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
-          <Grid item xs={12} sm={8}>
+          {/* <Grid item xs={12} sm={8}>
             <Header judul={isEdit ? 'Edit Propmpting' : 'Detail Prompting'} />
-          </Grid>
+          </Grid> */}
           {!isEdit && 
             <Grid item xs={12} sm={4} alignSelf='center' sx={{ textAlign: { xs:'start', sm:'end'}}}>
               <Button
@@ -197,11 +204,11 @@ const DetailPrompting = () => {
                           />
                         ) : (
                           <Grid container>
-                            <Grid item xs={12} sm={6}>
-                              <Typography variant='labelHeaderDetail'>Command Name</Typography>
+                            <Grid item xs={6} sm={6}>
+                              <Typography variant='labelHeaderDetail'>Command Name :</Typography>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Typography>/cek dokter</Typography>
+                            <Grid item xs={6}>
+                                <Typography variant='textDetail'>/cek dokter</Typography>
                               {/* <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{dataDetail.companyName}</Typography> */}
                             </Grid>
                           </Grid>
@@ -221,11 +228,11 @@ const DetailPrompting = () => {
                           />
                         ) : (
                           <Grid container>
-                            <Grid item xs={12} sm={6}>
-                              <Typography variant='labelHeaderDetail'>Command Response</Typography>
+                            <Grid item xs={6} sm={6}>
+                              <Typography variant='labelHeaderDetail'>Command Response :</Typography>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Typography>Ini informasi poliklinik</Typography>
+                            <Grid item xs={6}>
+                                <Typography variant='textDetail'>Ini informasi poliklinik</Typography>
                               {/* <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{dataDetail.companyEmail}</Typography> */}
                             </Grid>
                           </Grid>
@@ -257,11 +264,11 @@ const DetailPrompting = () => {
                             />
                         ) : (
                           <Grid container>
-                            <Grid item xs={12} sm={6}>
-                              <Typography variant='labelHeaderDetail'>Command Status</Typography>
+                            <Grid item xs={6} sm={6}>
+                              <Typography variant='labelHeaderDetail'>Command Status :</Typography>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Typography>Ini informasi poliklinik</Typography>
+                            <Grid item xs={6}>
+                                <Typography variant='textDetail'>Ini informasi poliklinik</Typography>
                               {/* <Typography variant='inputDetail'>{dataDetail.npwp}</Typography> */}
                             </Grid>
                           </Grid>
@@ -315,7 +322,8 @@ const DetailPrompting = () => {
             <Button onClick={onSave} variant='saveButton'>{isSave ? 'Save Data' : 'Back'}</Button>
           </DialogActions>
         </Dialog>
-    </SideBar>
+     </SideBar>
+        </div>
   )
 
 }

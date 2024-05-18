@@ -5,6 +5,8 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router';
 import globalTheme from './Theme';
 import { closedRoutes, finalRoutes } from './routes';
 import { AlertContext } from './Context';
+import Header from './Component/Header';
+import SideBar from './Component/Sidebar';
 
 const App = () => {
   const navigate = useNavigate()
@@ -48,16 +50,28 @@ const App = () => {
     onCloseAlert();
   }, [location])
 
+
+  const [open, setOpen] = useState(false);
+  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
+    setOpen(!open);
+  };
+
   return (
     <ThemeProvider theme={globalTheme}>
       <AlertContext.Provider value={value}>
+      {/* <Header title="Your Title" handleDrawerClose={handleDrawerClose} open={open} /> 
+        <SideBar open={open} handleDrawerClose={handleDrawerClose}>  */}
         <Suspense fallback={<p>Loading...</p>}>
+
+        {/* <main className={`main-content ${open ? 'open' : ''}`}> */}
           <Routes>
             {closedRoutes().map((res, idx) => {
               return <Route path={res.path} element={res.element} key={`${idx + 1}-route-path`} />
             })}
           </Routes>
+          {/* </main> */}
         </Suspense>
+        {/* </SideBar> */}
       </AlertContext.Provider>
     </ThemeProvider>
   );

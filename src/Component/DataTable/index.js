@@ -5,6 +5,9 @@ import SearchBar from "../Searchbar";
 import AddIcon from "@mui/icons-material/Add";
 import { DataGrid } from "@mui/x-data-grid";
 import PreviewIcon from "@mui/icons-material/Preview";
+import InfoIcon from '@mui/icons-material/Info';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from "@mui/icons-material/Delete";
 // import blanktable from "../../assets/blanktable.png";
 // import "../../App.css";
@@ -94,7 +97,7 @@ const DataTable = ({
                 </IconButton>
               ) : (
                 <IconButton onClick={() => onDetail(data.id)}>
-                  <PreviewIcon />
+                  <VisibilityIcon />
                 </IconButton>
               )}
               {onDelete && (
@@ -111,7 +114,7 @@ const DataTable = ({
 
   return (
     <Grid container rowSpacing={3}>
-      <Grid item xs={12} pb={2}>
+      {/* <Grid item xs={12} pb={2}>
         <Grid container className="containerHeader">
           <Grid item>
             <div className="dividerHeader" />
@@ -120,7 +123,7 @@ const DataTable = ({
             <Typography variant="headerCardMenu">{`Master ${title}`}</Typography>
           </Grid>
         </Grid>
-      </Grid>
+      </Grid> */}
       <Grid
         item
         justifyContent="space-between"
@@ -129,9 +132,9 @@ const DataTable = ({
         paddingTop={3}
       >
         {!onUpload ? (
-          <Grid item xs={12} sm={4} alignSelf="center" sx={{textAlign: {xs: "start", sm:"end"}}}>
+          <Grid item xs={6} sm={3} alignSelf="center" sx={{textAlign: {xs: "start", sm:"end"}}}>
             <SearchBar
-              placeholder={placeSearch}
+              // placeholder={placeSearch}
               label={searchTitle}
               onChange={handleChangeSearch}
             />

@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
 import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
+import Header from '../../Component/Header';
 import { useNavigate } from "react-router";
 // import client from "../../global/client";
 import { AlertContext } from "../../Context";
+import BreadCumbComp from '../../Component/DataBread';
 
 
 const User = () => {
@@ -50,6 +52,19 @@ const User = () => {
       headerName: 'Status',
       flex: 0.3 ,
       minWidth: 100
+    },
+  ];
+
+  const dataBread = [
+    {
+      href: "/",
+      title: "Dashboard",
+      current: false,
+    },
+    {
+      href: "/user",
+      title: "User",
+      current: false,
     },
   ];
 
@@ -161,9 +176,18 @@ const User = () => {
     })
   }
 
+  const [openSide, setOpenSide] = useState(false);
+  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
+    setOpenSide(!openSide);
+  };
+
   return (
     <div>
-      <SideBar>
+      {/* <SideBar> */}
+      <Header title='User' handleDrawerClose={handleDrawerClose} open={openSide} /> {/* Mengirimkan prop */}
+        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}> {/* Mengirimkan prop */}
+        
+      <BreadCumbComp breadcrumbs={dataBread} />
         <DataTable
           title='User'
           data={data}

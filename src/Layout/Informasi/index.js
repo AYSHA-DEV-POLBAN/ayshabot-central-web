@@ -5,6 +5,8 @@ import SideBar from '../../Component/Sidebar';
 import { useNavigate } from "react-router";
 // import client from "../../global/client";
 import { AlertContext } from "../../Context";
+import BreadCumbComp from '../../Component/DataBread';
+import Header from '../../Component/Header';
 
 
 const Informasi = () => {
@@ -39,6 +41,19 @@ const Informasi = () => {
       flex: 1 ,
       minWidth: 100
     }
+  ];
+
+  const dataBread = [
+    {
+      href: "/",
+      title: "Dashboard",
+      current: false,
+    },
+    {
+      href: "/informasi",
+      title: "Informasi",
+      current: false,
+    },
   ];
 
   const [open, setOpen] = useState(false);
@@ -148,14 +163,22 @@ const Informasi = () => {
     })
   }
 
+  const [openSide, setOpenSide] = useState(false);
+  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
+    setOpenSide(!openSide);
+  };
+
   return (
     <div>
-      <SideBar>
+      {/* <SideBar> */}
+      <Header title='Information' handleDrawerClose={handleDrawerClose} open={openSide} />
+        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}>
+      <BreadCumbComp breadcrumbs={dataBread} />
         <DataTable
           title='Informasi'
           data={data}
           columns={columns}
-          placeSearch="Information Name, File, Status, etc"
+          // placeSearch="Information Name, File, Status, etc"
           searchTitle="Search By"
           onAdd={() => onAdd()}
           onFilter={(dataFilter => onFilter(dataFilter))}

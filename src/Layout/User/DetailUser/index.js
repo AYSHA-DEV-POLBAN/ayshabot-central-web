@@ -161,13 +161,22 @@ const DetailUser = () => {
 
   }
 
+  const [openSide, setOpenSide] = useState(false);
+  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
+    setOpenSide(!openSide);
+  };
+
   return (
-    <SideBar>
+    // <SideBar>
+    <div>
+      <Header title='User' handleDrawerClose={handleDrawerClose} open={openSide} /> {/* Mengirimkan prop */}
+        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}> {/* Mengirimkan prop */}
+        
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
-          <Grid item xs={12} sm={8}>
+          {/* <Grid item xs={12} sm={8}>
             <Header judul={isEdit ? 'Edit User' : 'Detail User'} />
-          </Grid>
+          </Grid> */}
           {!isEdit && 
             <Grid item xs={12} sm={4} alignSelf='center' sx={{ textAlign: { xs:'start', sm:'end'}}}>
               <Button
@@ -408,7 +417,8 @@ const DetailUser = () => {
             <Button onClick={onSave} variant='saveButton'>{isSave ? 'Save Data' : 'Back'}</Button>
           </DialogActions>
         </Dialog>
-    </SideBar>
+     </SideBar>
+        </div>
   )
 
 }

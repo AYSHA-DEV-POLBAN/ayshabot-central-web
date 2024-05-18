@@ -3,6 +3,7 @@ import DataTable from '../../Component/DataTable';
 import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import Rating from '@mui/material/Rating';
+import Header from '../../Component/Header';
 // import { useNavigate } from "react-router";
 // import client from "../../global/client";
 // import { AlertContext } from "../../context";
@@ -209,9 +210,17 @@ const LogActivity = () => {
     })
   }
 
+  const [openSide, setOpenSide] = useState(false);
+  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
+    setOpenSide(!openSide);
+  };
+
   return (
     <div>
-      <SideBar>
+      {/* <SideBar> */}
+      <Header title='Log Activity' handleDrawerClose={handleDrawerClose} open={openSide} /> {/* Mengirimkan prop */}
+        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}> {/* Mengirimkan prop */}
+        
         <DataTable
           title='Log Activity'
           data={data}

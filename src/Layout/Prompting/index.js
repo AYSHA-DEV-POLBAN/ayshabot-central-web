@@ -2,10 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
 import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
+import Header from '../../Component/Header';
 import Rating from '@mui/material/Rating';
 import { useNavigate } from "react-router";
 // import client from "../../global/client";
 import { AlertContext } from "../../Context";
+import BreadCumbComp from '../../Component/DataBread';
 
 
 const Prompting = () => {
@@ -33,6 +35,19 @@ const Prompting = () => {
       headerName: 'Status',
       flex: 1 ,
       minWidth: 100
+    },
+  ];
+
+  const dataBread = [
+    {
+      href: "/",
+      title: "Dashboard",
+      current: false,
+    },
+    {
+      href: "/prompting",
+      title: "Prompting",
+      current: false,
     },
   ];
 
@@ -149,9 +164,18 @@ const Prompting = () => {
     })
   }
 
+  const [openSide, setOpenSide] = useState(false);
+  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
+    setOpenSide(!openSide);
+  };
+
   return (
     <div>
-      <SideBar>
+      {/* <SideBar> */}
+      <Header title='Prompting' handleDrawerClose={handleDrawerClose} open={openSide} /> {/* Mengirimkan prop */}
+        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}> {/* Mengirimkan prop */}
+        
+      <BreadCumbComp breadcrumbs={dataBread} />
         <DataTable
           title='Prompting'
           data={data}

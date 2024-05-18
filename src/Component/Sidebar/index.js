@@ -22,8 +22,10 @@ import { closedRoutes, finalRoutes } from "../../routes";
 // import CustomAlert from "../Alert";
 // import { convertBase64 } from "../../global/convertBase64";
 import { useLocation } from "react-router-dom";
+import MenuIcon from '@mui/icons-material/Menu';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -113,61 +115,16 @@ export default function SideBar({ children }) {
     (res) => clearStringPath(location.pathname) === clearStringPath(res.path)
   );
   return (
-    <Box sx={{ display: "-webkit-box" }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <Drawer className="drawer-container" variant="permanent" open={open}>
         <DrawerHeader className="drawer-header-container">
           <div className="drawer-header">
             <Grid container>
-              <Grid item xs={12}>
-                <div
-                  className={
-                    open ? "container-img margin-img" : "container-img"
-                  }
-                >
-                  <img
-                    className="drawer-logo"
-                    src={open ? logoAysha : minilogoAysha}
-                    alt="AyshaBot Central"
-                  />
-                </div>
-              </Grid>
-              <Grid item xs={12}>
-                <div className="container-chevron">
-                  <Grid container>
-                    <Grid item xs={open ? 4 : 12}>
-                      <Avatar
-                        variant="square"
-                        className={open ? "mini-avatar" : "lg-avatar"}
-                        // src={convertBase64(photoProfile)}
-                        onClick={handleDrawerClose}
-                      />
-                    </Grid>
-                    {open && (
-                      <Grid item container xs={8}>
-                        <Grid item container xs={8} overflow="hidden">
-                          <Grid item container xs={12} style={{maxWidth:"150px"}}>
-                            <Typography variant="drawerNameUser" textOverflow="ellipsis" noWrap overflow="hidden">
-                              {/* {username} */}
-                              Reyna
-                            </Typography>
-                          </Grid>
-                          <Grid item container xs={12}>
-                            <Typography variant="drawerPostion">
-                              {/* {position} */}
-                              Admin
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={4} textAlign="end">
-                          <IconButton onClick={handleDrawerClose}>
-                            {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                          </IconButton>
-                        </Grid>
-                      </Grid>
-                    )}
-                  </Grid>
-                </div>
+              <Grid item xs={12} className="list-menu-container">
+                  {/* <IconButton onClick={handleDrawerClose} sx={{color: '#146C94'}}>
+                    {!open ? <MenuIcon /> : <MenuOpenIcon />}
+                  </IconButton> */}
               </Grid>
             </Grid>
           </div>
@@ -196,6 +153,9 @@ export default function SideBar({ children }) {
                     minWidth: 0,
                     mr: open ? 3 : "auto",
                     justifyContent: "center",
+                    '& .MuiSvgIcon-root': {
+                      fontSize: '20px'
+                    }
                   }}
                 >
                   {res.icon}
