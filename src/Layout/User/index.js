@@ -1,15 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
-import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import Header from '../../Component/Header';
 import { useNavigate } from "react-router";
 // import client from "../../global/client";
 import { AlertContext } from "../../Context";
 import BreadCumbComp from '../../Component/DataBread';
+import axios from 'axios';
 
 
 const User = () => {
+  
+  const [data, setData] = useState([
+    // { id: 1, no: 1, name: 'John Doe', username: 'johndoe', email: 'john@example.com', password: '123456', userLevel: 'Admin', userStatus: 'active' },
+    // { id: 2, no: 2, name: 'Jane Smith', username: 'janesmith', email: 'jane@example.com', password: 'password', userLevel: 'Admin', userStatus: 'active' },
+  ]);
+  
   const columns = [
     {
       field: 'no',
@@ -20,27 +27,27 @@ const User = () => {
     {
       field: 'name',
       headerName: 'Name',
-      flex: 0.5,
-      minWidth: 180,
+      flex: 0.7,
+      minWidth: 200,
     },
-    {
-      field: 'username',
-      headerName: 'Username',
-      flex: 0.5,
-      minWidth: 150,
-    },
+    // {
+    //   field: 'username',
+    //   headerName: 'Username',
+    //   flex: 0.5,
+    //   minWidth: 150,
+    // },
     {
       field: 'email',
       headerName: 'Email',
-      flex: 0.7 ,
-      minWidth: 180
+      flex: 1 ,
+      minWidth: 200
     },
-    {
-      field: 'password',
-      headerName: 'Password',
-      flex: 0.7 ,
-      minWidth: 150
-    },
+    // {
+    //   field: 'password',
+    //   headerName: 'Password',
+    //   flex: 0.7 ,
+    //   minWidth: 150
+    // },
     {
       field: 'userLevel',
       headerName: 'Level',
@@ -51,7 +58,21 @@ const User = () => {
       field: 'userStatus',
       headerName: 'Status',
       flex: 0.3 ,
-      minWidth: 100
+      minWidth: 100,
+      // renderCell: (data) => (
+      //   <Box
+      //     sx={{
+      //       backgroundColor: getStatusColor(data.userStatus),
+      //       color: getStatusFontColor(data.userStatus),
+      //       padding: '5px 10px',
+      //       gap: '10px',
+      //       borderRadius: '4px',
+      //       fontSize: '12px',
+      //     }}
+      //   >
+      //     {data.userStatus}
+      //   </Box>
+      // ),
     },
   ];
 
@@ -71,10 +92,6 @@ const User = () => {
   const [open, setOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const navigate = useNavigate();
-  const [data, setData] = useState([
-    { id: 1, no: 1, name: 'John Doe', username: 'johndoe', email: 'john@example.com', password: '123456', userLevel: 'Admin', userStatus: 'active' },
-    { id: 2, no: 2, name: 'Jane Smith', username: 'janesmith', email: 'jane@example.com', password: 'password', userLevel: 'Admin', userStatus: 'active' },
-  ]);
   const [idHapus,setidHapus] = useState();
   const [totalData, setTotalData] = useState();
   const { setDataAlert } = useContext(AlertContext)
@@ -86,6 +103,21 @@ const User = () => {
     search: ''
   })
   
+  const getStatusColor = (status) => {
+    const statusColors = {
+      'active' : '#A1DD70',
+      'non active' : '#EE4E4E'
+    };
+    return statusColors[status] || '#ccc';
+  };
+
+  const getStatusFontColor = (status) => {
+    const statusFontColors = {
+      'active' : '#ffffff',
+      'non active' : '#fffff'
+    };
+    return statusFontColors[status] || '#fff';
+  };
 
   const handleClickOpen = async (id) => {
     setidHapus(id)
@@ -102,6 +134,17 @@ const User = () => {
     //   endpoint: ``
     // })
     // rebuildData(res)
+    try {
+      const res = await axios.get('http://localhost:8001/api/v1/users/', {
+        headers: {
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlX2lkIjoxLCJuYW1lIjoic3VwZXJhZG1pbiIsImVtYWlsIjoic3VwZXJhZG1pbkBnbWFpbC5jb20ifSwiaWF0IjoxNzE3NzkxMjMzfQ.Bqd_22FjessNFIw3G9eVkQT3GmkwTUXo2FoElw9X_EM`
+        }
+      });
+      console.log(res.data);
+      rebuildData(res.data)
+    } catch (error) {
+      console.error('There was an error!', error);
+    }
   }
 
   const rebuildData = (resData) => {
@@ -111,10 +154,15 @@ const User = () => {
       return {
         no: number + (index + 1),
         id: value.id,
+        name: value.name,
+        email: value.email,
+        userLevel: value.role_id,
+        userStatus: value.status
       }
     })    
     setData([...temp])
-    setTotalData(resData.meta.page.totalElements)
+    // setTotalData(resData.meta.page.totalElements)
+    setTotalData(resData.data.length)
   }
   
   const deleteData = async (id) => {
@@ -159,6 +207,7 @@ const User = () => {
       page: event.target.value != "" ? 0 : filter.page,
       search: event.target.value
     });
+    console.log(filter )
   }
   
   
@@ -176,17 +225,10 @@ const User = () => {
     })
   }
 
-  const [openSide, setOpenSide] = useState(false);
-  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
-    setOpenSide(!openSide);
-  };
 
   return (
     <div>
-      {/* <SideBar> */}
-      <Header title='User' handleDrawerClose={handleDrawerClose} open={openSide} /> {/* Mengirimkan prop */}
-        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}> {/* Mengirimkan prop */}
-        
+      <SideBar title='User' >
       <BreadCumbComp breadcrumbs={dataBread} />
         <DataTable
           title='User'

@@ -17,11 +17,17 @@ const DetailPrompting = lazy(() => import("./Layout/Prompting/DetailPrompting"))
 const User = lazy(() => import("./Layout/User"))
 const CreateUser = lazy(() => import("./Layout/User/CreateUser"))
 const DetailUser = lazy(() => import("./Layout/User/DetailUser"))
+const LoginScreen = lazy(() => import("./Layout/Authentikasi"))
 
 
 export const closedRoutes = () => [
   {
     path: "/",
+    element: <LoginScreen />,
+    key: "login",
+  },
+  {
+    path: "/dashboard",
     element: <Dashboard />,
     name: "Dashboard",
     key: "dashboard",

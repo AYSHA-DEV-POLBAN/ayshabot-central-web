@@ -163,16 +163,10 @@ const Informasi = () => {
     })
   }
 
-  const [openSide, setOpenSide] = useState(false);
-  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
-    setOpenSide(!openSide);
-  };
 
   return (
     <div>
-      {/* <SideBar> */}
-      <Header title='Information' handleDrawerClose={handleDrawerClose} open={openSide} />
-        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}>
+      <SideBar title='Informasi' >
       <BreadCumbComp breadcrumbs={dataBread} />
         <DataTable
           title='Informasi'

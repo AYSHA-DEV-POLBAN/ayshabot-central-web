@@ -110,17 +110,11 @@ const CreateUser = () => {
     }
   }
 
-  const [openSide, setOpenSide] = useState(false);
-  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
-    setOpenSide(!openSide);
-  };
 
   return (
     // <SideBar>
     <div>
-      <Header title='User' handleDrawerClose={handleDrawerClose} open={openSide} /> {/* Mengirimkan prop */}
-        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}> {/* Mengirimkan prop */}
-        
+      <SideBar title='User' >
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           {/* <Grid item xs={12} sm={6} pb={2}>

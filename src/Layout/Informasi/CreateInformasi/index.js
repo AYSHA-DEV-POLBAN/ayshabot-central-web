@@ -150,16 +150,9 @@ const CreateInfomasi = () => {
   // }
 
 
-  const [openSide, setOpenSide] = useState(false);
-  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
-    setOpenSide(!openSide);
-  };
-
-
   return (
     <div>
-      <Header title='Information' handleDrawerClose={handleDrawerClose} open={openSide} /> {/* Mengirimkan prop */}
-        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}> {/* Mengirimkan prop */}
+      <SideBar title='Informasi' >
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           <Grid item xs={12}>

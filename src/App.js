@@ -59,19 +59,13 @@ const App = () => {
   return (
     <ThemeProvider theme={globalTheme}>
       <AlertContext.Provider value={value}>
-      {/* <Header title="Your Title" handleDrawerClose={handleDrawerClose} open={open} /> 
-        <SideBar open={open} handleDrawerClose={handleDrawerClose}>  */}
         <Suspense fallback={<p>Loading...</p>}>
-
-        {/* <main className={`main-content ${open ? 'open' : ''}`}> */}
           <Routes>
             {closedRoutes().map((res, idx) => {
               return <Route path={res.path} element={res.element} key={`${idx + 1}-route-path`} />
             })}
           </Routes>
-          {/* </main> */}
         </Suspense>
-        {/* </SideBar> */}
       </AlertContext.Provider>
     </ThemeProvider>
   );

@@ -205,8 +205,7 @@ const optStatus = [
   return (
     // <SideBar>
     <div>
-      <Header title='Information' handleDrawerClose={handleDrawerClose} open={openSide} /> {/* Mengirimkan prop */}
-        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}> {/* Mengirimkan prop */}
+      <SideBar title='Informasi' >
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           {/* <Grid item xs={12} sm={8}>

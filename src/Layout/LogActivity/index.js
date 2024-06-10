@@ -210,17 +210,9 @@ const LogActivity = () => {
     })
   }
 
-  const [openSide, setOpenSide] = useState(false);
-  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
-    setOpenSide(!openSide);
-  };
-
   return (
     <div>
-      {/* <SideBar> */}
-      <Header title='Log Activity' handleDrawerClose={handleDrawerClose} open={openSide} /> {/* Mengirimkan prop */}
-        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}> {/* Mengirimkan prop */}
-        
+      <SideBar title='Log Activity' >
         <DataTable
           title='Log Activity'
           data={data}

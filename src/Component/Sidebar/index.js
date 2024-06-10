@@ -13,9 +13,10 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import "./index.css";
+import '../../App.css'
 import logoAysha from "../../assets/logoAysha.png";
 import minilogoAysha from "../../assets/minilogoAysha.png";
-import { Avatar, Typography } from "@mui/material";
+import { Avatar, Typography, Hidden } from "@mui/material";
 import { useNavigate } from "react-router";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { closedRoutes, finalRoutes } from "../../routes";
@@ -24,6 +25,7 @@ import { closedRoutes, finalRoutes } from "../../routes";
 import { useLocation } from "react-router-dom";
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import Header from "../Header";
 
 const drawerWidth = 200;
 
@@ -74,7 +76,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function SideBar({ children }) {
+export default function SideBar({ children, title }) {
   const navigate = useNavigate();
 
   const photoProfile = localStorage.getItem("photoProfile");
@@ -115,16 +117,17 @@ export default function SideBar({ children }) {
     (res) => clearStringPath(location.pathname) === clearStringPath(res.path)
   );
   return (
+    
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <Drawer className="drawer-container" variant="permanent" open={open}>
         <DrawerHeader className="drawer-header-container">
           <div className="drawer-header">
             <Grid container>
-              <Grid item xs={12} className="list-menu-container">
-                  {/* <IconButton onClick={handleDrawerClose} sx={{color: '#146C94'}}>
+              <Grid item xs={4} className="list-menu-container">
+                  <IconButton onClick={handleDrawerClose} sx={{color: '#AFD3E2'}}>
                     {!open ? <MenuIcon /> : <MenuOpenIcon />}
-                  </IconButton> */}
+                  </IconButton>
               </Grid>
             </Grid>
           </div>
@@ -195,6 +198,7 @@ export default function SideBar({ children }) {
         sx={{ flexGrow: 1, px: 2.5, py: 5 }}
       >
         {/* <CustomAlert /> */}
+        <Header title={title} open={open} />
         {children}
       </Box>
     </Box>

@@ -39,10 +39,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      {/* <SideBar> */}
-        {/* <Header title='Dashboard' /> */}
-        <Header title='Dashboard' handleDrawerClose={handleDrawerClose} openSide={openSide} />
-        {/* <SideBar openSide={openSide} handleDrawerClose={handleDrawerClose}> */}
+      <SideBar title='Dashboard' >
         <BreadCumbComp breadcrumbs={dataBread} />
         <Grid container style={{marginTop: '20px'}}>
           <Grid container item md={5} sm={6} xs={6} className='card-container'>
@@ -78,7 +75,7 @@ const Dashboard = () => {
             </div>
           </Grid>
         </Grid>
-      {/* </SideBar> */}
+      </SideBar>
     </div>
   )
 }

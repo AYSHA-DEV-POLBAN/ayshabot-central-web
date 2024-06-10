@@ -151,17 +151,9 @@ const DetailPrompting = () => {
 
   }
 
-  const [openSide, setOpenSide] = useState(false);
-  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
-    setOpenSide(!openSide);
-  };
-
   return (
-    // <SideBar>
     <div>
-      <Header title='Prompting' handleDrawerClose={handleDrawerClose} open={openSide} /> {/* Mengirimkan prop */}
-        <SideBar open={openSide} handleDrawerClose={handleDrawerClose}> {/* Mengirimkan prop */}
-        
+      <SideBar title='Prompting' >
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           {/* <Grid item xs={12} sm={8}>

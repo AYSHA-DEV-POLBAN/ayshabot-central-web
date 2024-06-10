@@ -1,5 +1,5 @@
 .drawer-container > .MuiDrawer-paper{
-    background-color: #E6F2FB !important;
+    background-color: #146C94 !important;
   }
   
   .drawer-container {
@@ -69,7 +69,7 @@
   
   .MuiListItemButton-root.Mui-selected {
     border-radius: 100px !important;
-    background: #146C94 !important;
+    background: #19A7CE !important;
     color: #F6F1F1 !important;
     font-size: 14px !important;
     font-weight: 500 !important;
@@ -86,14 +86,14 @@
   }
   
   .MuiListItemButton-root {
-    color: #146C94 !important;
+    color: #F6F1F1 !important;
     font-size: 12px !important;
     font-weight: 500 !important;
     line-height: 150% !important;
   }
   
   .button-list-icon {
-    color: #146C94 !important;
+    color: #F6F1F1 !important;
   }
   
   /* .MuiListItemButton-root > .MuiListItemIcon-root {

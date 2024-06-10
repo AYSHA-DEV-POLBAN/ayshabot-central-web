@@ -114,16 +114,6 @@ const DataTable = ({
 
   return (
     <Grid container rowSpacing={3}>
-      {/* <Grid item xs={12} pb={2}>
-        <Grid container className="containerHeader">
-          <Grid item>
-            <div className="dividerHeader" />
-          </Grid>
-          <Grid item xs={11} sm={6}>
-            <Typography variant="headerCardMenu">{`Master ${title}`}</Typography>
-          </Grid>
-        </Grid>
-      </Grid> */}
       <Grid
         item
         justifyContent="space-between"
@@ -149,69 +139,9 @@ const DataTable = ({
             justifyContent="flex-start"
             spacing={2}
           >
-            {/* <Grid item xs={12} sm={8} md={3}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  views={["month"]}
-                  openTo="month"
-                  name="month"
-                  label="Select Month"
-                  inputFormat="MM"
-                  onChange={handleChangeMonthFilter}
-                  slots={{
-                    textField: (params) => (
-                      <TextField {...params} name="month" variant="outlined" />
-                    ),
-                  }}
-                  slotProps={{
-                    actionBar: {
-                      actions: ["clear"],
-                    },
-                  }}
-                />
-              </LocalizationProvider>
-            </Grid>
-
-            <Grid item xs={12} sm={8} md={3}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  views={["year"]}
-                  openTo="year"
-                  name="year"
-                  label="Select Year"
-                  inputFormat="YYYY"
-                  defaultValue={dayjs(new Date().getFullYear().toString())}
-                  onChange={handleChangeYearFilter}
-                  slots={{
-                    textField: (params) => (
-                      <TextField {...params} name="year" variant="outlined" />
-                    ),
-                  }}
-                  slotProps={{
-                    actionBar: {
-                      actions: ["clear"],
-                    },
-                  }}
-                />
-              </LocalizationProvider>
-            </Grid> */}
           </Grid>
         )
         }
-
-        {onEmployee && (
-          <Grid item xs={12} sm={4} mt={1} alignSelf="center" sx={{textAlign: {xs: "start", sm:"end"}}}
-          >
-            <Button
-              variant="contained"
-              className="button-text"
-              onClick={() => onEmployee()}
-              startIcon={<SyncOutlinedIcon />}
-            >
-              Synchronise
-            </Button>
-          </Grid>
-        )}
 
         {onUpload && (
           <Grid
@@ -243,7 +173,7 @@ const DataTable = ({
           </Grid>
         )}
 
-        {!onEmployee && !onUpload && (
+        {!onUpload && (
           <Grid item xs={12} sm={4} mt={1} alignSelf="center" sx={{textAlign: {xs: "start", sm:"end"}}}
           >
             <Button

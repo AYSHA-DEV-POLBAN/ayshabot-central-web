@@ -45,30 +45,26 @@ import Grid from "@mui/material/Grid";
 import logoAysha from "../../assets/logoAysha.png";
 import '../../App.css'
 
-const Header = ({ title, handleDrawerClose, openSide }) => { // Terima prop
+
+const Header = ({ title, open }) => { // Terima prop
   return (
-    <Grid container rowSpacing={3} sx={{ position: 'sticky', top: 0, zIndex: 1100, width: '100%', height: '70px', backgroundColor: '#146C94'}}>
+    <Grid container rowSpacing={5} columnSpacing={3} sx={{ position: 'sticky', top: 0, zIndex: 1100, width: '103.95%', height: '70px', backgroundColor: '#146C94' }}>
       <Grid item xs={12}>
         <Grid container className="containerHeader">
-          <Grid item xs={1} textAlign="center">
-            <IconButton onClick={handleDrawerClose} sx={{color: '#F6F1F1'}}>
-              {!openSide ? <MenuIcon /> : <MenuOpenIcon />}
-            </IconButton>
-          </Grid>
-          <Grid item xs={9} sx={{marginLeft: `${openSide ? 200 : 0}px`, transition: 'margin-left 0.3s ease, width 0.3s ease'}}>
+          <Grid item xs={8} sx={{marginLeft: `${open ? 0 : 0}px`, transition: 'margin-left 0.3s ease, width 0.3s ease'}}>
             <Hidden mdDown>
-              <Typography variant="headerCardMenu" padding={2}>
+              <Typography variant="headerCardMenu" padding={1}>
                 {`${title}`}
               </Typography>
             </Hidden>
 
             <Hidden mdUp>
-              <Typography variant="body2" padding={1} marginTop={1.5}>
+              <Typography variant="body2" padding={1} marginTop={1}>
                 {`${title}`}
               </Typography>
             </Hidden>
           </Grid>
-          <Grid item xs={2}>
+          {/* <Grid item xs={3}>
             <div
               className={
                 "container-img margin-img"
@@ -80,7 +76,7 @@ const Header = ({ title, handleDrawerClose, openSide }) => { // Terima prop
                 alt="AyshaBot Central"
               />
             </div>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </Grid>
