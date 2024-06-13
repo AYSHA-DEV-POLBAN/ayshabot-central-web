@@ -16,8 +16,8 @@ import { AlertContext } from '../../../Context';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
-const DetailPrompting = () => {
-  const [dataProject, setDataProject] = useState([])
+const EditUser = () => {
+  const [dataProject, setDataProject] = useState([]) 
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [sendData, setData] = useState({})
@@ -32,20 +32,26 @@ const DetailPrompting = () => {
       current: false,
     },
     {
-      href: "/command",
-      title: "Command",
+      href: "/user",
+      title: "User",
       current: false,
     },
     {
-      href: "/command/detail",
-      title: isEdit ? "Edit Command" : "Detail Command",
+      href: "/user/detail",
+      title: "Edit User",
       current: true,
     },
   ];
 
+
   const optStatus = [
-    {label: 'Active'},
-    {label: 'Non Active'}
+    {label: "Active"},
+    {label: "Non Active"}
+  ]
+
+  const optLevel = [
+    {label: "Admin"},
+    {label: "Operator"}
   ]
 
   const cancelData = () => {
@@ -63,11 +69,15 @@ const DetailPrompting = () => {
   let methods = useForm({
     // resolver: yupResolver(schemacompany),
     defaultValues: {
-      commandName: '',
-      commandResponse: '',
-      informationStatus: '',
+      name: '',
+      username: '',
+      password: '',
+      email: '',
+      userLevel: '',
+      userStatus: '',
     }
   })
+
 
   useEffect(() => {
     getDataDetail()
@@ -115,7 +125,7 @@ const DetailPrompting = () => {
 
   const handleClose = () => {
     if (!isSave) {
-      navigate('/command')
+      navigate('/user')
     }
     setOpen(false)
   }
@@ -128,7 +138,7 @@ const DetailPrompting = () => {
 //       }
 //       const res = await client.requestAPI({
 //         method: 'PUT',
-//         endpoint: ``,
+//         endpoint: `/company/${companyId}`,
 //         data
 //       })
 //       if (!res.isError) {
@@ -151,26 +161,12 @@ const DetailPrompting = () => {
 
   }
 
+
   return (
     <div>
-      <SideBar title='Command' >
+      <SideBar title='User' > 
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
-          {/* <Grid item xs={12} sm={8}>
-            <Header judul={isEdit ? 'Edit Propmpting' : 'Detail Prompting'} />
-          </Grid> */}
-          {!isEdit && 
-            <Grid item xs={12} sm={4} alignSelf='center' sx={{ textAlign: { xs:'start', sm:'end'}}}>
-              <Button
-                variant='outlined'
-                className="button-text"
-                startIcon={<EditOutlinedIcon />}
-                onClick={() => setIsEdit(true)}
-              >
-                Edit Prompting
-              </Button>
-            </Grid>
-          }
           <Grid item xs={12}>
             <FormProvider {...methods}>
               {/* <form onSubmit={methods.handleSubmit(confirmSave)}> */}
@@ -183,92 +179,31 @@ const DetailPrompting = () => {
                       xs={12}
                     >
                       <Grid item xs={12} sm={12}>
-                        {isEdit ? (
                           <FormInputText
                             focused
-                            name='commandName'
+                            name='name'
                             className='input-field-crud'
-                            placeholder='e.g Fasilitas Poliklinik'
-                            label='Command Name *'
+                            placeholder='e.g Bagas'
+                            label='Name *'
                             inputProps={{
                               maxLength: 50,
                             }}
                           />
-                        ) : (
-                          <Grid container>
-                            <Grid item xs={6} sm={6}>
-                              <Typography variant='labelHeaderDetail'>Command Name :</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant='textDetail'>/cek dokter</Typography>
-                              {/* <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{dataDetail.companyName}</Typography> */}
-                            </Grid>
-                          </Grid>
-                        )}
                       </Grid>
+                      
                       <Grid item xs={12} sm={12}>
-                        {isEdit ? (
                           <FormInputText
                             focused
-                            name='commandResponse'
+                            name='email'
                             className='input-field-crud'
-                            placeholder='e.g Ini adalah fasilitas poliklinik'
-                            label='Command Response *'
+                            placeholder='e.g bagass@gmail.com'
+                            label='Email *'
                             inputProps={{
-                              maxLength: 100,
+                              maxLength: 25,
                             }}
                           />
-                        ) : (
-                          <Grid container>
-                            <Grid item xs={6} sm={6}>
-                              <Typography variant='labelHeaderDetail'>Command Response :</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant='textDetail'>Ini informasi poliklinik</Typography>
-                              {/* <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{dataDetail.companyEmail}</Typography> */}
-                            </Grid>
-                          </Grid>
-                        )}
-                      </Grid>
-                      <Grid item xs={12} sm={12}>
-                        {isEdit ? (
-                          <></>
-                          // <Autocomplete                    
-                          //     disablePortal
-                          //     id="combo-box-demo"
-                          //     name="commandStatus"
-                          //     options={optStatus}
-                          //     sx={{ width: "100%", marginTop: "4px" }}
-                          //     // value={selectedRole}
-                          //     // getOptionLabel={(option) => option.name}
-                          //     // onChange={(event, newValue) => setSelectedRoles(newValue)}
-                          //     // isOptionEqualToValue={(option, value) => option.value === value.value}
-                          //     renderInput={(params) => (
-                          //       <TextField 
-                          //       {...params} 
-                          //       InputLabelProps={{ shrink: true }}   
-                          //       label="Status *" 
-                          //       placeholder="Select Status" 
-                          //       // {...register('role')}
-                          //       // error={errors.role !== undefined}
-                          //       // helperText={errors.role ? errors.role.message : ''}
-                          //       />
-                          //     )}
-                          //   />
-                        ) : (
-                          <Grid container>
-                            <Grid item xs={6} sm={6}>
-                              <Typography variant='labelHeaderDetail'>Command Status :</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant='textDetail'>Ini informasi poliklinik</Typography>
-                              {/* <Typography variant='inputDetail'>{dataDetail.npwp}</Typography> */}
-                            </Grid>
-                          </Grid>
-                        )}
                       </Grid>
                     </Grid>
-                  {isEdit && (
                     <Grid container spacing={2} justifyContent="flex-end" mt={3.5}>
                       <Grid item xs={12} sm={2} textAlign="right">
                         <Button
@@ -289,7 +224,6 @@ const DetailPrompting = () => {
                         </Button>
                       </Grid>
                     </Grid>
-                  )}
                 </div>
               {/* </form> */}
             </FormProvider>
@@ -321,4 +255,4 @@ const DetailPrompting = () => {
 
 }
 
-export default DetailPrompting
+export default EditUser

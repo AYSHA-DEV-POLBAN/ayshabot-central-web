@@ -10,10 +10,10 @@ import { useNavigate } from 'react-router';
 import { FormProvider, useForm } from "react-hook-form";
 import FormInputText from '../../../Component/FormInputText';
 // import schemacompany from '../shema';
-// import client from '../../../global/client';
+import client from '../../../Global/client';
 import { AlertContext } from '../../../Context';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
+
+import axios from "axios";
 
 const CreatePrompting = () => {
   const navigate = useNavigate()
@@ -29,22 +29,17 @@ const CreatePrompting = () => {
       current: false,
     },
     {
-      href: "/prompting",
-      title: "Prompting",
+      href: "/command",
+      title: "Command",
       current: false,
     },
     {
-      href: "/prompting/create",
-      title: "Create New Prompting",
+      href: "/command/create",
+      title: "Create New Command",
       current: true,
     },
   ];
 
-
-  const optStatus = [
-    {label: 'Active'},
-    {label: 'Non Active'}
-  ]
 
   const cancelData = () => {
     setIsSave(false)
@@ -60,15 +55,14 @@ const CreatePrompting = () => {
   const methods = useForm({
     // resolver: yupResolver(schemacompany),
     defaultValues: {
-      commandName: '',
-      commandResponse: '',
-      commandStatus: '',
+      name_command: '',
+      response_command:''
     }
   })
 
   const handleClose = () => {
     if (!isSave) {
-      navigate('/prompting')
+      navigate('/command')
     }
     setOpen(false)
   }
@@ -77,14 +71,22 @@ const CreatePrompting = () => {
       setOpen(false)
     } else{
     //   else{
-    //     const data = {
-    //       ...sendData,
-    //     }
-    //     const res = await client.requestAPI({
-    //       method: 'POST',
-    //       endpoint: '',
-    //       data
-    //     })
+        var data = {
+            ...sendData
+        }
+
+        
+        console.log(sendData)
+        
+        console.log(data)
+        const res = await client.requestAPI({
+          method: 'POST',
+          endpoint: '/command/create',
+          data
+        })
+        console.log(res)
+
+        
     //     if (!res.isError) {
     //       setDataAlert({
     //         severity: 'success',
@@ -108,15 +110,12 @@ const CreatePrompting = () => {
 
   return (
     <div>
-      <SideBar title='Prompting' >
+      <SideBar title='Command' >
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
-          {/* <Grid item xs={12} sm={6} pb={2}>
-            <Header judul='Create New Prompting' />
-          </Grid> */}
           <Grid item xs={12}>
             <FormProvider {...methods}>
-              {/* <form onSubmit={methods.handleSubmit(confirmSave)}> */}
+              <form onSubmit={methods.handleSubmit(confirmSave)}>
                 <div className='card-container'>
                     <Grid 
                       item 
@@ -128,7 +127,7 @@ const CreatePrompting = () => {
                         <Grid item xs={12} sm={12}>
                         <FormInputText
                           focused
-                          name='commandName'
+                          name='name_command'
                           className='input-field-crud'
                           placeholder='e.g Cek Dokter'
                           label='Command Name *'
@@ -140,38 +139,14 @@ const CreatePrompting = () => {
                       <Grid item xs={12} sm={12}>
                         <FormInputText
                           focused
-                          name='commandResponse'
+                          name='response_command'
                           className='input-field-crud'
                           placeholder='e.g Jadwal Dokter Hari Ini'
-                          label='Command Response *'
+                          label='Response Command*'
                           inputProps={{
                             maxLength: 100,
                           }}
                         />
-                      </Grid>
-                      <Grid item xs={12} sm={12}>  
-                        <Autocomplete                    
-                            disablePortal
-                            id="combo-box-demo"
-                            name="commandStatus"
-                            options={optStatus}
-                            sx={{ width: "100%", marginTop: "4px" }}
-                            // value={selectedRole}
-                            // getOptionLabel={(option) => option.name}
-                            // onChange={(event, newValue) => setSelectedRoles(newValue)}
-                            // isOptionEqualToValue={(option, value) => option.value === value.value}
-                            renderInput={(params) => (
-                              <TextField 
-                              {...params} 
-                              InputLabelProps={{ shrink: true }}   
-                              label="Status *" 
-                              placeholder="Select Status" 
-                              // {...register('role')}
-                              // error={errors.role !== undefined}
-                              // helperText={errors.role ? errors.role.message : ''}
-                              />
-                            )}
-                          />      
                       </Grid>
                     </Grid>
                     
@@ -190,13 +165,14 @@ const CreatePrompting = () => {
                     fullWidth
                     variant="saveButton"
                     type="submit"
+                    // onClick={() => confirmSave()}
                   >
                     Save Data
                   </Button>
                 </Grid>
               </Grid>
                 </div>
-              {/* </form> */}
+              </form>
             </FormProvider>
           </Grid>
         </Grid>

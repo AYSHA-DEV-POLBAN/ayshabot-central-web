@@ -27,7 +27,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import Header from "../Header";
 
-const drawerWidth = 200;
+const drawerWidth = 300;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,

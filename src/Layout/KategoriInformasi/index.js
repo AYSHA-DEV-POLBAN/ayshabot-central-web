@@ -2,13 +2,18 @@ import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
 import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
+import Header from '../../Component/Header';
 import { useNavigate } from "react-router";
 import client from '../../Global/client';
 import { AlertContext } from "../../Context";
 import BreadCumbComp from '../../Component/DataBread';
+import axios from 'axios';
 
 
-const Command = () => {
+const CategoryInformation = () => {
+  
+  const [data, setData] = useState([]);
+  
   const columns = [
     {
       field: 'no',
@@ -17,22 +22,16 @@ const Command = () => {
       sortable: false,
     },
     {
-      field: 'commandName',
-      headerName: 'Command Name',
+      field: 'category_name',
+      headerName: 'Category Name',
       flex: 0.7,
-      minWidth: 180,
+      minWidth: 200,
     },
     {
-      field: 'commandResponse',
-      headerName: 'Response Command',
-      flex: 1,
-      minWidth: 240,
-    },
-    {
-      field: 'commandStatus',
-      headerName: 'Status',
-      flex: 1 ,
-      minWidth: 100
+      field: 'category_description',
+      headerName: 'Description',
+      flex: 0.5,
+      minWidth: 150,
     },
   ];
 
@@ -43,8 +42,8 @@ const Command = () => {
       current: false,
     },
     {
-      href: "/command",
-      title: "Command",
+      href: "/category_information",
+      title: "Category Information",
       current: false,
     },
   ];
@@ -52,35 +51,31 @@ const Command = () => {
   const [open, setOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const navigate = useNavigate();
-  const [data, setData] = useState([
-    { id:1, no: 1, commandName: '/Dasada', commandResponse: 'UGD', commandStatus: 'active' },
-    { id:2, no: 2, commandName: '/raes', commandResponse: 'Poliklinik', commandStatus:'avtive' },
-  ]);
   const [idHapus,setidHapus] = useState();
   const [totalData, setTotalData] = useState();
   const { setDataAlert } = useContext(AlertContext)
   const [filter, setFilter] = useState({
     page: 0,
     size: 10,
-    sortName: 'commandName',
+    sortName: 'category_name',
     sortType: 'asc',
     search: ''
   })
+  
 
   const handleClickOpen = async (id) => {
-    //setId
     setidHapus(id)
     setOpen(true)
   };
 
   useEffect(() => {
     getData()
-  }, [filter])
+  }, [])
 
   const getData = async () => {
     const res = await client.requestAPI({
       method: 'GET',
-      endpoint: `/command/`
+      endpoint: `/category-information/`
     })
     rebuildData(res)
   }
@@ -92,20 +87,21 @@ const Command = () => {
       return {
         no: number + (index + 1),
         id: value.id,
-        commandName: value.name_command,
-        commandResponse: value.response_command,
-        commandStatus: value.status_command,
+        category_name: value.name_category_information,
+        category_description: value.description_category_information,
       }
     })    
     setData([...temp])
     // setTotalData(resData.meta.page.totalElements)
+    setTotalData(resData.data.length)
   }
   
   const deleteData = async (id) => {
     const res = await client.requestAPI({
       method: 'DELETE',
-      endpoint: `/command/delete/${id}`
+      endpoint: `/category-information/delete/${id}`
     })
+      console.log(res);
     setOpenAlert(true);
     getData()
     if (!res.isError) {
@@ -127,15 +123,17 @@ const Command = () => {
   
 
   const handleDetail = async (id) => {
-    // localStorage.setItem('idBacklog', id)
-    navigate("/command/detail");
+    localStorage.setItem('id', id)
+    console.log(id)
+    navigate("/user/detail");
   };
 
   const handleEdit = async (id) => {
     localStorage.setItem('id', id)
-    navigate("/command/edit");
+    console.log(id)
+    navigate("/user/detail");
   };
-  
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -147,32 +145,34 @@ const Command = () => {
       page: event.target.value != "" ? 0 : filter.page,
       search: event.target.value
     });
+    console.log(filter )
   }
   
   
   const onAdd = () => {
-    navigate("/command/create");
+    navigate("/user/create")
   }
 
   const onFilter = (dataFilter) => {
     setFilter({
       page: dataFilter.page,
       size: dataFilter.pageSize,
-      sortName: dataFilter.sorting.field !== '' ? dataFilter.sorting[0].field : 'commandName',
+      sortName: dataFilter.sorting.field !== '' ? dataFilter.sorting[0].field : 'name',
       sortType: dataFilter.sorting.sort !== '' ? dataFilter.sorting[0].sort : 'asc',
       search: filter.search
     })
   }
 
+
   return (
     <div>
-      <SideBar title='Command' >
+      <SideBar title='Category Information' >
       <BreadCumbComp breadcrumbs={dataBread} />
         <DataTable
-          title='Command'
+          title='Category Information'
           data={data}
           columns={columns}
-          placeSearch="Command Name, Status, etc"
+          placeSearch="Name, Username, Status, etc"
           searchTitle="Search By"
           onAdd={() => onAdd()}
           onFilter={(dataFilter => onFilter(dataFilter))}
@@ -209,4 +209,4 @@ const Command = () => {
   )
 }
 
-export default Command
+export default CategoryInformation

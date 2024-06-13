@@ -19,7 +19,7 @@ import PreviewIcon from "@mui/icons-material/Preview";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
-const DetailInformasi = () => {
+const EditInformasi = () => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
@@ -44,7 +44,7 @@ const DetailInformasi = () => {
     },
     {
       href: "/informasi/detail",
-      title: isEdit ? "Edit Informasi" : "Detail Informasi",
+      title: "Edit Informasi",
       current: true,
     },
   ];
@@ -248,7 +248,6 @@ const optStatus = [
                         }
                       </Grid>
                       <Grid item xs={12} sm={12}>
-                        {isEdit ? (
                           <FormInputText
                             focused
                             name='informationName'
@@ -259,21 +258,9 @@ const optStatus = [
                               maxLength: 50,
                             }}
                           />
-                        ) : (
-                          <Grid container>
-                            <Grid item xs={6} sm={6}>
-                              <Typography variant='labelHeaderDetail'>Information Name :</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant='textDetail'>Ini informasi poliklinik</Typography>
-                              {/* <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{dataDetail.companyName}</Typography> */}
-                            </Grid>
-                          </Grid>
-                        )}
                       </Grid>
                       
                       <Grid item xs={12} sm={12}>
-                        {isEdit ? (
                           <Autocomplete                    
                           disablePortal
                           id="combo-box-demo"
@@ -296,20 +283,8 @@ const optStatus = [
                             />
                           )}
                         />
-                        ) : (
-                          <Grid container>
-                            <Grid item xs={6} sm={6}>
-                              <Typography variant='labelHeaderDetail'>Category Information :</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant='textDetail'>Poliklinik</Typography>
-                              {/* <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{dataDetail.companyName}</Typography> */}
-                            </Grid>
-                          </Grid>
-                        )}
                       </Grid>
                       <Grid item xs={12} sm={12}>
-                        {isEdit ? (
                           <FormInputText
                             focused
                             name='desc'
@@ -320,81 +295,31 @@ const optStatus = [
                               maxLength: 100,
                             }}
                           />
-                        ) : (
-                          <Grid container>
-                            <Grid item xs={6} sm={6}>
-                              <Typography variant='labelHeaderDetail'>Description :</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant='textDetail'>Ini informasi poliklinik</Typography>
-                              {/* <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{dataDetail.companyEmail}</Typography> */}
-                            </Grid>
-                          </Grid>
-                        )}
-                      </Grid>
-                      <Grid item xs={12} sm={12}>
-                        {isEdit ? ( 
-                          <></>
-                          // <Autocomplete                    
-                          //     disablePortal
-                          //     id="combo-box-demo"
-                          //     name="informationStatus"
-                          //     options={optStatus}
-                          //     sx={{ width: "100%", marginTop: "8px" }}
-                          //     // value={selectedRole}
-                          //     // getOptionLabel={(option) => option.name}
-                          //     // onChange={(event, newValue) => setSelectedRoles(newValue)}
-                          //     // isOptionEqualToValue={(option, value) => option.value === value.value}
-                          //     renderInput={(params) => (
-                          //       <TextField 
-                          //       {...params} 
-                          //       InputLabelProps={{ shrink: true }}   
-                          //       label="Status *" 
-                          //       placeholder="Select Status" 
-                          //       // {...register('role')}
-                          //       // error={errors.role !== undefined}
-                          //       // helperText={errors.role ? errors.role.message : ''}
-                          //       />
-                          //     )}
-                          //   />
-                        ) : (
-                          <Grid container>
-                            <Grid item xs={6} sm={6}>
-                              <Typography variant='labelHeaderDetail'>Information Status :</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant='textDetail'>Ini informasi poliklinik</Typography>
-                              {/* <Typography variant='inputDetail'>{dataDetail.npwp}</Typography> */}
-                            </Grid>
-                          </Grid>
-                        )}
                       </Grid>
                     </Grid>
-                  {isEdit && (
-                    <Grid container spacing={2} justifyContent="flex-end" mt={3.5}>
-                      <Grid item xs={12} sm={2} textAlign="right">
-                        <Button
-                          fullWidth
-                          variant="cancelButton"
-                          onClick={() => cancelData()}
-                        >
-                          Cancel Data
-                        </Button>
-                      </Grid>
-                      <Grid item xs={12} sm={2} textAlign="right">
-                        <Button 
-                          fullWidth
-                          variant="saveButton"
-                          type="submit"
-                        >
-                          Save Data
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  )}
-                </div>
-              {/* </form> */}
-            </FormProvider>
+                        <Grid container spacing={2} justifyContent="flex-end" mt={3.5}>
+                        <Grid item xs={12} sm={2} textAlign="right">
+                            <Button
+                            fullWidth
+                            variant="cancelButton"
+                            onClick={() => cancelData()}
+                            >
+                            Cancel Data
+                            </Button>
+                        </Grid>
+                        <Grid item xs={12} sm={2} textAlign="right">
+                            <Button 
+                            fullWidth
+                            variant="saveButton"
+                            type="submit"
+                            >
+                            Save Data
+                            </Button>
+                        </Grid>
+                        </Grid>
+                    </div>
+                {/* </form> */}
+                </FormProvider>
           </Grid>
         </Grid>
         <Dialog
@@ -424,4 +349,4 @@ const optStatus = [
 
 }
 
-export default DetailInformasi
+export default EditInformasi

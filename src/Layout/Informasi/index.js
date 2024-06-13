@@ -1,15 +1,61 @@
 import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
-import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Typography, Box } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import { useNavigate } from "react-router";
-// import client from "../../global/client";
+import client from '../../Global/client';
 import { AlertContext } from "../../Context";
 import BreadCumbComp from '../../Component/DataBread';
+import Stack from '@mui/material/Stack';
+import Switch from '@mui/material/Switch';
+import { styled } from '@mui/material/styles';
 import Header from '../../Component/Header';
 
 
 const Informasi = () => {
+
+  const AntSwitch = styled(Switch)(({ theme }) => ({
+    width: 28,
+    height: 16,
+    padding: 0,
+    display: 'flex',
+    '&:active': {
+      '& .MuiSwitch-thumb': {
+        width: 15,
+      },
+      '& .MuiSwitch-switchBase.Mui-checked': {
+        transform: 'translateX(9px)',
+      },
+    },
+    '& .MuiSwitch-switchBase': {
+      padding: 2,
+      '&.Mui-checked': {
+        transform: 'translateX(12px)',
+        color: '#fff',
+        '& + .MuiSwitch-track': {
+          opacity: 1,
+          backgroundColor: theme.palette.mode === 'dark' ? '#177ddc' : '#1890ff',
+        },
+      },
+    },
+    '& .MuiSwitch-thumb': {
+      boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
+      width: 12,
+      height: 12,
+      borderRadius: 6,
+      transition: theme.transitions.create(['width'], {
+        duration: 200,
+      }),
+    },
+    '& .MuiSwitch-track': {
+      borderRadius: 16 / 2,
+      opacity: 1,
+      backgroundColor:
+        theme.palette.mode === 'dark' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
+      boxSizing: 'border-box',
+    },
+  }));
+
   const columns = [
     {
       field: 'no',
@@ -20,6 +66,12 @@ const Informasi = () => {
     {
       field: 'informationName',
       headerName: 'Information Name',
+      flex: 0.7,
+      minWidth: 180,
+    },
+    {
+      field: 'categoryInformation',
+      headerName: 'Category Information',
       flex: 0.7,
       minWidth: 180,
     },
@@ -38,8 +90,15 @@ const Informasi = () => {
     {
       field: 'informationStatus',
       headerName: 'Status',
-      flex: 1 ,
-      minWidth: 100
+      flex: 1.5 ,
+      minWidth: 150,
+      renderCell: (data) => (
+        <Stack direction="row" spacing={1} alignItems="center">
+        <Typography>deact</Typography>
+        <AntSwitch defaultChecked inputProps={{ 'aria-label': 'ant design' }} />
+        <Typography>act</Typography>
+      </Stack>
+      ),
     }
   ];
 
@@ -60,8 +119,8 @@ const Informasi = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const navigate = useNavigate();
   const [data, setData] = useState([
-    { id:1, no: 1, informationName: 'Fasilitas', desc: 'UGD', file: 'abcd.pdf', informationStatus: 'active' },
-    { id:2, no: 2, informationName: 'Fasilitas', desc: 'Poliklinik', file: 'abds.pdf', informationStatus: 'active' },
+    // { id:1, no: 1, informationName: 'Fasilitas', desc: 'UGD', file: 'abcd.pdf', informationStatus: 'active' },
+    // { id:2, no: 2, informationName: 'Fasilitas', desc: 'Poliklinik', file: 'abds.pdf', informationStatus: 'active' },
   ]);
   const [idHapus,setidHapus] = useState();
   const [totalData, setTotalData] = useState();
@@ -76,20 +135,20 @@ const Informasi = () => {
   
   const handleClickOpen = async (id) => {
     //setId
-    // setidHapus(id)
+    setidHapus(id)
     setOpen(true)
   };
 
   useEffect(() => {
-    // getData()
+    getData()
   }, [filter])
 
   const getData = async () => {
-    // const res = await client.requestAPI({
-    //   method: 'GET',
-    //   endpoint: ``
-    // })
-    // rebuildData(res)
+    const res = await client.requestAPI({
+      method: 'GET',
+      endpoint: `/information/`
+    })
+    rebuildData(res)
   }
 
   const rebuildData = (resData) => {
@@ -99,19 +158,24 @@ const Informasi = () => {
       return {
         no: number + (index + 1),
         id: value.id,
+        informationName: value.title_information,
+        categoryInformation: value.category_information_id,
+        desc: value.description_information,
+        file: value.file_path_information,
+        informationStatus: value.status_information
       }
     })    
     setData([...temp])
-    setTotalData(resData.meta.page.totalElements)
+    // setTotalData(resData.meta.page.totalElements)
   }
   
   const deleteData = async (id) => {
-    // const res = await client.requestAPI({
-    //   method: 'DELETE',
-    //   endpoint: ``
-    // })
+    const res = await client.requestAPI({
+      method: 'DELETE',
+      endpoint: `/information/delete/${id}`
+    })
     setOpenAlert(true);
-    // getData()
+    getData()
     // if (!res.isError) {
     //   setDataAlert({
     //     severity: 'warning',
@@ -131,8 +195,15 @@ const Informasi = () => {
   
 
   const handleDetail = async (id) => {
-    // localStorage.setItem('id', id)
+    localStorage.setItem('id', id)
+    console.log(id)
     navigate("/informasi/detail");
+  };
+
+  const handleEdit = async (id) => {
+    localStorage.setItem('id', id)
+    console.log(id)
+    navigate("/informasi/edit");
   };
 
   const handleClose = () => {
@@ -166,10 +237,10 @@ const Informasi = () => {
 
   return (
     <div>
-      <SideBar title='Informasi' >
+      <SideBar title='Information' >
       <BreadCumbComp breadcrumbs={dataBread} />
         <DataTable
-          title='Informasi'
+          title='Information'
           data={data}
           columns={columns}
           // placeSearch="Information Name, File, Status, etc"
@@ -178,6 +249,7 @@ const Informasi = () => {
           onFilter={(dataFilter => onFilter(dataFilter))}
           handleChangeSearch={handleChangeSearch}
           onDetail={(id) => handleDetail(id)}
+          onEdit={(id) => handleEdit(id)}
           onDelete={(id) => handleClickOpen(id)}
           totalData={totalData}
           getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
@@ -200,7 +272,6 @@ const Informasi = () => {
           <DialogActions className="dialog-delete-actions">
             <Button onClick={handleClose} variant='outlined' className="button-text">Cancel</Button>
             <Button onClick={() => deleteData(idHapus)} className='delete-button button-text'>Delete Data</Button>
-            {/* <Button onClick={() => onDelete(idHapus)} className='delete-button button-text'>Delete Data</Button> */}
           </DialogActions>
         </Dialog>
       </SideBar>

@@ -91,13 +91,14 @@ const DataTable = ({
         renderCell: (data) => {
           return (
             <div>
-              {onEdit ? (
-                <IconButton onClick={() => onEdit(data.id)}>
-                  <EditOutlined />
-                </IconButton>
-              ) : (
+              {onDetail && (
                 <IconButton onClick={() => onDetail(data.id)}>
                   <VisibilityIcon />
+                </IconButton>
+              )}
+              {onEdit && (
+                <IconButton onClick={() => onEdit(data.id)}>
+                  <EditOutlined />
                 </IconButton>
               )}
               {onDelete && (

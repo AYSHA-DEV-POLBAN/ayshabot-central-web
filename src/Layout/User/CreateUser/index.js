@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router';
 import { FormProvider, useForm } from "react-hook-form";
 import FormInputText from '../../../Component/FormInputText';
 // import schemacompany from '../shema';
-// import client from '../../../global/client';
+import client from '../../../Global/client';
 import { AlertContext } from '../../../Context';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -34,7 +34,7 @@ const CreateUser = () => {
     },
     {
       href: "/user/create",
-      title: "Create New User",
+      title: "Create New Operator",
       current: true,
     },
   ];
@@ -64,11 +64,7 @@ const CreateUser = () => {
     // resolver: yupResolver(schemacompany),
     defaultValues: {
       name: '',
-      username: '',
-      password: '',
       email: '',
-      userLevel: '',
-      userStatus: '',
     }
   })
 
@@ -82,14 +78,16 @@ const CreateUser = () => {
     if(!isSave){
       setOpen(false)
     } else{
-//     const data = {
-//       ...sendData,
-//     }
-//     const res = await client.requestAPI({
-//       method: 'POST',
-//       endpoint: '',
-//       data
-//     })
+    const data = {
+      ...sendData,
+    }
+    console.log(data)
+    const res = await client.requestAPI({
+      method: 'POST',
+      endpoint: '/users/add_operator',
+      data
+    })
+    console.log(res)
 //     if (!res.isError) {
 //       setDataAlert({
 //         severity: 'success',
@@ -122,7 +120,7 @@ const CreateUser = () => {
           </Grid> */}
           <Grid item xs={12}>
             <FormProvider {...methods}>
-              {/* <form onSubmit={methods.handleSubmit(confirmSave)}> */}
+              <form onSubmit={methods.handleSubmit(confirmSave)}>
                 <div className='card-container'>
                     <Grid 
                       item 
@@ -131,7 +129,7 @@ const CreateUser = () => {
                       rowSpacing={3.79}
                       xs={12}
                     >
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={12}>
                         <FormInputText
                           focused
                           name='name'
@@ -143,32 +141,7 @@ const CreateUser = () => {
                           }}
                         />
                       </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <FormInputText
-                          focused
-                          name='username'
-                          className='input-field-crud'
-                          placeholder='e.g aslanislan_'
-                          label='Username*'
-                          inputProps={{
-                            maxLength: 100,
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <FormInputText
-                          focused
-                          name='password'
-                          className='input-field-crud'
-                          placeholder='e.g 123Abcdh'
-                          label='Password *'
-                          inputProps={{
-                            minLength: 8,
-                            maxLength: 25,
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid item xs={12} sm={12}>
                         <FormInputText
                           focused
                           name='email'
@@ -179,54 +152,6 @@ const CreateUser = () => {
                             maxLength: 25,
                           }}
                         />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>  
-                        <Autocomplete                    
-                            disablePortal
-                            id="combo-box-demo"
-                            name="userLevel"
-                            options={optLevel}
-                            sx={{ width: "100%", marginTop: "8px" }}
-                            // value={selectedRole}
-                            // getOptionLabel={(option) => option.name}
-                            // onChange={(event, newValue) => setSelectedRoles(newValue)}
-                            // isOptionEqualToValue={(option, value) => option.value === value.value}
-                            renderInput={(params) => (
-                              <TextField 
-                              {...params} 
-                              InputLabelProps={{ shrink: true }}   
-                              label="Level *" 
-                              placeholder="Select Level" 
-                              // {...register('role')}
-                              // error={errors.role !== undefined}
-                              // helperText={errors.role ? errors.role.message : ''}
-                              />
-                            )}
-                          />      
-                      </Grid>
-                      <Grid item xs={12} sm={6}>  
-                        <Autocomplete                    
-                            disablePortal
-                            id="combo-box-demo"
-                            name="userStatus"
-                            options={optStatus}
-                            sx={{ width: "100%", marginTop: "4px" }}
-                            // value={selectedRole}
-                            // getOptionLabel={(option) => option.name}
-                            // onChange={(event, newValue) => setSelectedRoles(newValue)}
-                            // isOptionEqualToValue={(option, value) => option.value === value.value}
-                            renderInput={(params) => (
-                              <TextField 
-                              {...params} 
-                              InputLabelProps={{ shrink: true }}   
-                              label="Status *" 
-                              placeholder="Select Status" 
-                              // {...register('role')}
-                              // error={errors.role !== undefined}
-                              // helperText={errors.role ? errors.role.message : ''}
-                              />
-                            )}
-                          />      
                       </Grid>
                     </Grid>
                     
@@ -251,7 +176,7 @@ const CreateUser = () => {
                 </Grid>
               </Grid>
                 </div>
-              {/* </form> */}
+              </form>
             </FormProvider>
           </Grid>
         </Grid>

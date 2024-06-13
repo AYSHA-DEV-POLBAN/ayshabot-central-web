@@ -16,7 +16,7 @@ import { AlertContext } from '../../../Context';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
-const DetailPrompting = () => {
+const EditCommand = () => {
   const [dataProject, setDataProject] = useState([])
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
@@ -38,7 +38,7 @@ const DetailPrompting = () => {
     },
     {
       href: "/command/detail",
-      title: isEdit ? "Edit Command" : "Detail Command",
+      title: "Edit Command",
       current: true,
     },
   ];
@@ -156,21 +156,6 @@ const DetailPrompting = () => {
       <SideBar title='Command' >
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
-          {/* <Grid item xs={12} sm={8}>
-            <Header judul={isEdit ? 'Edit Propmpting' : 'Detail Prompting'} />
-          </Grid> */}
-          {!isEdit && 
-            <Grid item xs={12} sm={4} alignSelf='center' sx={{ textAlign: { xs:'start', sm:'end'}}}>
-              <Button
-                variant='outlined'
-                className="button-text"
-                startIcon={<EditOutlinedIcon />}
-                onClick={() => setIsEdit(true)}
-              >
-                Edit Prompting
-              </Button>
-            </Grid>
-          }
           <Grid item xs={12}>
             <FormProvider {...methods}>
               {/* <form onSubmit={methods.handleSubmit(confirmSave)}> */}
@@ -183,7 +168,6 @@ const DetailPrompting = () => {
                       xs={12}
                     >
                       <Grid item xs={12} sm={12}>
-                        {isEdit ? (
                           <FormInputText
                             focused
                             name='commandName'
@@ -194,20 +178,8 @@ const DetailPrompting = () => {
                               maxLength: 50,
                             }}
                           />
-                        ) : (
-                          <Grid container>
-                            <Grid item xs={6} sm={6}>
-                              <Typography variant='labelHeaderDetail'>Command Name :</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant='textDetail'>/cek dokter</Typography>
-                              {/* <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{dataDetail.companyName}</Typography> */}
-                            </Grid>
-                          </Grid>
-                        )}
                       </Grid>
                       <Grid item xs={12} sm={12}>
-                        {isEdit ? (
                           <FormInputText
                             focused
                             name='commandResponse'
@@ -218,57 +190,8 @@ const DetailPrompting = () => {
                               maxLength: 100,
                             }}
                           />
-                        ) : (
-                          <Grid container>
-                            <Grid item xs={6} sm={6}>
-                              <Typography variant='labelHeaderDetail'>Command Response :</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant='textDetail'>Ini informasi poliklinik</Typography>
-                              {/* <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{dataDetail.companyEmail}</Typography> */}
-                            </Grid>
-                          </Grid>
-                        )}
-                      </Grid>
-                      <Grid item xs={12} sm={12}>
-                        {isEdit ? (
-                          <></>
-                          // <Autocomplete                    
-                          //     disablePortal
-                          //     id="combo-box-demo"
-                          //     name="commandStatus"
-                          //     options={optStatus}
-                          //     sx={{ width: "100%", marginTop: "4px" }}
-                          //     // value={selectedRole}
-                          //     // getOptionLabel={(option) => option.name}
-                          //     // onChange={(event, newValue) => setSelectedRoles(newValue)}
-                          //     // isOptionEqualToValue={(option, value) => option.value === value.value}
-                          //     renderInput={(params) => (
-                          //       <TextField 
-                          //       {...params} 
-                          //       InputLabelProps={{ shrink: true }}   
-                          //       label="Status *" 
-                          //       placeholder="Select Status" 
-                          //       // {...register('role')}
-                          //       // error={errors.role !== undefined}
-                          //       // helperText={errors.role ? errors.role.message : ''}
-                          //       />
-                          //     )}
-                          //   />
-                        ) : (
-                          <Grid container>
-                            <Grid item xs={6} sm={6}>
-                              <Typography variant='labelHeaderDetail'>Command Status :</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant='textDetail'>Ini informasi poliklinik</Typography>
-                              {/* <Typography variant='inputDetail'>{dataDetail.npwp}</Typography> */}
-                            </Grid>
-                          </Grid>
-                        )}
                       </Grid>
                     </Grid>
-                  {isEdit && (
                     <Grid container spacing={2} justifyContent="flex-end" mt={3.5}>
                       <Grid item xs={12} sm={2} textAlign="right">
                         <Button
@@ -289,7 +212,6 @@ const DetailPrompting = () => {
                         </Button>
                       </Grid>
                     </Grid>
-                  )}
                 </div>
               {/* </form> */}
             </FormProvider>
@@ -321,4 +243,4 @@ const DetailPrompting = () => {
 
 }
 
-export default DetailPrompting
+export default EditCommand

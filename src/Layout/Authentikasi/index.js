@@ -1,5 +1,6 @@
 import Grid from '@mui/material/Grid';
 import React from 'react';
+import conversation from '../../assets/conversation.png'
 // import rightBackground from '../../assets/frame79.png'
 // import logo from '../../assets/logo.png'
 // import Forgot from './forgot';
@@ -27,7 +28,7 @@ const LoginScreen = () => {
         <Grid container height="100%">
           <Grid item xs={12} sm={6} height="100%" display="flex" flexDirection="column">
             <Grid item xs={12}>
-            <Grid
+            {/* <Grid
               item
               xs={12}
               paddingTop={{xs: 6, sm: 4}}
@@ -37,7 +38,7 @@ const LoginScreen = () => {
               alignItems={{ xs: 'center' }}
             >
                 <img alt="leftImage" src={''} style={{ maxWidth: '100%', height: 'auto' }}/>
-              </Grid>
+              </Grid> */}
               <Grid item xs={12} 
                 paddingLeft={{xs:3, md:12, lg:25}} 
                 paddingRight={{xs:3, md:12, lg:25}} 
@@ -49,18 +50,23 @@ const LoginScreen = () => {
             </Grid>
 
             <Grid item xs={12} paddingLeft={1.875} display="flex" alignItems="flex-end">
-              <Typography className='text-files-sizes' color='#8a8a8a' fontSize="0.875rem" sx={{marginBottom: -12}}>
+              <Typography className='text-files-sizes' color='#8a8a8a' fontSize="0.875rem">
                 &copy; {new Date().getFullYear()} RS Islam Aysha Bogor
               </Typography>
             </Grid>
           </Grid>
           <Hidden smDown>
-          <Grid item xs={6} height="100%">
-            <img alt="rightimage" src={''} style={
+          <Grid item xs={6} height="100%" style={{
+            backgroundColor: '#146C94',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+            }}>
+            <img alt="rightimage" src={conversation} style={
               { 
-                width: '100%', 
-                minHeight: '100%', 
-                objectFit: 'cover'
+                width: '60%', 
+                minHeight: '60%', 
+                objectFit: 'cover',
               }
             }/>
           </Grid>

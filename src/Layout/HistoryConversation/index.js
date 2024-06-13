@@ -8,7 +8,7 @@ import { AlertContext } from "../../Context";
 import BreadCumbComp from '../../Component/DataBread';
 
 
-const Command = () => {
+const HistoryConversation = () => {
   const columns = [
     {
       field: 'no',
@@ -17,20 +17,26 @@ const Command = () => {
       sortable: false,
     },
     {
-      field: 'commandName',
-      headerName: 'Command Name',
+      field: 'phoneNumber',
+      headerName: 'Phone Number',
       flex: 0.7,
       minWidth: 180,
     },
     {
-      field: 'commandResponse',
-      headerName: 'Response Command',
+      field: 'question',
+      headerName: 'Question',
       flex: 1,
       minWidth: 240,
     },
     {
-      field: 'commandStatus',
-      headerName: 'Status',
+      field: 'answer',
+      headerName: 'Answer',
+      flex: 1 ,
+      minWidth: 100
+    },
+    {
+      field: 'bill',
+      headerName: 'Bill',
       flex: 1 ,
       minWidth: 100
     },
@@ -43,8 +49,8 @@ const Command = () => {
       current: false,
     },
     {
-      href: "/command",
-      title: "Command",
+      href: "/history_conversation",
+      title: "History Conversation",
       current: false,
     },
   ];
@@ -53,8 +59,8 @@ const Command = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const navigate = useNavigate();
   const [data, setData] = useState([
-    { id:1, no: 1, commandName: '/Dasada', commandResponse: 'UGD', commandStatus: 'active' },
-    { id:2, no: 2, commandName: '/raes', commandResponse: 'Poliklinik', commandStatus:'avtive' },
+    // { id:1, no: 1, phoneNumber: 'Fasilitas', question: 'UGD', answer: 'abcd.pdf', bill: 'active' },
+    // { id:2, no: 2, phoneNumber: 'Fasilitas', question: 'Poliklinik', answer: 'abds.pdf', bill: 'active' },
   ]);
   const [idHapus,setidHapus] = useState();
   const [totalData, setTotalData] = useState();
@@ -80,7 +86,7 @@ const Command = () => {
   const getData = async () => {
     const res = await client.requestAPI({
       method: 'GET',
-      endpoint: `/command/`
+      endpoint: `/conversation/`
     })
     rebuildData(res)
   }
@@ -92,37 +98,14 @@ const Command = () => {
       return {
         no: number + (index + 1),
         id: value.id,
-        commandName: value.name_command,
-        commandResponse: value.response_command,
-        commandStatus: value.status_command,
+        phoneNumber: value.client_id,
+        question: value.question_client,
+        answer: value.response_system,
+        bill: value.bill,
       }
     })    
     setData([...temp])
     // setTotalData(resData.meta.page.totalElements)
-  }
-  
-  const deleteData = async (id) => {
-    const res = await client.requestAPI({
-      method: 'DELETE',
-      endpoint: `/command/delete/${id}`
-    })
-    setOpenAlert(true);
-    getData()
-    if (!res.isError) {
-      setDataAlert({
-        severity: 'warning',
-        open: true,
-        message: res.message
-      })
-      handleClose();
-    } else {
-      setDataAlert({
-        severity: 'error',
-        message: res.error.detail,
-        open: true
-      })
-    }
-    handleClose();
   }
   
 
@@ -131,11 +114,6 @@ const Command = () => {
     navigate("/command/detail");
   };
 
-  const handleEdit = async (id) => {
-    localStorage.setItem('id', id)
-    navigate("/command/edit");
-  };
-  
   const handleClose = () => {
     setOpen(false);
   };
@@ -149,10 +127,6 @@ const Command = () => {
     });
   }
   
-  
-  const onAdd = () => {
-    navigate("/command/create");
-  }
 
   const onFilter = (dataFilter) => {
     setFilter({
@@ -166,47 +140,23 @@ const Command = () => {
 
   return (
     <div>
-      <SideBar title='Command' >
+      <SideBar title='History Conversation' >
       <BreadCumbComp breadcrumbs={dataBread} />
         <DataTable
-          title='Command'
+          title='History Conversation'
           data={data}
           columns={columns}
           placeSearch="Command Name, Status, etc"
           searchTitle="Search By"
-          onAdd={() => onAdd()}
           onFilter={(dataFilter => onFilter(dataFilter))}
           handleChangeSearch={handleChangeSearch}
           onDetail={(id) => handleDetail(id)}
-          onEdit={(id) => handleEdit(id)}
-          onDelete={(id) => handleClickOpen(id)}
           totalData={totalData}
           getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
         />
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-          className="dialog-delete"
-        >
-          <DialogTitle id="alert-dialog-title" className='dialog-delete-header'>
-            {"Delete Data"}
-          </DialogTitle>
-          <DialogContent className="dialog-delete-content">
-            <DialogContentText className='dialog-delete-text-content' id="alert-dialog-description">
-              Warning: Deleting this data is irreversible. Are you sure you want to proceed?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions className="dialog-delete-actions">
-            <Button onClick={handleClose} variant='outlined' className="button-text">Cancel</Button>
-            <Button onClick={() => deleteData(idHapus)} className='delete-button button-text'>Delete Data</Button>
-            {/* <Button onClick={() => onDelete(idHapus)} className='delete-button button-text'>Delete Data</Button> */}
-          </DialogActions>
-        </Dialog>
       </SideBar>
     </div>
   )
 }
 
-export default Command
+export default HistoryConversation

@@ -4,20 +4,29 @@ import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
+import QrCode2Icon from '@mui/icons-material/QrCode2';
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = lazy(() => import("./Layout/Dashboard"));
 const Informasi = lazy(() => import("./Layout/Informasi"))
 const CreateInfomasi = lazy(() => import("./Layout/Informasi/CreateInformasi"))
 const DetailInformasi = lazy(() => import("./Layout/Informasi/DetailInformasi"))
-const LogActivity = lazy(() => import("./Layout/LogActivity"))
-const Prompting = lazy(() => import("./Layout/Prompting"))
+const EditInformasi = lazy(() => import("./Layout/Informasi/EditInformasi"))
+const LogHistory = lazy(() => import("./Layout/LogHistory"))
+const Command = lazy(() => import("./Layout/Prompting"))
 const CreatePrompting = lazy(() => import("./Layout/Prompting/CreatePrompting"))
 const DetailPrompting = lazy(() => import("./Layout/Prompting/DetailPrompting"))
+const EditCommand = lazy(() => import("./Layout/Prompting/EditCommand"))
 const User = lazy(() => import("./Layout/User"))
 const CreateUser = lazy(() => import("./Layout/User/CreateUser"))
 const DetailUser = lazy(() => import("./Layout/User/DetailUser"))
+const EditUser = lazy(() => import("./Layout/User/EditUser"))
 const LoginScreen = lazy(() => import("./Layout/Authentikasi"))
+const CategoryInformation = lazy(() => import("./Layout/KategoriInformasi"))
+const GenerateQR = lazy(() => import("./Layout/GenerateQR"))
+const HistoryConversation = lazy(() => import("./Layout/HistoryConversation"))
+const DetailHistoryConversation = lazy(() => import("./Layout/HistoryConversation/detailHistoryConversation"))
 
 
 export const closedRoutes = () => [
@@ -51,28 +60,58 @@ export const closedRoutes = () => [
     key: "detail informasi",
   },
   {
-    path: "/logActivity",
-    element: <LogActivity />,
-    name: "Log Activity",
-    key: "log activity",
-    icon: <BookOutlinedIcon />,
+    path: "/informasi/edit",
+    element: <EditInformasi />,
+    key: "edit informasi",
   },
   {
-    path: "/prompting",
-    element: <Prompting />,
-    name: "Prompting",
-    key: "prompting",
+    path: "/category_information",
+    element: <CategoryInformation />,
+    name: "Category Information",
+    key: "category_information",
     icon: <CodeOutlinedIcon />,
   },
   {
-    path: "/prompting/create",
+    path: "/command",
+    element: <Command />,
+    name: "Command",
+    key: "command",
+    icon: <CodeOutlinedIcon />,
+  },
+  {
+    path: "/command/create",
     element: <CreatePrompting />,
     key: "create prompting",
   },
   {
-    path: "/prompting/detail",
+    path: "/command/detail",
     element: <DetailPrompting />,
     key: "detail prompting",
+  },
+  {
+    path: "/command/edit",
+    element: <EditCommand />,
+    key: "edit command",
+  },
+  {
+    path: "/generate_qr",
+    element: <GenerateQR />,
+    name: "Generate QR",
+    key: "generate_qr",
+    icon: <QrCode2Icon />,
+  },
+  {
+    path: "/history_conversation",
+    element: <HistoryConversation />,
+    name: "History Conversation",
+    key: "history_conversation",
+    icon: <ForumOutlinedIcon />,
+  },
+  {
+    path: "/history_conversation/detail",
+    element: <DetailHistoryConversation />,
+    name: "History Conversation Detail",
+    key: "detail history_conversation",
   },
   {
     path: "/user",
@@ -90,6 +129,18 @@ export const closedRoutes = () => [
     path: "/user/detail",
     element: <DetailUser />,
     key: "detail user",
+  },
+  {
+    path: "/user/edit",
+    element: <EditUser />,
+    key: "edir user",
+  },
+  {
+    path: "/logHistory",
+    element: <LogHistory />,
+    name: "Log History",
+    key: "log history",
+    icon: <BookOutlinedIcon />,
   },
 ];
 

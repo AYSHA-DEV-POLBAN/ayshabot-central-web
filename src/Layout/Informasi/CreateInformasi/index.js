@@ -43,9 +43,9 @@ const CreateInfomasi = () => {
   ];
 
 
-  const optStatus = [
-    {label: 'Active'},
-    {label: 'Non Active'}
+  const optCategory = [
+    {label: 'Poliklinik'},
+    {label: 'Rawat Inap'}
   ]
 
   const cancelData = () => {
@@ -195,6 +195,30 @@ const CreateInfomasi = () => {
                           }}
                         />
                       </Grid>
+                      <Grid item xs={12} sm={12}>  
+                        <Autocomplete                    
+                            disablePortal
+                            id="combo-box-demo"
+                            name="categoryName"
+                            options={optCategory}
+                            sx={{ width: "100%", marginTop: "8px" }}
+                            // value={selectedRole}
+                            // getOptionLabel={(option) => option.name}
+                            // onChange={(event, newValue) => setSelectedRoles(newValue)}
+                            // isOptionEqualToValue={(option, value) => option.value === value.value}
+                            renderInput={(params) => (
+                              <TextField 
+                              {...params} 
+                              InputLabelProps={{ shrink: true }}   
+                              label="Category Information *" 
+                              placeholder="Select Category" 
+                              // {...register('role')}
+                              // error={errors.role !== undefined}
+                              // helperText={errors.role ? errors.role.message : ''}
+                              />
+                            )}
+                          />      
+                      </Grid>
                       <Grid item xs={12} sm={12}>
                         <FormInputText
                           focused
@@ -206,30 +230,6 @@ const CreateInfomasi = () => {
                             maxLength: 100,
                           }}
                         />
-                      </Grid>
-                      <Grid item xs={12} sm={12}>  
-                        <Autocomplete                    
-                            disablePortal
-                            id="combo-box-demo"
-                            name="informationStatus"
-                            options={optStatus}
-                            sx={{ width: "100%", marginTop: "8px" }}
-                            // value={selectedRole}
-                            // getOptionLabel={(option) => option.name}
-                            // onChange={(event, newValue) => setSelectedRoles(newValue)}
-                            // isOptionEqualToValue={(option, value) => option.value === value.value}
-                            renderInput={(params) => (
-                              <TextField 
-                              {...params} 
-                              InputLabelProps={{ shrink: true }}   
-                              label="Status *" 
-                              placeholder="Select Status" 
-                              // {...register('role')}
-                              // error={errors.role !== undefined}
-                              // helperText={errors.role ? errors.role.message : ''}
-                              />
-                            )}
-                          />      
                       </Grid>
                     </Grid>
                     

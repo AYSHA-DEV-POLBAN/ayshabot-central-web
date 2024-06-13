@@ -104,7 +104,14 @@ let globalTheme = createTheme({
       fontStyle: ["normal"],
       fontWeight: ["400"],
       lineHeight: ["150%"],
-    },  
+    },
+    signinText: {
+      fontSize: ["28px"],
+      fontFamily: ["Poppins"],
+      fontWeight: ["700"],
+      color: ["#19A7CE"],
+      letterSpacing: ["-0.021em"],
+    },
   },
   
   components: {
@@ -249,7 +256,30 @@ let globalTheme = createTheme({
               color: "#FFFFFF",
             },
           },
-        },        
+        }, 
+        {
+          props: {
+            variant: "signin",
+            color: "19A7CE"
+          },
+          style: {
+            color: "#FFFFFF",
+            border: "none",
+            borderRadius: "30px",
+            boxShadow:
+              "0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 1px 5px rgba(0, 0, 0, 0.12)",
+            background: "#0078D7",
+            padding: "6px 16px",
+            "&:hover": {
+              color: "rgba(0, 0, 0, 0.38)",
+              backgroundColor: "rgba(0, 0, 0, 0.12)",
+            },
+            "&:active": {
+              backgroundColor: "rgba(0, 0, 0, 0.12)",
+              color: "rgba(0, 0, 0, 0.38)",
+            },
+          },      
+        },       
       ],
     },
     MuiFormControlLabel: {

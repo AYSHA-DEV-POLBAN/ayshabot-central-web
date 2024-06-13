@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, B
 import SideBar from '../../Component/Sidebar';
 import Header from '../../Component/Header';
 import { useNavigate } from "react-router";
-// import client from "../../global/client";
+import client from '../../Global/client';
 import { AlertContext } from "../../Context";
 import BreadCumbComp from '../../Component/DataBread';
 import axios from 'axios';
@@ -30,29 +30,23 @@ const User = () => {
       flex: 0.7,
       minWidth: 200,
     },
-    // {
-    //   field: 'username',
-    //   headerName: 'Username',
-    //   flex: 0.5,
-    //   minWidth: 150,
-    // },
+    {
+      field: 'userLevel',
+      headerName: 'Role',
+      flex: 0.3 ,
+      minWidth: 100
+    },
     {
       field: 'email',
       headerName: 'Email',
       flex: 1 ,
       minWidth: 200
     },
-    // {
-    //   field: 'password',
-    //   headerName: 'Password',
-    //   flex: 0.7 ,
-    //   minWidth: 150
-    // },
     {
-      field: 'userLevel',
-      headerName: 'Level',
-      flex: 0.3 ,
-      minWidth: 100
+      field: 'email_verify',
+      headerName: 'Email Verify',
+      flex: 0.7 ,
+      minWidth: 150
     },
     {
       field: 'userStatus',
@@ -103,21 +97,6 @@ const User = () => {
     search: ''
   })
   
-  const getStatusColor = (status) => {
-    const statusColors = {
-      'active' : '#A1DD70',
-      'non active' : '#EE4E4E'
-    };
-    return statusColors[status] || '#ccc';
-  };
-
-  const getStatusFontColor = (status) => {
-    const statusFontColors = {
-      'active' : '#ffffff',
-      'non active' : '#fffff'
-    };
-    return statusFontColors[status] || '#fff';
-  };
 
   const handleClickOpen = async (id) => {
     setidHapus(id)
@@ -129,22 +108,22 @@ const User = () => {
   }, [])
 
   const getData = async () => {
-    // const res = await client.requestAPI({
-    //   method: 'GET',
-    //   endpoint: ``
-    // })
-    // rebuildData(res)
-    try {
-      const res = await axios.get('http://localhost:8001/api/v1/users/', {
-        headers: {
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlX2lkIjoxLCJuYW1lIjoic3VwZXJhZG1pbiIsImVtYWlsIjoic3VwZXJhZG1pbkBnbWFpbC5jb20ifSwiaWF0IjoxNzE3NzkxMjMzfQ.Bqd_22FjessNFIw3G9eVkQT3GmkwTUXo2FoElw9X_EM`
-        }
-      });
-      console.log(res.data);
-      rebuildData(res.data)
-    } catch (error) {
-      console.error('There was an error!', error);
-    }
+    const res = await client.requestAPI({
+      method: 'GET',
+      endpoint: `/users/`,
+    })
+    rebuildData(res)
+    // try {
+    //   const res = await axios.get('http://localhost:8001/api/v1/users/', {
+    //     headers: {
+    //       'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlX2lkIjoxLCJuYW1lIjoic3VwZXJhZG1pbiIsImVtYWlsIjoic3VwZXJhZG1pbkBnbWFpbC5jb20ifSwiaWF0IjoxNzE3NzkxMjMzfQ.Bqd_22FjessNFIw3G9eVkQT3GmkwTUXo2FoElw9X_EM`
+    //     }
+    //   });
+    //   console.log(res.data);
+    //   rebuildData(res.data)
+    // } catch (error) {
+    //   console.error('There was an error!', error);
+    // }
   }
 
   const rebuildData = (resData) => {
@@ -156,6 +135,7 @@ const User = () => {
         id: value.id,
         name: value.name,
         email: value.email,
+        email_verify: value.verify_email,
         userLevel: value.role_id,
         userStatus: value.status
       }
@@ -166,12 +146,12 @@ const User = () => {
   }
   
   const deleteData = async (id) => {
-    // const res = await client.requestAPI({
-    //   method: 'DELETE',
-    //   endpoint: ``
-    // })
-    // setOpenAlert(true);
-    // getData()
+    const res = await client.requestAPI({
+      method: 'DELETE',
+      endpoint: `/users/delete/${id}`
+    })
+    setOpenAlert(true);
+    getData()
     // if (!res.isError) {
     //   setDataAlert({
     //     severity: 'warning',
@@ -186,6 +166,17 @@ const User = () => {
     //     open: true
     //   })
     // }
+
+    // try {
+    //   const res = await axios.delete(`/users/delete/${id}`)
+    //   console.log(res);
+    //   setOpenAlert(true);
+    //   getData()
+    //   // rebuildData(res.data)
+    // } catch (error) {
+    //   console.error('There was an error!', error);
+    // }
+
     handleClose();
   }
   
@@ -194,6 +185,11 @@ const User = () => {
     localStorage.setItem('id', id)
     console.log(id)
     navigate("/user/detail");
+  };
+
+  const handleEdit = async (id) => {
+    localStorage.setItem('id', id)
+    navigate("/user/edit");
   };
 
   const handleClose = () => {
@@ -240,6 +236,7 @@ const User = () => {
           onFilter={(dataFilter => onFilter(dataFilter))}
           handleChangeSearch={handleChangeSearch}
           onDetail={(id) => handleDetail(id)}
+          onEdit={(id) => handleEdit(id)}
           onDelete={(id) => handleClickOpen(id)}
           totalData={totalData}
           getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
