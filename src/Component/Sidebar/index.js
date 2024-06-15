@@ -19,7 +19,7 @@ import minilogoAysha from "../../assets/minilogoAysha.png";
 import { Avatar, Typography, Hidden } from "@mui/material";
 import { useNavigate } from "react-router";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
-import { closedRoutes, finalRoutes } from "../../routes";
+import { closedRoutes, FinalRoutes } from "../../routes";
 // import CustomAlert from "../Alert";
 // import { convertBase64 } from "../../global/convertBase64";
 import { useLocation } from "react-router-dom";
@@ -91,7 +91,7 @@ export default function SideBar({ children, title }) {
   const [selectedIndex, setSelectedIndex] = React.useState(
     parseInt(currentMenu ? currentMenu.idx : 0)
   );
-  // const dataRoute = finalRoutes().filter((res) => res.icon);
+  // const dataRoute = FinalRoutes().filter((res) => res.icon);
   const dataRoute = closedRoutes().filter((res) => res.icon);
 
   const handleLogout = () => {

@@ -291,6 +291,65 @@ let globalTheme = createTheme({
       },
     },
     
+    MuiSwitch: {
+      styleOverrides: {
+        root: {
+          width: 28,
+          height: 16,
+          padding: 0,
+          display: 'flex',
+          '&:active .MuiSwitch-thumb': {
+            width: 15,
+          },
+          '&:active .MuiSwitch-switchBase.Mui-checked': {
+            transform: 'translateX(9px)',
+          },
+        },
+        switchBase: {
+          padding: 2,
+          '&.Mui-checked': {
+            transform: 'translateX(12px)',
+            color: '#fff',
+            '& + .MuiSwitch-track': {
+              opacity: 1,
+              backgroundColor: theme => theme.palette.mode === 'dark' ? '#177ddc' : '#1890ff',
+            },
+          },
+        },
+        thumb: {
+          boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
+          width: 12,
+          height: 12,
+          borderRadius: 6,
+          transition: theme => theme.transitions.create(['width'], {
+            duration: 200,
+          }),
+        },
+        track: {
+          borderRadius: 16 / 2,
+          opacity: 1,
+          backgroundColor: theme => theme.palette.mode === 'dark' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
+          boxSizing: 'border-box',
+        },
+      },
+    },
+
+    MuiMenu: {
+      variants: [
+        {
+          props: {
+            variant: "myMenuVariant",
+          },
+          style: {
+            paper: {
+              backgroundColor: "#0078D7",
+              color: "#ffffff",
+            },
+          },
+        },
+        // Add more variants as needed
+      ],
+    }
   },
 });
 

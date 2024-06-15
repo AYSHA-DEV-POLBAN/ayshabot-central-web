@@ -12,18 +12,16 @@ const Dashboard = lazy(() => import("./Layout/Dashboard"));
 const Informasi = lazy(() => import("./Layout/Informasi"))
 const CreateInfomasi = lazy(() => import("./Layout/Informasi/CreateInformasi"))
 const DetailInformasi = lazy(() => import("./Layout/Informasi/DetailInformasi"))
-const EditInformasi = lazy(() => import("./Layout/Informasi/EditInformasi"))
 const LogHistory = lazy(() => import("./Layout/LogHistory"))
 const Command = lazy(() => import("./Layout/Prompting"))
 const CreatePrompting = lazy(() => import("./Layout/Prompting/CreatePrompting"))
 const DetailPrompting = lazy(() => import("./Layout/Prompting/DetailPrompting"))
-const EditCommand = lazy(() => import("./Layout/Prompting/EditCommand"))
 const User = lazy(() => import("./Layout/User"))
 const CreateUser = lazy(() => import("./Layout/User/CreateUser"))
 const DetailUser = lazy(() => import("./Layout/User/DetailUser"))
-const EditUser = lazy(() => import("./Layout/User/EditUser"))
 const LoginScreen = lazy(() => import("./Layout/Authentikasi"))
 const CategoryInformation = lazy(() => import("./Layout/KategoriInformasi"))
+const CreateCategory = lazy(() => import("./Layout/KategoriInformasi/CreateCategory"))
 const GenerateQR = lazy(() => import("./Layout/GenerateQR"))
 const HistoryConversation = lazy(() => import("./Layout/HistoryConversation"))
 const DetailHistoryConversation = lazy(() => import("./Layout/HistoryConversation/detailHistoryConversation"))
@@ -60,16 +58,16 @@ export const closedRoutes = () => [
     key: "detail informasi",
   },
   {
-    path: "/informasi/edit",
-    element: <EditInformasi />,
-    key: "edit informasi",
-  },
-  {
     path: "/category_information",
     element: <CategoryInformation />,
     name: "Category Information",
     key: "category_information",
     icon: <CodeOutlinedIcon />,
+  },
+  {
+    path: "/category_information/create",
+    element: <CreateCategory />,
+    key: "category_information create",
   },
   {
     path: "/command",
@@ -87,11 +85,6 @@ export const closedRoutes = () => [
     path: "/command/detail",
     element: <DetailPrompting />,
     key: "detail prompting",
-  },
-  {
-    path: "/command/edit",
-    element: <EditCommand />,
-    key: "edit command",
   },
   {
     path: "/generate_qr",
@@ -131,11 +124,6 @@ export const closedRoutes = () => [
     key: "detail user",
   },
   {
-    path: "/user/edit",
-    element: <EditUser />,
-    key: "edir user",
-  },
-  {
     path: "/logHistory",
     element: <LogHistory />,
     name: "Log History",
@@ -145,49 +133,50 @@ export const closedRoutes = () => [
 ];
 
 
-export const finalRoutes = () => {
+// export const finalRoutes = () => {
     
-}
+// }
 
 // default all routes
 // export const finalRoutes = temp
 
 // final routes with controll
-// export const finalRoutes = () => {
+// export const FinalRoutes = () => {
 //   const navigate = useNavigate();
   
-// //   const openRoutes = [{ path: "/login", element: <LoginScreen /> }];
-//   const openRoutes = [{ path: "/", element: <Dashboard /> }];
-//   const userId = localStorage.getItem("userId") || null
+//   const openRoutes = [{ path: "/", element: <LoginScreen /> }];
+//   // const openRoutes = [{ path: "/", element: <Dashboard /> }];
+//   const userId = localStorage.getItem("id") || null
 //   const token = localStorage.getItem("token");
-//   // Comment if route user already exist
-//   // const tempRoute = ['master-holiday', 'master-company']
+// //   // Comment if route user already exist
+// //   // const tempRoute = ['master-holiday', 'master-company']
 //   useEffect(() => {
-//     if (!!token) {
-//       if (window.location.pathname === "/login") {
-//         navigate("/workingReport");
+//     if (token) {
+//       if (window.location.pathname === "/") {
+//         navigate("/");
 //       }
 //     } else {
-//       if (window.location.pathname !== "/login") {
-//         navigate("/login");
+//       if (window.location.pathname !== "/dashboard") {
+//         navigate("/dashboard");
 //       }
 //     }
 //   }, [token, navigate]);
 
-//   // localStorage.setItem('privilage', JSON.stringify(tempRoute))
-//   const userRoutes = JSON.parse(localStorage.getItem("privilage") || '[]');
-//   // console.log('app route: ', routes)
+// //   // localStorage.setItem('privilage', JSON.stringify(tempRoute))
+//   const userRoutes = JSON.parse(localStorage.getItem("id") || '[]');
+// //   // console.log('app route: ', routes)
 //   let temp = closedRoutes.filter((res) => {
-//     let isSame = false;
+//     // let isSame = false;
 
-//     isSame = userRoutes.some((privilege) => privilege.privilegeName === res.key);
-//     if (!isSame) {
-//       return;
-//     }
+//     // isSame = userRoutes.some((user) => user.name === res.key);
+//     // if (!isSame) {
+//     //   return;
+//     // }
 //     return res;
 //   });
 
 //   temp = [...temp, ...openRoutes];
-//   temp = userId ? [...temp, { path: "/", element: <Dashboard />,}] : openRoutes
+//   temp = userId ? [...temp, { path: "/dashboard", element: <Dashboard />,}] : openRoutes
+//   // temp = userId ? [...temp, { path: "/", element: <LoginScreen />,}] : openRoutes
 //   return temp
 // };

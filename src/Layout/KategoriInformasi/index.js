@@ -125,13 +125,14 @@ const CategoryInformation = () => {
   const handleDetail = async (id) => {
     localStorage.setItem('id', id)
     console.log(id)
-    navigate("/user/detail");
+    navigate("/category_information/detail");
   };
 
-  const handleEdit = async (id) => {
+  const handleEdit = async (id, isEdit) => {
     localStorage.setItem('id', id)
     console.log(id)
-    navigate("/user/detail");
+    isEdit=(true)
+    navigate("/category_information/create");
   };
 
   const handleClose = () => {
@@ -150,7 +151,7 @@ const CategoryInformation = () => {
   
   
   const onAdd = () => {
-    navigate("/user/create")
+    navigate("/category_information/create")
   }
 
   const onFilter = (dataFilter) => {

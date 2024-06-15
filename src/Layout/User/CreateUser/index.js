@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import Grid from "@mui/material/Grid";
 import SideBar from '../../../Component/Sidebar';
 import Breadcrumbs from "../../../Component/DataBread";
-import Header from '../../../Component/Header'
 import { Dialog, Button, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import '../../../App.css'
 import { useNavigate } from 'react-router';
@@ -15,7 +14,7 @@ import { AlertContext } from '../../../Context';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
-const CreateUser = () => {
+const CreateUser = (isEdit) => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [sendData, setData] = useState({})
@@ -34,7 +33,7 @@ const CreateUser = () => {
     },
     {
       href: "/user/create",
-      title: "Create New Operator",
+      title: isEdit ? "Edit Operator" : "Create New Operator",
       current: true,
     },
   ];
@@ -88,22 +87,59 @@ const CreateUser = () => {
       data
     })
     console.log(res)
-//     if (!res.isError) {
-//       setDataAlert({
-//         severity: 'success',
-//         open: true,
-//         message: res.data.meta.message
-//       })
-//       setTimeout(() => {
-//         navigate('/user')
-//       }, 3000)
-//     } else {
-//       setDataAlert({
-//         severity: 'error',
-//         message: res.error.detail,
-//         open: true
-//       })
-//     }
+    if (!res.isError) {
+      setDataAlert({
+        severity: 'success',
+        open: true,
+        message: res.status
+      })
+      setTimeout(() => {
+        navigate('/user')
+      }, 3000)
+    } else {
+      setDataAlert({
+        severity: 'error',
+        message: res.error.detail,
+        open: true
+      })
+    }
+        setOpen(false)
+    }
+  }
+
+
+
+  const onSaveEdit = async () => {
+    if(!isSave){
+      setOpen(false)
+    } else{
+    const data = {
+      ...sendData,
+    }
+    console.log(data)
+    const id = localStorage.getItem("id")
+    const res = await client.requestAPI({
+      method: 'PUT',
+      endpoint: `/users/edit/${id}`,
+      data
+    })
+    console.log(res)
+    if (!res.isError) {
+      setDataAlert({
+        severity: 'success',
+        open: true,
+        message: res.status
+      })
+      setTimeout(() => {
+        navigate('/user')
+      }, 3000)
+    } else {
+      setDataAlert({
+        severity: 'error',
+        message: res.error.detail,
+        open: true
+      })
+    }
         setOpen(false)
     }
   }
@@ -115,10 +151,8 @@ const CreateUser = () => {
       <SideBar title='User' >
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
-          {/* <Grid item xs={12} sm={6} pb={2}>
-            <Header judul='Create New User' />
-          </Grid> */}
           <Grid item xs={12}>
+            {isEdit ? (
             <FormProvider {...methods}>
               <form onSubmit={methods.handleSubmit(confirmSave)}>
                 <div className='card-container'>
@@ -178,6 +212,67 @@ const CreateUser = () => {
                 </div>
               </form>
             </FormProvider>
+            ) : (
+              <FormProvider {...methods}>
+              <form onSubmit={methods.handleSubmit(confirmSave)}>
+                <div className='card-container'>
+                    <Grid 
+                      item 
+                      container 
+                      columnSpacing={3.79}
+                      rowSpacing={3.79}
+                      xs={12}
+                    >
+                        <Grid item xs={12} sm={12}>
+                        <FormInputText
+                          focused
+                          name='name'
+                          className='input-field-crud'
+                          placeholder='e.g Aslan Islan'
+                          label='Name *'
+                          inputProps={{
+                            maxLength: 50,
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={12}>
+                        <FormInputText
+                          focused
+                          name='email'
+                          className='input-field-crud'
+                          placeholder='e.g aslanislan@gmail.com'
+                          label='Email *'
+                          inputProps={{
+                            maxLength: 25,
+                          }}
+                        />
+                      </Grid>
+                    </Grid>
+                    
+                <Grid container spacing={2} justifyContent="flex-end" mt={3.5}>
+                <Grid item xs={12} sm={2} textAlign="right">
+                  <Button
+                    fullWidth
+                    variant="cancelButton"
+                    onClick={() => cancelData()}
+                  >
+                    Cancel Data
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={2} textAlign="right">
+                  <Button 
+                    fullWidth
+                    variant="saveButton"
+                    type="submit"
+                  >
+                    Save Data
+                  </Button>
+                </Grid>
+              </Grid>
+                </div>
+              </form>
+            </FormProvider>
+            )}
           </Grid>
         </Grid>
         <Dialog
@@ -197,7 +292,7 @@ const CreateUser = () => {
           </DialogContent>
           <DialogActions className="dialog-delete-actions">
             <Button onClick={handleClose} variant='outlined' className="button-text">{isSave ? 'Back' : 'Cancel without saving'}</Button>
-            <Button onClick={onSave} variant='saveButton'>{isSave ? 'Save Data' : 'Back'}</Button>
+            <Button onClick={isEdit ? onSaveEdit : onSave} variant='saveButton'>{isSave ? 'Save Data' : 'Back'}</Button>
           </DialogActions>
         </Dialog>
      </SideBar>

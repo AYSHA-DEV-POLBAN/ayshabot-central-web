@@ -8,54 +8,28 @@ import { AlertContext } from "../../Context";
 import BreadCumbComp from '../../Component/DataBread';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
-import { styled } from '@mui/material/styles';
-import Header from '../../Component/Header';
 
 
 const Informasi = () => {
 
-  const AntSwitch = styled(Switch)(({ theme }) => ({
-    width: 28,
-    height: 16,
-    padding: 0,
-    display: 'flex',
-    '&:active': {
-      '& .MuiSwitch-thumb': {
-        width: 15,
-      },
-      '& .MuiSwitch-switchBase.Mui-checked': {
-        transform: 'translateX(9px)',
-      },
-    },
-    '& .MuiSwitch-switchBase': {
-      padding: 2,
-      '&.Mui-checked': {
-        transform: 'translateX(12px)',
-        color: '#fff',
-        '& + .MuiSwitch-track': {
-          opacity: 1,
-          backgroundColor: theme.palette.mode === 'dark' ? '#177ddc' : '#1890ff',
-        },
-      },
-    },
-    '& .MuiSwitch-thumb': {
-      boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
-      width: 12,
-      height: 12,
-      borderRadius: 6,
-      transition: theme.transitions.create(['width'], {
-        duration: 200,
-      }),
-    },
-    '& .MuiSwitch-track': {
-      borderRadius: 16 / 2,
-      opacity: 1,
-      backgroundColor:
-        theme.palette.mode === 'dark' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
-      boxSizing: 'border-box',
-    },
-  }));
-
+  const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [idHapus,setidHapus] = useState();
+  const [totalData, setTotalData] = useState();
+  const [isEdit, setIsEdit] = useState(false)
+  const { setDataAlert } = useContext(AlertContext)
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [currentRow, setCurrentRow] = useState(null);
+  const [filter, setFilter] = useState({
+    page: 0,
+    size: 10,
+    sortName: 'informationName',
+    sortType: 'asc',
+    search: ''
+  })
+  
   const columns = [
     {
       field: 'no',
@@ -92,15 +66,55 @@ const Informasi = () => {
       headerName: 'Status',
       flex: 1.5 ,
       minWidth: 150,
-      renderCell: (data) => (
-        <Stack direction="row" spacing={1} alignItems="center">
-        <Typography>deact</Typography>
-        <AntSwitch defaultChecked inputProps={{ 'aria-label': 'ant design' }} />
-        <Typography>act</Typography>
-      </Stack>
-      ),
+      renderCell: (data) => {
+        const isActive = data.row.informationStatus === 1;
+  
+        return (
+          <Stack direction="row" spacing={1} marginTop={2} alignItems="center">
+            <Switch
+              checked={isActive}
+              onChange={() => handleDialogOpen(data.row)}
+              inputProps={{ 'aria-label': 'information status toggle' }}
+            />
+          </Stack>
+        );
+      },
     }
   ];
+
+
+  const handleDialogOpen = (row) => {
+    setCurrentRow(row);
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+    setCurrentRow(null);
+  };
+
+  const handleToggleStatus = async () => {
+    const isActive = currentRow.informationStatus === 1
+    const id = currentRow.id;
+    const endpoint = isActive
+      ? `/information/deactivate_information/${id}`
+      : `/information/activate_information/${id}`;
+    
+    try {
+      await client.requestAPI({ method: 'PUT', endpoint });
+      getData();
+      setDataAlert({
+        message: `Information ${isActive ? 'deactivated' : 'activated'} successfully`,
+        severity: 'success'
+      });
+    } catch (error) {
+      setDataAlert({
+        message: `Failed to ${isActive ? 'deactivate' : 'activate'} information`,
+        severity: 'error'
+      });
+    }
+    handleDialogClose();
+  };
 
   const dataBread = [
     {
@@ -115,26 +129,9 @@ const Informasi = () => {
     },
   ];
 
-  const [open, setOpen] = useState(false);
-  const [openAlert, setOpenAlert] = useState(false);
-  const navigate = useNavigate();
-  const [data, setData] = useState([
-    // { id:1, no: 1, informationName: 'Fasilitas', desc: 'UGD', file: 'abcd.pdf', informationStatus: 'active' },
-    // { id:2, no: 2, informationName: 'Fasilitas', desc: 'Poliklinik', file: 'abds.pdf', informationStatus: 'active' },
-  ]);
-  const [idHapus,setidHapus] = useState();
-  const [totalData, setTotalData] = useState();
-  const { setDataAlert } = useContext(AlertContext)
-  const [filter, setFilter] = useState({
-    page: 0,
-    size: 10,
-    sortName: 'informationName',
-    sortType: 'asc',
-    search: ''
-  })
+ 
   
   const handleClickOpen = async (id) => {
-    //setId
     setidHapus(id)
     setOpen(true)
   };
@@ -148,6 +145,7 @@ const Informasi = () => {
       method: 'GET',
       endpoint: `/information/`
     })
+    console.log(res)
     rebuildData(res)
   }
 
@@ -176,20 +174,20 @@ const Informasi = () => {
     })
     setOpenAlert(true);
     getData()
-    // if (!res.isError) {
-    //   setDataAlert({
-    //     severity: 'warning',
-    //     open: true,
-    //     message: res.meta.message
-    //   })
-    //   handleClose();
-    // } else {
-    //   setDataAlert({
-    //     severity: 'error',
-    //     message: res.error.detail,
-    //     open: true
-    //   })
-    // }
+    if (!res.isError) {
+      setDataAlert({
+        severity: 'warning',
+        open: true,
+        message: res.message
+      })
+      handleClose();
+    } else {
+      setDataAlert({
+        severity: 'error',
+        message: res.error.detail,
+        open: true
+      })
+    }
     handleClose();
   }
   
@@ -200,10 +198,11 @@ const Informasi = () => {
     navigate("/informasi/detail");
   };
 
-  const handleEdit = async (id) => {
+  const handleEdit = async (id, isEdit) => {
     localStorage.setItem('id', id)
     console.log(id)
-    navigate("/informasi/edit");
+    isEdit=(true)
+    navigate("/informasi/create");
   };
 
   const handleClose = () => {
@@ -243,7 +242,6 @@ const Informasi = () => {
           title='Information'
           data={data}
           columns={columns}
-          // placeSearch="Information Name, File, Status, etc"
           searchTitle="Search By"
           onAdd={() => onAdd()}
           onFilter={(dataFilter => onFilter(dataFilter))}
@@ -272,6 +270,28 @@ const Informasi = () => {
           <DialogActions className="dialog-delete-actions">
             <Button onClick={handleClose} variant='outlined' className="button-text">Cancel</Button>
             <Button onClick={() => deleteData(idHapus)} className='delete-button button-text'>Delete Data</Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* dialog untuk ubah status */}
+        <Dialog
+          open={dialogOpen}
+          onClose={handleDialogClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          className="dialog-delete"
+        >
+          <DialogTitle id="alert-dialog-title" className='dialog-delete-header'>
+            {"Change Status"}
+          </DialogTitle>
+          <DialogContent className="dialog-delete-content">
+            <DialogContentText className='dialog-delete-text-content' id="alert-dialog-description">
+            Are you sure you want to {currentRow?.informationStatus === 1 ? 'deactivate' : 'activate'} this information?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions className="dialog-delete-actions">
+            <Button onClick={handleDialogClose} variant='outlined' className="button-text">Cancel</Button>
+            <Button onClick={handleToggleStatus} variant='saveButton' className="button-text">Confirm</Button>
           </DialogActions>
         </Dialog>
       </SideBar>

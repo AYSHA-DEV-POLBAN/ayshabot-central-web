@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import Grid from "@mui/material/Grid";
 import SideBar from '../../../Component/Sidebar';
 import Breadcrumbs from "../../../Component/DataBread";
-import Header from '../../../Component/Header'
 import { Dialog, Button, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import '../../../App.css'
 import { useNavigate } from 'react-router';
@@ -13,9 +12,7 @@ import FormInputText from '../../../Component/FormInputText';
 import client from '../../../Global/client';
 import { AlertContext } from '../../../Context';
 
-import axios from "axios";
-
-const CreatePrompting = (isEdit) => {
+const CreateCategory = (isEdit) => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [sendData, setData] = useState({})
@@ -30,12 +27,12 @@ const CreatePrompting = (isEdit) => {
     },
     {
       href: "/command",
-      title: "Command",
+      title: "Category Information",
       current: false,
     },
     {
-      href: "/command/create",
-      title: isEdit ? "Edit Command" : "Create New Command",
+      href: "/category_information/create",
+      title: isEdit ? "Edit Category Information" : "Create New Category Information",
       current: true,
     },
   ];
@@ -55,14 +52,14 @@ const CreatePrompting = (isEdit) => {
   const methods = useForm({
     // resolver: yupResolver(schemacompany),
     defaultValues: {
-      name_command: '',
-      response_command:''
+        name_category_information: '',
+        description_category_information:''
     }
   })
 
   const handleClose = () => {
     if (!isSave) {
-      navigate('/command')
+      navigate('/category_information')
     }
     setOpen(false)
   }
@@ -71,15 +68,15 @@ const CreatePrompting = (isEdit) => {
       setOpen(false)
     } else{
         const data = {
-          ...sendData
+            ...sendData
         }
-
+ 
         console.log(sendData)
         
         console.log(data)
         const res = await client.requestAPI({
           method: 'POST',
-          endpoint: '/command/create',
+          endpoint: '/category-information/create',
           data
         })
         console.log(res)
@@ -92,7 +89,7 @@ const CreatePrompting = (isEdit) => {
             message: res.message
           })
           setTimeout(() => {
-            navigate('/command')
+            navigate('/category_information')
           }, 3000)
         } else {
           setDataAlert({
@@ -102,22 +99,25 @@ const CreatePrompting = (isEdit) => {
           })
         }
         setOpen(false)
+    //   }
     }
   }
+
+
 
   const onSaveEdit = async () => {
     if(!isSave){
       setOpen(false)
     } else{
         const data = {
-          ...sendData
+            ...sendData
         }
         console.log(data)
 
         const id = localStorage.getItem("id")
         const res = await client.requestAPI({
           method: 'PUT',
-          endpoint: `/command/edit/${id}`,
+          endpoint: `/category-information/edit/${id}`,
           data
         })
         console.log(res)
@@ -130,7 +130,7 @@ const CreatePrompting = (isEdit) => {
             message: res.message
           })
           setTimeout(() => {
-            navigate('/command')
+            navigate('/category_information')
           }, 3000)
         } else {
           setDataAlert({
@@ -140,12 +140,13 @@ const CreatePrompting = (isEdit) => {
           })
         }
         setOpen(false)
+    //   }
     }
   }
 
   return (
     <div>
-      <SideBar title='Command' >
+      <SideBar title='Category Information' >
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           <Grid item xs={12}>
@@ -163,10 +164,10 @@ const CreatePrompting = (isEdit) => {
                         <Grid item xs={12} sm={12}>
                         <FormInputText
                           focused
-                          name='name_command'
+                          name='name_category_information'
                           className='input-field-crud'
                           placeholder='e.g Cek Dokter'
-                          label='Command Name *'
+                          label='Category Name *'
                           inputProps={{
                             maxLength: 50,
                           }}
@@ -175,10 +176,10 @@ const CreatePrompting = (isEdit) => {
                       <Grid item xs={12} sm={12}>
                         <FormInputText
                           focused
-                          name='response_command'
+                          name='description_category_information'
                           className='input-field-crud'
                           placeholder='e.g Jadwal Dokter Hari Ini'
-                          label='Response Command*'
+                          label='Description *'
                           inputProps={{
                             maxLength: 100,
                           }}
@@ -224,10 +225,10 @@ const CreatePrompting = (isEdit) => {
                         <Grid item xs={12} sm={12}>
                         <FormInputText
                           focused
-                          name='name_command'
+                          name='name_category_information'
                           className='input-field-crud'
                           placeholder='e.g Cek Dokter'
-                          label='Command Name *'
+                          label='Category Name *'
                           inputProps={{
                             maxLength: 50,
                           }}
@@ -236,10 +237,10 @@ const CreatePrompting = (isEdit) => {
                       <Grid item xs={12} sm={12}>
                         <FormInputText
                           focused
-                          name='response_command'
+                          name='description_category_information'
                           className='input-field-crud'
                           placeholder='e.g Jadwal Dokter Hari Ini'
-                          label='Response Command*'
+                          label='Description *'
                           inputProps={{
                             maxLength: 100,
                           }}
@@ -300,4 +301,4 @@ const CreatePrompting = (isEdit) => {
 
 }
 
-export default CreatePrompting
+export default CreateCategory

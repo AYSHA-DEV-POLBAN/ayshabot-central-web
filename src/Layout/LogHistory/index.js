@@ -89,17 +89,6 @@ const LogHistory = () => {
       endpoint: `/log-history/`
     })
     rebuildData(res)
-    // try {
-    //   const res = await axios.get('http://localhost:8001/api/v1/log-history/', {
-    //     headers: {
-    //       'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlX2lkIjoxLCJuYW1lIjoic3VwZXJhZG1pbiIsImVtYWlsIjoic3VwZXJhZG1pbkBnbWFpbC5jb20ifSwiaWF0IjoxNzE3NzkxMjMzfQ.Bqd_22FjessNFIw3G9eVkQT3GmkwTUXo2FoElw9X_EM`
-    //     }
-    //   });
-    //   console.log(res.data);
-    //   rebuildData(res.data)
-    // } catch (error) {
-    //   console.error('There was an error!', error);
-    // }
   }
 
   const rebuildData = (resData) => {

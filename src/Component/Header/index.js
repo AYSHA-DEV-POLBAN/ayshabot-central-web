@@ -1,57 +1,34 @@
-// import React from "react";
-// import { Hidden, Typography } from "@mui/material";
-// import Grid from "@mui/material/Grid";
-// const Header = (props) => {
-//   const { judul } = props;
-//   return (
-//     <Grid container rowSpacing={3} sx={{ position: 'sticky', top: 0, zIndex: 1100, width: '100%', height: '80px', backgroundColor: '#146C94' }}>
-//       <Grid item xs={12}>
-//         <Grid container className="containerHeader">
-//           {/* <Grid item>
-//             <div className="dividerHeader" />
-//           </Grid> */}
-//           <Grid item xs={11}>
-//           <Hidden mdDown>
-//             <Typography variant="headerCardMenu" padding={2}>
-//               {`${judul}`}
-//             </Typography>
-//           </Hidden>
-
-//           <Hidden mdUp>
-//             <Typography variant="body2" padding={1} marginTop={1.5}>
-//               {`${judul}`}
-//             </Typography>
-//           </Hidden>
-//           </Grid>
-//         </Grid>
-//       </Grid>
-//     </Grid>
-
-//     // <div>
-//     //   <Typography variant="headerCardMenu">{judul}</Typography>
-//     // </div>
-//   );
-// };
-
-// export default Header;
-
-
-
 import React from "react";
-import { Hidden, Typography, IconButton } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import { Hidden, Typography, IconButton, Box, Avatar, Menu, MenuItem, ListItemIcon, Divider, Tooltip } from "@mui/material";
+import PersonAdd from '@mui/icons-material/PersonAdd';
+import Logout from '@mui/icons-material/Logout';
 import Grid from "@mui/material/Grid";
-import logoAysha from "../../assets/logoAysha.png";
+import { useNavigate } from 'react-router';
 import '../../App.css'
 
 
 const Header = ({ title, open }) => { // Terima prop
+  const name = localStorage.getItem("name");
+  const navigate = useNavigate()
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openMenu = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    navigate('/')
+  };
+
   return (
-    <Grid container rowSpacing={5} columnSpacing={3} sx={{ position: 'sticky', top: 0, zIndex: 1100, width: '103.95%', height: '70px', backgroundColor: '#146C94' }}>
-      <Grid item xs={12}>
+    <Grid container rowSpacing={5} columnSpacing={3} sx={{ position: 'sticky', top: 0, zIndex: 1100, width: '103.95%', height: '70px', backgroundColor: '#146C94', display: 'flex' }}>
+      <Grid item xs={10.5}>
         <Grid container className="containerHeader">
-          <Grid item xs={8} sx={{marginLeft: `${open ? 0 : 0}px`, transition: 'margin-left 0.3s ease, width 0.3s ease'}}>
+          <Grid item xs={12} sx={{marginLeft: `${open ? 0 : 0}px`, transition: 'margin-left 0.3s ease, width 0.3s ease'}}>
             <Hidden mdDown>
               <Typography variant="headerCardMenu" padding={1}>
                 {`${title}`}
@@ -64,20 +41,55 @@ const Header = ({ title, open }) => { // Terima prop
               </Typography>
             </Hidden>
           </Grid>
-          {/* <Grid item xs={3}>
-            <div
-              className={
-                "container-img margin-img"
-              }
-            >
-              <img
-                className="drawer-logo"
-                src={logoAysha}
-                alt="AyshaBot Central"
-              />
-            </div>
-          </Grid> */}
         </Grid>
+      </Grid>
+      
+      <Grid item xs={1.5}>
+        <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+          <Tooltip title="Account settings">
+            <IconButton
+              onClick={handleClick}
+              size="small"
+              sx={{ ml: 2 }}
+              aria-controls={openMenu ? 'account-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={openMenu ? 'true' : undefined}
+            >
+              <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+              {/* <Typography>dada</Typography> */}
+            </IconButton>
+          </Tooltip>
+        </Box>
+
+        <Menu
+          anchorEl={anchorEl}
+          id="account-menu"
+          open={openMenu}
+          onClose={handleClose}
+          onClick={handleClose}
+          PaperProps={{
+            variant:"myMenuVariant"
+          }}
+          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        >
+          <MenuItem>
+            <Avatar /> NAMA USER
+          </MenuItem>
+          <Divider />
+          <MenuItem onClick={handleClose}>
+            <ListItemIcon>
+              <PersonAdd fontSize="small" />
+            </ListItemIcon>
+            Change Password
+          </MenuItem>
+          <MenuItem onClick={handleLogout}>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            Logout
+          </MenuItem>
+        </Menu>
       </Grid>
     </Grid>
   );

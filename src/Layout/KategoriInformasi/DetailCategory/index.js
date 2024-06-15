@@ -16,8 +16,8 @@ import { AlertContext } from '../../../Context';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
-const EditUser = () => {
-  const [dataProject, setDataProject] = useState([]) 
+const DetailCategory = () => {
+  const [dataProject, setDataProject] = useState([])
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [sendData, setData] = useState({})
@@ -32,26 +32,20 @@ const EditUser = () => {
       current: false,
     },
     {
-      href: "/user",
-      title: "User",
+      href: "/command",
+      title: "Command",
       current: false,
     },
     {
-      href: "/user/detail",
-      title: "Edit User",
+      href: "/command/detail",
+      title: isEdit ? "Edit Command" : "Detail Command",
       current: true,
     },
   ];
 
-
   const optStatus = [
-    {label: "Active"},
-    {label: "Non Active"}
-  ]
-
-  const optLevel = [
-    {label: "Admin"},
-    {label: "Operator"}
+    {label: 'Active'},
+    {label: 'Non Active'}
   ]
 
   const cancelData = () => {
@@ -69,46 +63,27 @@ const EditUser = () => {
   let methods = useForm({
     // resolver: yupResolver(schemacompany),
     defaultValues: {
-      name: '',
-      username: '',
-      password: '',
-      email: '',
-      userLevel: '',
-      userStatus: '',
+      commandName: '',
+      commandResponse: '',
+      informationStatus: '',
     }
   })
-
 
   useEffect(() => {
     getDataDetail()
   }, [])
 
   const getDataDetail = async () => {
-    // const id = localStorage.getItem('companyId')
-    // setCompanyId(id)
-    // const res = await client.requestAPI({
-    //   method: 'GET',
-    //   endpoint: `/company/${id}`
-    // })
-    // if (res.data.attributes) {
-    //   buildDataComp(res.data.attributes.projects)
-    //   const temp = res.data.attributes
-    //   delete temp.createdBy
-    //   delete temp.createdOn
-    //   delete temp.isActive
-    //   delete temp.lastModifiedBy
-    //   delete temp.lastModifiedOn
-    //   for (const property in temp) {
-    //     if (property === 'companyProfile') {
-    //       const urlMinio = temp[property] ? `${process.env.REACT_APP_BASE_API}/${temp[property]}` : ''
-    //       setFilePath(temp[property])
-    //       setFile(urlMinio)
-    //     } else {
-    //       methods.setValue(`${property}`, `${temp[property]}`)
-    //       setDataDetail(temp)
-    //     }
-    //   }
-    // }
+    const id = localStorage.getItem('id')
+    setDataDetail(id)
+    const res = await client.requestAPI({
+        method: 'GET',
+        endpoint: `/users/get_user_by_id/${id}`
+      })
+      console.log(res)
+      if (res.data) {
+        setDetail(res.data) 
+      }
   }
 
   const buildDataComp = (dataCom) => {
@@ -125,7 +100,7 @@ const EditUser = () => {
 
   const handleClose = () => {
     if (!isSave) {
-      navigate('/user')
+      navigate('/command')
     }
     setOpen(false)
   }
@@ -138,7 +113,7 @@ const EditUser = () => {
 //       }
 //       const res = await client.requestAPI({
 //         method: 'PUT',
-//         endpoint: `/company/${companyId}`,
+//         endpoint: ``,
 //         data
 //       })
 //       if (!res.isError) {
@@ -161,12 +136,26 @@ const EditUser = () => {
 
   }
 
-
   return (
     <div>
-      <SideBar title='User' > 
+      <SideBar title='Command' >
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
+          {/* <Grid item xs={12} sm={8}>
+            <Header judul={isEdit ? 'Edit Propmpting' : 'Detail Prompting'} />
+          </Grid> */}
+          {!isEdit && 
+            <Grid item xs={12} sm={4} alignSelf='center' sx={{ textAlign: { xs:'start', sm:'end'}}}>
+              <Button
+                variant='outlined'
+                className="button-text"
+                startIcon={<EditOutlinedIcon />}
+                onClick={() => setIsEdit(true)}
+              >
+                Edit Prompting
+              </Button>
+            </Grid>
+          }
           <Grid item xs={12}>
             <FormProvider {...methods}>
               {/* <form onSubmit={methods.handleSubmit(confirmSave)}> */}
@@ -179,31 +168,92 @@ const EditUser = () => {
                       xs={12}
                     >
                       <Grid item xs={12} sm={12}>
+                        {isEdit ? (
                           <FormInputText
                             focused
-                            name='name'
+                            name='commandName'
                             className='input-field-crud'
-                            placeholder='e.g Bagas'
-                            label='Name *'
+                            placeholder='e.g Fasilitas Poliklinik'
+                            label='Command Name *'
                             inputProps={{
                               maxLength: 50,
                             }}
                           />
+                        ) : (
+                          <Grid container>
+                            <Grid item xs={6} sm={6}>
+                              <Typography variant='labelHeaderDetail'>Command Name :</Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography variant='textDetail'>/cek dokter</Typography>
+                              {/* <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{dataDetail.companyName}</Typography> */}
+                            </Grid>
+                          </Grid>
+                        )}
                       </Grid>
-                      
                       <Grid item xs={12} sm={12}>
+                        {isEdit ? (
                           <FormInputText
                             focused
-                            name='email'
+                            name='commandResponse'
                             className='input-field-crud'
-                            placeholder='e.g bagass@gmail.com'
-                            label='Email *'
+                            placeholder='e.g Ini adalah fasilitas poliklinik'
+                            label='Command Response *'
                             inputProps={{
-                              maxLength: 25,
+                              maxLength: 100,
                             }}
                           />
+                        ) : (
+                          <Grid container>
+                            <Grid item xs={6} sm={6}>
+                              <Typography variant='labelHeaderDetail'>Command Response :</Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography variant='textDetail'>Ini informasi poliklinik</Typography>
+                              {/* <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{dataDetail.companyEmail}</Typography> */}
+                            </Grid>
+                          </Grid>
+                        )}
+                      </Grid>
+                      <Grid item xs={12} sm={12}>
+                        {isEdit ? (
+                          <></>
+                          // <Autocomplete                    
+                          //     disablePortal
+                          //     id="combo-box-demo"
+                          //     name="commandStatus"
+                          //     options={optStatus}
+                          //     sx={{ width: "100%", marginTop: "4px" }}
+                          //     // value={selectedRole}
+                          //     // getOptionLabel={(option) => option.name}
+                          //     // onChange={(event, newValue) => setSelectedRoles(newValue)}
+                          //     // isOptionEqualToValue={(option, value) => option.value === value.value}
+                          //     renderInput={(params) => (
+                          //       <TextField 
+                          //       {...params} 
+                          //       InputLabelProps={{ shrink: true }}   
+                          //       label="Status *" 
+                          //       placeholder="Select Status" 
+                          //       // {...register('role')}
+                          //       // error={errors.role !== undefined}
+                          //       // helperText={errors.role ? errors.role.message : ''}
+                          //       />
+                          //     )}
+                          //   />
+                        ) : (
+                          <Grid container>
+                            <Grid item xs={6} sm={6}>
+                              <Typography variant='labelHeaderDetail'>Command Status :</Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Typography variant='textDetail'>Ini informasi poliklinik</Typography>
+                              {/* <Typography variant='inputDetail'>{dataDetail.npwp}</Typography> */}
+                            </Grid>
+                          </Grid>
+                        )}
                       </Grid>
                     </Grid>
+                  {isEdit && (
                     <Grid container spacing={2} justifyContent="flex-end" mt={3.5}>
                       <Grid item xs={12} sm={2} textAlign="right">
                         <Button
@@ -224,6 +274,7 @@ const EditUser = () => {
                         </Button>
                       </Grid>
                     </Grid>
+                  )}
                 </div>
               {/* </form> */}
             </FormProvider>
@@ -255,4 +306,4 @@ const EditUser = () => {
 
 }
 
-export default EditUser
+export default DetailCategory

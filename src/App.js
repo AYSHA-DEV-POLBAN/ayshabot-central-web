@@ -3,7 +3,7 @@ import React, { Suspense, useEffect, useState} from 'react';
 import { ThemeProvider } from "@mui/material/styles";
 import { Route, Routes, useLocation, useNavigate } from 'react-router';
 import globalTheme from './Theme';
-import { closedRoutes, finalRoutes } from './routes';
+import { closedRoutes, FinalRoutes } from './routes';
 import { AlertContext } from './Context';
 import Header from './Component/Header';
 import SideBar from './Component/Sidebar';
@@ -11,12 +11,12 @@ import SideBar from './Component/Sidebar';
 const App = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  // const userId = localStorage.getItem("userId") || null
-  // useEffect(() => {
-    // if (!userId) {
-      // navigate('/login')
-    // }
-  // }, [userId])
+  const userId = localStorage.getItem("id") || null
+  useEffect(() => {
+    if (!userId) {
+      navigate('/')
+    }
+  }, [userId])
   
   // useEffect(() => {
     // const isRememberMe = localStorage.getItem("rememberMe");
@@ -62,8 +62,11 @@ const App = () => {
         <Suspense fallback={<p>Loading...</p>}>
           <Routes>
             {closedRoutes().map((res, idx) => {
-              return <Route path={res.path} element={res.element} key={`${idx + 1}-route-path`} />
+                return <Route path={res.path} element={res.element} key={`${idx + 1}-route-path`} />
             })}
+            {/* {FinalRoutes().map((res, idx) => {
+              return <Route path={res.path} element={res.element} key={`${idx + 1}-route-path`} />
+            })} */}
           </Routes>
         </Suspense>
       </AlertContext.Provider>

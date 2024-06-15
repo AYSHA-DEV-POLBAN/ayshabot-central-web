@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
-import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Stack, Switch, Typography } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import { useNavigate } from "react-router";
 import client from '../../Global/client';
@@ -9,6 +9,40 @@ import BreadCumbComp from '../../Component/DataBread';
 
 
 const Command = () => {
+
+  
+  const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [idHapus,setidHapus] = useState();
+  const [totalData, setTotalData] = useState();
+  const { setDataAlert } = useContext(AlertContext)
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [currentRow, setCurrentRow] = useState(null);
+  const [filter, setFilter] = useState({
+    page: 0,
+    size: 10,
+    sortName: 'commandName',
+    sortType: 'asc',
+    search: ''
+  })
+
+  
+  const dataBread = [
+    {
+      href: "/",
+      title: "Dashboard",
+      current: false,
+    },
+    {
+      href: "/command",
+      title: "Command",
+      current: false,
+    },
+  ];
+
+
   const columns = [
     {
       field: 'no',
@@ -32,40 +66,55 @@ const Command = () => {
       field: 'commandStatus',
       headerName: 'Status',
       flex: 1 ,
-      minWidth: 100
+      minWidth: 100,
+      renderCell: (data) => {
+        const isActive = data.row.commandStatus === 1;
+  
+        return (
+          <Stack direction="row" spacing={1} marginTop={2} alignItems="center">
+            <Switch
+              checked={isActive}
+              onChange={() => handleDialogOpen(data.row)}
+              inputProps={{ 'aria-label': 'information status toggle' }}
+            />
+          </Stack>
+        );
+      },
     },
   ];
 
-  const dataBread = [
-    {
-      href: "/",
-      title: "Dashboard",
-      current: false,
-    },
-    {
-      href: "/command",
-      title: "Command",
-      current: false,
-    },
-  ];
+  const handleDialogOpen = (row) => {
+    setCurrentRow(row);
+    setDialogOpen(true);
+  };
 
-  const [open, setOpen] = useState(false);
-  const [openAlert, setOpenAlert] = useState(false);
-  const navigate = useNavigate();
-  const [data, setData] = useState([
-    { id:1, no: 1, commandName: '/Dasada', commandResponse: 'UGD', commandStatus: 'active' },
-    { id:2, no: 2, commandName: '/raes', commandResponse: 'Poliklinik', commandStatus:'avtive' },
-  ]);
-  const [idHapus,setidHapus] = useState();
-  const [totalData, setTotalData] = useState();
-  const { setDataAlert } = useContext(AlertContext)
-  const [filter, setFilter] = useState({
-    page: 0,
-    size: 10,
-    sortName: 'commandName',
-    sortType: 'asc',
-    search: ''
-  })
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+    setCurrentRow(null);
+  };
+
+  const handleToggleStatus = async () => {
+    const isActive = currentRow.commandStatus === 1
+    const id = currentRow.id;
+    const endpoint = isActive
+      ? `/command/deactivate_command/${id}`
+      : `/command/activate_command/${id}`;
+    
+    try {
+      await client.requestAPI({ method: 'PUT', endpoint });
+      getData();
+      setDataAlert({
+        message: `Command ${isActive ? 'deactivated' : 'activated'} successfully`,
+        severity: 'success'
+      });
+    } catch (error) {
+      setDataAlert({
+        message: `Failed to ${isActive ? 'deactivate' : 'activate'} command`,
+        severity: 'error'
+      });
+    }
+    handleDialogClose();
+  };
 
   const handleClickOpen = async (id) => {
     //setId
@@ -82,6 +131,7 @@ const Command = () => {
       method: 'GET',
       endpoint: `/command/`
     })
+    console.log(res)
     rebuildData(res)
   }
 
@@ -131,9 +181,10 @@ const Command = () => {
     navigate("/command/detail");
   };
 
-  const handleEdit = async (id) => {
+  const handleEdit = async (id, isEdit) => {
     localStorage.setItem('id', id)
-    navigate("/command/edit");
+    isEdit=(true)
+    navigate("/command/create");
   };
   
   const handleClose = () => {
@@ -201,7 +252,28 @@ const Command = () => {
           <DialogActions className="dialog-delete-actions">
             <Button onClick={handleClose} variant='outlined' className="button-text">Cancel</Button>
             <Button onClick={() => deleteData(idHapus)} className='delete-button button-text'>Delete Data</Button>
-            {/* <Button onClick={() => onDelete(idHapus)} className='delete-button button-text'>Delete Data</Button> */}
+          </DialogActions>
+        </Dialog>
+
+        {/* dialog untuk ubah status */}
+        <Dialog
+          open={dialogOpen}
+          onClose={handleDialogClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          className="dialog-delete"
+        >
+          <DialogTitle id="alert-dialog-title" className='dialog-delete-header'>
+            {"Change Status"}
+          </DialogTitle>
+          <DialogContent className="dialog-delete-content">
+            <DialogContentText className='dialog-delete-text-content' id="alert-dialog-description">
+            Are you sure you want to {currentRow?.informationStatus === 1 ? 'deactivate' : 'activate'} this information?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions className="dialog-delete-actions">
+            <Button onClick={handleDialogClose} variant='outlined' className="button-text">Cancel</Button>
+            <Button onClick={handleToggleStatus} variant='saveButton' className="button-text">Confirm</Button>
           </DialogActions>
         </Dialog>
       </SideBar>

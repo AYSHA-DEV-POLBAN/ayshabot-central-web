@@ -1,21 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
-import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Stack, Switch, Typography } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
-import Header from '../../Component/Header';
 import { useNavigate } from "react-router";
 import client from '../../Global/client';
 import { AlertContext } from "../../Context";
 import BreadCumbComp from '../../Component/DataBread';
-import axios from 'axios';
 
 
 const User = () => {
   
-  const [data, setData] = useState([
-    // { id: 1, no: 1, name: 'John Doe', username: 'johndoe', email: 'john@example.com', password: '123456', userLevel: 'Admin', userStatus: 'active' },
-    // { id: 2, no: 2, name: 'Jane Smith', username: 'janesmith', email: 'jane@example.com', password: 'password', userLevel: 'Admin', userStatus: 'active' },
-  ]);
+  const [data, setData] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogVerifyOpen, setDialogVerifyOpen] = useState(false);
+  const [currentRow, setCurrentRow] = useState(null);
+  const [statusVerify, setStatusVerify] = useState(null);
   
   const columns = [
     {
@@ -45,28 +44,40 @@ const User = () => {
     {
       field: 'email_verify',
       headerName: 'Email Verify',
-      flex: 0.7 ,
-      minWidth: 150
+      flex: 1 ,
+      minWidth: 150,
+      renderCell: (data) => {
+        const isActive = data.row.email_verify === 1;
+  
+        return (
+          <Stack direction="row" spacing={1} marginTop={2} alignItems="center">
+            <Switch
+              checked={isActive}
+              onChange={() => handleDialogVerifyOpen(data.row)}
+              inputProps={{ 'aria-label': 'information status toggle' }}
+            />
+          </Stack>
+        );
+      },
     },
     {
       field: 'userStatus',
       headerName: 'Status',
-      flex: 0.3 ,
+      flex:1,
       minWidth: 100,
-      // renderCell: (data) => (
-      //   <Box
-      //     sx={{
-      //       backgroundColor: getStatusColor(data.userStatus),
-      //       color: getStatusFontColor(data.userStatus),
-      //       padding: '5px 10px',
-      //       gap: '10px',
-      //       borderRadius: '4px',
-      //       fontSize: '12px',
-      //     }}
-      //   >
-      //     {data.userStatus}
-      //   </Box>
-      // ),
+      renderCell: (data) => {
+        const isActive = data.row.userStatus === 1;
+  
+        return (
+          <Stack direction="row" spacing={1} marginTop={2} alignItems="center">
+            <Switch
+              checked={isActive}
+              onChange={() => handleDialogOpen(data.row)}
+              inputProps={{ 'aria-label': 'information status toggle' }}
+            />
+          </Stack>
+        );
+      },
     },
   ];
 
@@ -98,6 +109,74 @@ const User = () => {
   })
   
 
+  const handleDialogOpen = (row) => {
+    setCurrentRow(row);
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+    setCurrentRow(null);
+  };
+
+  const handleToggleStatus = async () => {
+    const isActive = currentRow.userStatus === 1
+    const id = currentRow.id;
+    const endpoint = isActive
+      ? `/users/deactivate_account_operator/${id}`
+      : `/users/activate_account_operator/${id}`;
+    
+      console.log(endpoint)
+    try {
+      await client.requestAPI({ method: 'PUT', endpoint });
+      getData();
+      setDataAlert({
+        message: `User ${isActive ? 'deactivated' : 'activated'} successfully`,
+        severity: 'success'
+      });
+    } catch (error) {
+      setDataAlert({
+        message: `Failed to ${isActive ? 'deactivate' : 'activate'} user`,
+        severity: 'error'
+      });
+    }
+    handleDialogClose();
+  };
+
+  const handleDialogVerifyOpen = (row) => {
+    setStatusVerify(row);
+    setDialogVerifyOpen(true);
+  };
+
+  const handleDialogVerifyClose = () => {
+    setDialogVerifyOpen(false);
+    setStatusVerify(null);
+  };
+
+  const handleToggleVerify = async () => {
+    const isActive = statusVerify.informationStatus === 1
+    const id = statusVerify.id;
+    const endpoint = isActive
+      ? `/users/deactivate_email_operator/${id}`
+      : `/users/activate_email_operator/${id}`;
+    
+    console.log("ferivy",endpoint)
+    try {
+      await client.requestAPI({ method: 'PUT', endpoint });
+      getData();
+      setDataAlert({
+        message: `Information ${isActive ? 'deactivated' : 'activated'} successfully`,
+        severity: 'success'
+      });
+    } catch (error) {
+      setDataAlert({
+        message: `Failed to ${isActive ? 'deactivate' : 'activate'} information`,
+        severity: 'error'
+      });
+    }
+    handleDialogVerifyClose();
+  };
+
   const handleClickOpen = async (id) => {
     setidHapus(id)
     setOpen(true)
@@ -113,17 +192,6 @@ const User = () => {
       endpoint: `/users/`,
     })
     rebuildData(res)
-    // try {
-    //   const res = await axios.get('http://localhost:8001/api/v1/users/', {
-    //     headers: {
-    //       'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlX2lkIjoxLCJuYW1lIjoic3VwZXJhZG1pbiIsImVtYWlsIjoic3VwZXJhZG1pbkBnbWFpbC5jb20ifSwiaWF0IjoxNzE3NzkxMjMzfQ.Bqd_22FjessNFIw3G9eVkQT3GmkwTUXo2FoElw9X_EM`
-    //     }
-    //   });
-    //   console.log(res.data);
-    //   rebuildData(res.data)
-    // } catch (error) {
-    //   console.error('There was an error!', error);
-    // }
   }
 
   const rebuildData = (resData) => {
@@ -152,31 +220,20 @@ const User = () => {
     })
     setOpenAlert(true);
     getData()
-    // if (!res.isError) {
-    //   setDataAlert({
-    //     severity: 'warning',
-    //     open: true,
-    //     message: res.meta.message
-    //   })
-    //   handleClose();
-    // } else {
-    //   setDataAlert({
-    //     severity: 'error',
-    //     message: res.error.detail,
-    //     open: true
-    //   })
-    // }
-
-    // try {
-    //   const res = await axios.delete(`/users/delete/${id}`)
-    //   console.log(res);
-    //   setOpenAlert(true);
-    //   getData()
-    //   // rebuildData(res.data)
-    // } catch (error) {
-    //   console.error('There was an error!', error);
-    // }
-
+    if (!res.isError) {
+      setDataAlert({
+        severity: 'warning',
+        open: true,
+        message: res.message
+      })
+      handleClose();
+    } else {
+      setDataAlert({
+        severity: 'error',
+        message: res.error.detail,
+        open: true
+      })
+    }
     handleClose();
   }
   
@@ -187,9 +244,10 @@ const User = () => {
     navigate("/user/detail");
   };
 
-  const handleEdit = async (id) => {
+  const handleEdit = async (id, isEdit) => {
     localStorage.setItem('id', id)
-    navigate("/user/edit");
+    isEdit=(true)
+    navigate("/user/create");
   };
 
   const handleClose = () => {
@@ -259,7 +317,50 @@ const User = () => {
           <DialogActions className="dialog-delete-actions">
             <Button onClick={handleClose} variant='outlined' className="button-text">Cancel</Button>
             <Button onClick={() => deleteData(idHapus)} className='delete-button button-text'>Delete Data</Button>
-            {/* <Button onClick={() => onDelete(idHapus)} className='delete-button button-text'>Delete Data</Button> */}
+          </DialogActions>
+        </Dialog>
+
+        {/* dialog untuk ubah status */}
+        <Dialog
+          open={dialogOpen}
+          onClose={handleDialogClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          className="dialog-delete"
+        >
+          <DialogTitle id="alert-dialog-title" className='dialog-delete-header'>
+            {"Change Status"}
+          </DialogTitle>
+          <DialogContent className="dialog-delete-content">
+            <DialogContentText className='dialog-delete-text-content' id="alert-dialog-description">
+            Are you sure you want to {currentRow?.userStatus === 1 ? 'deactivate' : 'activate'} this information?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions className="dialog-delete-actions">
+            <Button onClick={handleDialogClose} variant='outlined' className="button-text">Cancel</Button>
+            <Button onClick={handleToggleStatus} variant='saveButton' className="button-text">Confirm</Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* dialog untuk verify email */}
+        <Dialog
+          open={dialogVerifyOpen}
+          onClose={handleDialogVerifyClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          className="dialog-delete"
+        >
+          <DialogTitle id="alert-dialog-title" className='dialog-delete-header'>
+            {"Change Status Verify"}
+          </DialogTitle>
+          <DialogContent className="dialog-delete-content">
+            <DialogContentText className='dialog-delete-text-content' id="alert-dialog-description">
+            Are you sure you want to {statusVerify?.email_verify === 1 ? 'deactivate' : 'activate'} this information?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions className="dialog-delete-actions">
+            <Button onClick={handleDialogVerifyClose} variant='outlined' className="button-text">Cancel</Button>
+            <Button onClick={handleToggleVerify} variant='saveButton' className="button-text">Confirm</Button>
           </DialogActions>
         </Dialog>
       </SideBar>

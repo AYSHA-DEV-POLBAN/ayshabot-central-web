@@ -1,6 +1,6 @@
-// import * as yup from "yup";
+import * as yup from "yup";
 import { useForm } from "react-hook-form";
-// import { yupResolver } from "@hookform/resolvers/yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   IconButton,
   Button,
@@ -21,88 +21,76 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import client from "../../Global/client";
 import { useNavigate } from 'react-router';
 import axios from "axios";
-// import { AlertContext } from '../../context';
+import { AlertContext } from "../../Context";
 // import CustomAlert from "../../Component/Alert";
 
 const Login = ({ changeStat }) => {
   const navigate = useNavigate()
-//   const { setDataAlert } = useContext(AlertContext)
+  const { setDataAlert } = useContext(AlertContext)
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show); 
 
   const [isLoading, setIsLoading] = React.useState(false);
 
-//   const validationSchema = yup.object().shape({
-//     email: yup.string().required("Please input your email").email("Invalid email address"),
-//     password: yup
-//       .string()
-//       .required("Please input your password")
-//       .min(8, "Password must be at least 8 characters")
-//       .max(16, "Password must not exceed 16 characters")
-//       .matches(
-//         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?& #^_\-+=()<>,./|\[\]{}~])[A-Za-z\d@$!%*?& #^_\-+=()<>,./|\[\]{}~]*$/,
-//         "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-//       ),
-//   });
+  const validationSchema = yup.object().shape({
+    email: yup.string().required("Please input your email").email("Invalid email address"),
+    // password: yup
+    //   .integer()
+    //   .required("Please input your password")
+    //   .min(8, "Password must be at least 8 characters")
+    //   .max(16, "Password must not exceed 16 characters")
+    //   .matches(
+    //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?& #^_\-+=()<>,./|\[\]{}~])[A-Za-z\d@$!%*?& #^_\-+=()<>,./|\[\]{}~]*$/,
+    //     "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+    //   ),
+  });
 
   const { handleSubmit, formState: { errors }, register } = useForm({
-    // resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema),
   });
 
 
   const handleLogin = async (data) => {
     setIsLoading(true)
+    console.log('ini data', data)
     // const res = await client.requestAPI({
-    // const res = await axios({
-    //   url: 'http://localhost:8001/api',
     //   method: 'POST',
     //   endpoint: `/auth/signin`,
     //   data,
     //   isLogin: true
     // })    
     // console.log(res)
-    // if (!res.isError) {      
-      // localStorage.setItem('privilage', JSON.stringify(res.listPrivilege))
-      // localStorage.setItem('token', res.token)
-      // localStorage.setItem('refreshtoken', res.refreshToken)
-      // localStorage.setItem('roles', JSON.stringify(res.listRole))
-      // localStorage.setItem("userId", res.userId)      
-      // localStorage.setItem("employeeName", res.employeeName)
-      // localStorage.setItem("position", res.position)
-      // localStorage.setItem("rememberMe", rememberMe)
-      // setDataAlert({
-      //   severity: 'success',
-      //   open: true,
-      //   message: "Login successful!"
-      // })
-      // const currentUserId = localStorage.getItem("id");
-      // // const resUser = await client.requestAPI({
-      // const resUser = await axios({
-      //   url: 'http://localhost:8001/api',
-      //   method: "GET",
-      //   endpoint: `/users/${currentUserId}`,
-      // });
-      // if (!resUser.isError) {
-        // localStorage.setItem("photoProfile", resUser.data.attributes.photoProfile);
-      // }
-      navigate('/dashboard')
-      // setIsLoading(false);
+    // if (!res.isError) {
+    //   localStorage.setItem('token', res.token)
+    //   // localStorage.setItem("userId", res.userId)      
+    //   // localStorage.setItem("employeeName", res.employeeName)
+    //   // localStorage.setItem("position", res.position)
+    //   // localStorage.setItem("rememberMe", rememberMe)
+    //   setDataAlert({
+    //     severity: 'success',
+    //     open: true,
+    //     message: "Login successful!"
+    //   })
+    //   // const currentUserId = localStorage.getItem("id");
+    //   // const resUser = await client.requestAPI({
+    //   //   method: "GET",
+    //   //   endpoint: `/users/get_user_by_id/${currentUserId}`,
+    //   // });
+    //   // console.log("data user",resUser)
+    //   // if (!resUser.isError) {
+    //   //   localStorage.setItem("name", resUser.name);
+    //   // }
+    //   navigate('/dashboard')
+    //   setIsLoading(false);
     // }else{
-      // setDataAlert({
-      //   severity: 'error',
-      //   open: true,
-      //   message: res.error.meta.message
-      // })   
-      // setIsLoading(false);    
+    //   setDataAlert({
+    //     severity: 'error',
+    //     open: true,
+    //     message: res.error.message
+    //   })   
+    //   setIsLoading(false);    
     // }   
     navigate('/dashboard')
-  };
-
-  const [rememberMe, setRememberMe] = useState(false);
-
-  const handleRememberMe = (event) => {
-    const checked = event.target.checked;
-    setRememberMe(checked);
   };
 
 

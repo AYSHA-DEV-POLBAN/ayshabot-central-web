@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import Grid from "@mui/material/Grid";
 import SideBar from '../../../Component/Sidebar';
 import Breadcrumbs from "../../../Component/DataBread";
-import Header from '../../../Component/Header'
 import { Dialog, Button, DialogTitle, DialogContent, DialogContentText, DialogActions, IconButton } from '@mui/material';
 import '../../../App.css'
 import { useNavigate } from 'react-router';
@@ -11,8 +10,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import FormInputText from '../../../Component/FormInputText';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import client from '../../../Global/client';
 // import schemacompany from '../shema';
-// import client from '../../../global/client';
 // import uploadFile from '../../../global/uploadFile';
 import { AlertContext } from '../../../Context';
 
@@ -157,7 +156,7 @@ const CreateInfomasi = () => {
         <Grid container>
           <Grid item xs={12}>
             <FormProvider {...methods}>
-              {/* <form onSubmit={methods.handleSubmit(confirmSave)}> */}
+              <form onSubmit={methods.handleSubmit(confirmSave)}>
                 <div className='card-container'>
                     <Grid 
                       item 
@@ -254,7 +253,7 @@ const CreateInfomasi = () => {
                 </Grid>
               </Grid>
                 </div>
-              {/* </form> */}
+              </form>
             </FormProvider>
           </Grid>
         </Grid>
