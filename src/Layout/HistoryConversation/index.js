@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
-import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box, Grid } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import { useNavigate } from "react-router";
 import client from '../../Global/client';
@@ -58,10 +58,7 @@ const HistoryConversation = () => {
   const [open, setOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const navigate = useNavigate();
-  const [data, setData] = useState([
-    // { id:1, no: 1, phoneNumber: 'Fasilitas', question: 'UGD', answer: 'abcd.pdf', bill: 'active' },
-    // { id:2, no: 2, phoneNumber: 'Fasilitas', question: 'Poliklinik', answer: 'abds.pdf', bill: 'active' },
-  ]);
+  const [data, setData] = useState([]);
   const [idHapus,setidHapus] = useState();
   const [totalData, setTotalData] = useState();
   const { setDataAlert } = useContext(AlertContext)
@@ -72,12 +69,6 @@ const HistoryConversation = () => {
     sortType: 'asc',
     search: ''
   })
-
-  const handleClickOpen = async (id) => {
-    //setId
-    setidHapus(id)
-    setOpen(true)
-  };
 
   useEffect(() => {
     getData()
@@ -104,19 +95,38 @@ const HistoryConversation = () => {
         bill: value.bill,
       }
     })    
+
+    if (filter.sortName && filter.sortType) {
+      temp.sort((a, b) => {
+        const valueA = (typeof a[filter.sortName] === 'string') ? a[filter.sortName].toLowerCase() : '';
+        const valueB = (typeof b[filter.sortName] === 'string') ? b[filter.sortName].toLowerCase() : '';
+        if (filter.sortType === 'asc') {
+          return valueA > valueB ? 1 : -1;
+        } else {
+          return valueA < valueB ? 1 : -1;
+        }
+      });
+    }
+
+    if (filter.search) {
+      temp = temp.filter(item =>
+        // item.phoneNumber.toLowerCase().includes(filter.search.toLowerCase()) ||
+        // item.question.toLowerCase().includes(filter.search.toLowerCase()) ||
+        item.answer.toLowerCase().includes(filter.search.toLowerCase()) ||
+        item.bill.toLowerCase().includes(filter.search.toLowerCase())
+      );
+    }
+
     setData([...temp])
-    // setTotalData(resData.meta.page.totalElements)
+    setTotalData(resData.data.length)
   }
   
 
   const handleDetail = async (id) => {
-    // localStorage.setItem('idBacklog', id)
-    navigate("/command/detail");
+    localStorage.setItem('id', id)
+    navigate("/history_conversation/detail");
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
 
 
   const handleChangeSearch = (event) => {
@@ -132,7 +142,7 @@ const HistoryConversation = () => {
     setFilter({
       page: dataFilter.page,
       size: dataFilter.pageSize,
-      sortName: dataFilter.sorting.field !== '' ? dataFilter.sorting[0].field : 'commandName',
+      sortName: dataFilter.sorting.field !== '' ? dataFilter.sorting[0].field : 'question',
       sortType: dataFilter.sorting.sort !== '' ? dataFilter.sorting[0].sort : 'asc',
       search: filter.search
     })
@@ -141,19 +151,22 @@ const HistoryConversation = () => {
   return (
     <div>
       <SideBar title='History Conversation' >
-      <BreadCumbComp breadcrumbs={dataBread} />
-        <DataTable
-          title='History Conversation'
-          data={data}
-          columns={columns}
-          placeSearch="Command Name, Status, etc"
-          searchTitle="Search By"
-          onFilter={(dataFilter => onFilter(dataFilter))}
-          handleChangeSearch={handleChangeSearch}
-          onDetail={(id) => handleDetail(id)}
-          totalData={totalData}
-          getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
-        />
+        <Grid style={{marginTop:'20px', marginLeft:'10px'}}>
+          <BreadCumbComp breadcrumbs={dataBread} />
+            <DataTable
+              title='History Conversation'
+              data={data}
+              columns={columns}
+              placeSearch="Command Name, Status, etc"
+              searchTitle="Search By"
+              onFilter={(dataFilter => onFilter(dataFilter))}
+              handleChangeSearch={handleChangeSearch}
+              onDetail={(id) => handleDetail(id)}
+              totalData={totalData}
+              getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
+              hideAddButton={true}
+            />
+          </Grid>
       </SideBar>
     </div>
   )

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
-import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Stack, Switch, Typography } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Stack, Switch, Grid } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import { useNavigate } from "react-router";
 import client from '../../Global/client';
@@ -149,6 +149,7 @@ const Command = () => {
     })    
     setData([...temp])
     // setTotalData(resData.meta.page.totalElements)
+    setTotalData(resData.data.length)
   }
   
   const deleteData = async (id) => {
@@ -177,14 +178,14 @@ const Command = () => {
   
 
   const handleDetail = async (id) => {
-    // localStorage.setItem('idBacklog', id)
+    localStorage.setItem('id', id)
     navigate("/command/detail");
   };
 
   const handleEdit = async (id, isEdit) => {
     localStorage.setItem('id', id)
     isEdit=(true)
-    navigate("/command/create");
+    navigate("/command/edit");
   };
   
   const handleClose = () => {
@@ -218,22 +219,24 @@ const Command = () => {
   return (
     <div>
       <SideBar title='Command' >
-      <BreadCumbComp breadcrumbs={dataBread} />
-        <DataTable
-          title='Command'
-          data={data}
-          columns={columns}
-          placeSearch="Command Name, Status, etc"
-          searchTitle="Search By"
-          onAdd={() => onAdd()}
-          onFilter={(dataFilter => onFilter(dataFilter))}
-          handleChangeSearch={handleChangeSearch}
-          onDetail={(id) => handleDetail(id)}
-          onEdit={(id) => handleEdit(id)}
-          onDelete={(id) => handleClickOpen(id)}
-          totalData={totalData}
-          getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
-        />
+        <Grid style={{marginTop:'20px', marginLeft:'10px'}}>
+          <BreadCumbComp breadcrumbs={dataBread} />
+            <DataTable
+              title='Command'
+              data={data}
+              columns={columns}
+              placeSearch="Command Name, Status, etc"
+              searchTitle="Search By"
+              onAdd={() => onAdd()}
+              onFilter={(dataFilter => onFilter(dataFilter))}
+              handleChangeSearch={handleChangeSearch}
+              onDetail={(id) => handleDetail(id)}
+              onEdit={(id) => handleEdit(id)}
+              onDelete={(id) => handleClickOpen(id)}
+              totalData={totalData}
+              getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
+            />
+        </Grid>
         <Dialog
           open={open}
           onClose={handleClose}
@@ -268,7 +271,7 @@ const Command = () => {
           </DialogTitle>
           <DialogContent className="dialog-delete-content">
             <DialogContentText className='dialog-delete-text-content' id="alert-dialog-description">
-            Are you sure you want to {currentRow?.informationStatus === 1 ? 'deactivate' : 'activate'} this information?
+            Are you sure you want to {currentRow?.informationStatus === 1 ? 'deactivate' : 'activate'} this command?
             </DialogContentText>
           </DialogContent>
           <DialogActions className="dialog-delete-actions">

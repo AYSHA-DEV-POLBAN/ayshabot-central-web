@@ -1,33 +1,6 @@
 import axios from "axios";
-// // // import { useAuth } from "react-oidc-context";
-// // // import useasuth
 
 const instance = axios.create();
-// // URL= 
-// // // const auth = useAuth()
-
-// // const refreshToken = async (Token) => {
-// //   try {    
-// //     const host = process.env.REACT_APP_BASE_API;
-// //     const refreshTokenEndpoint = `${host}/auth/signin`;
-// //     const response = await axios.post(refreshTokenEndpoint); 
-// //     // const refreshTokenEndpoint = `${host}/auth/refreshToken`;
-// //     // const response = await axios.post(refreshTokenEndpoint, {
-// //     //   refreshToken: Token,
-// //     // }); 
-// //     if (response.status === 200) {
-// //       window.location.reload();
-// //       localStorage.setItem('token', response.data.token);
-// //     //   localStorage.setItem('refreshtoken', response.data.refreshToken);      
-// //       return true;
-// //     }
-// //   } catch (error) {
-// //     console.error("Token Refresh Error: ", error.message);
-// //     localStorage.clear();
-// //     return false;
-// //   }
-// // };
-
 
 export const clientState = {
   requesting: false,
@@ -47,11 +20,9 @@ const requestAPI = async ({
   isLogin = false,
 }) => {
   let result = {};
-//   const host = process.env.REACT_APP_BASE_API;
   const url = `http://localhost:8001/api/v1${endpoint}`;
   const timeout = process.env.REACT_APP_DEFAULT_TIMEOUT;
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJyb2xlX2lkIjoxLCJuYW1lIjoic3VwZXJhZG1pbiIsImVtYWlsIjoic3VwZXJhZG1pbkBnbWFpbC5jb20ifSwiaWF0IjoxNzE4MjU2Mzk0fQ.yaBanl3bCUcB7ZO9w5tW9_xXHHx8dy4GzgCDJCzPoOY"
-  // const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   console.log('token', token)
 
   let optHeaders = {
@@ -64,7 +35,6 @@ const requestAPI = async ({
   if (!isLogin) optHeaders = { ...optHeaders, Authorization: `Bearer ${token}` };
 
   const reqConfig = { url, method, timeout, headers: optHeaders, data };
-  console.log(reqConfig)
   if (!endpoint) throw new Error("Parameter url diperlukan");
   
   clientState.requesting = true;
@@ -93,12 +63,6 @@ const requestAPI = async ({
     if (error.response.status === 401) {
       if (!clientState.refreshingToken) { 
         clientState.refreshingToken = true;
-        // const refreshTokennya = localStorage.getItem("refreshtoken");
-        // const refreshTokenSuccess = await refreshToken(refreshTokennya);
-        // clientState.refreshingToken = false;
-        // if (refreshTokenSuccess) {
-        //   return await requestAPI({ method, endpoint, data, headers }); 
-        // }
       }
     }
     

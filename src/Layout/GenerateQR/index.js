@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
-import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box, Grid } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import Header from '../../Component/Header';
 import Rating from '@mui/material/Rating';
@@ -75,7 +75,9 @@ const GenerateQR = () => {
   return (
     <div>
       <SideBar title='Generate QR' >
-      <BreadCumbComp breadcrumbs={dataBread} />
+        <Grid container style={{marginTop: '20px', marginLeft: '10px'}}>
+          <BreadCumbComp breadcrumbs={dataBread} />
+        </Grid>
         <Dialog
           open={open}
           onClose={handleClose}

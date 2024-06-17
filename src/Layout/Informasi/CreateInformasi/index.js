@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Grid from "@mui/material/Grid";
 import SideBar from '../../../Component/Sidebar';
 import Breadcrumbs from "../../../Component/DataBread";
@@ -23,6 +23,8 @@ const CreateInfomasi = () => {
   const { setDataAlert } = useContext(AlertContext)
   const [file, setFile] = useState('')
   const [filePath, setFilePath] = useState('')
+  const [document, setDocument] = useState('')
+  const [optCategory, setOptCategory] = useState([])
   const dataBread = [
     {
       href: "/",
@@ -41,12 +43,6 @@ const CreateInfomasi = () => {
     },
   ];
 
-
-  const optCategory = [
-    {label: 'Poliklinik'},
-    {label: 'Rawat Inap'}
-  ]
-
   const cancelData = () => {
     setIsSave(false)
     setOpen(true)
@@ -61,11 +57,16 @@ const CreateInfomasi = () => {
   const methods = useForm({
     // resolver: yupResolver(schemacompany),
     defaultValues: {
-      informationName: '',
-      desc: '',
-      informationStatus: '',
+      document: '',
+      title_information: '',
+      category_information_id: '',
+      description_information: ''
     }
   })
+
+  useEffect(() => {
+    getCategory()
+  }, []);
 
   const handleClose = () => {
     if (!isSave) {
@@ -73,81 +74,70 @@ const CreateInfomasi = () => {
     }
     setOpen(false)
   }
+
+  const getCategory = async () => {
+    const res = await client.requestAPI({
+      method: 'GET',
+      endpoint: '/category-information/',  
+    })
+    const data = res.data.map(item => ({id : item.id, name: item.name_category_information}));    
+
+    setOptCategory(data)
+  }
+
   const onSave = async () => {
     if(!isSave){
       setOpen(false)
     } else{
-    //   if(filePath >= MAX_SIZE_FILE){
+      if(file && file.size >= MAX_SIZE_FILE){
         
-    //     setDataAlert({
-    //       severity: 'error',
-    //       message: 'Max Image Size is 3 MB',
-    //       open: true
-    //     })
-    //   }
-    //   else{
-    //     const data = {
-    //       ...sendData,
-    //       companyProfile: filePath,
-    //       createdBy: parseInt(localStorage.getItem('userId')),
-    //       lastModifiedBy: parseInt(localStorage.getItem('userId'))
-    //     }
-    //     const res = await client.requestAPI({
-    //       method: 'POST',
-    //       endpoint: '/company/addCompany',
-    //       data
-    //     })
-    //     if (!res.isError) {
-    //       setDataAlert({
-    //         severity: 'success',
-    //         open: true,
-    //         message: res.data.meta.message
-    //       })
-    //       setTimeout(() => {
-    //         navigate('/master-company')
-    //       }, 3000)
-    //     } else {
-    //       setDataAlert({
-    //         severity: 'error',
-    //         message: res.error.detail,
-    //         open: true
-    //       })
-    //     }
+        setDataAlert({
+          severity: 'error',
+          message: 'Max Image Size is 3 MB',
+          open: true
+        })
+      }
+      else{
+        const data = {
+          ...sendData,
+          document: document
+        }
+
+
+        console.log("cek data", data)
+        const res = await client.requestAPI({
+          method: 'POST',
+          endpoint: '/information/create_with_upload_file',
+          data,
+        })
+        console.log("coba create", res)
+        if (!res.isError) {
+          setDataAlert({
+            severity: 'success',
+            open: true,
+            message: res.data.meta.message
+          })
+          setTimeout(() => {
+            navigate('/information')
+          }, 3000)
+        } else {
+          setDataAlert({
+            severity: 'error',
+            message: res.error.detail,
+            open: true
+          })
+        }
         setOpen(false)
-    //   }
+      }
     }
   }
 
-  // const MAX_SIZE_FILE = 3145728;
-  // const handleChange = async (e) => {
-  //   if (e.target.files.length > 0) {
-  //     const uploadedFile = e.target.files[0];
-  //     if (uploadedFile.size <= MAX_SIZE_FILE) {
-  //       if (
-  //         uploadedFile.type === "file/pdf"
-  //       ) {
-  //         const tempFilePath = await uploadFile(uploadedFile, 'company');
-  //         setFilePath(tempFilePath);
-  //         setFile(URL.createObjectURL(uploadedFile));
-  //       } else {
-  //         console.error("Tipe file tidak valid.");
-  //         setDataAlert({
-  //           severity: 'error',
-  //           message: "Invalid type file",
-  //           open: true
-  //         })
-  //       }
-  //     } else {
-  //       console.error("File terlalu besar.");
-  //       setDataAlert({
-  //         severity: 'error',
-  //         message: "Company Image can't more than 3MB",
-  //         open: true
-  //       })
-  //     }
-  //   }
-  // }
-
+  const MAX_SIZE_FILE = 3145728;
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setDocument(file);
+    setFilePath(file.name)
+  };
 
   return (
     <div>
@@ -171,21 +161,14 @@ const CreateInfomasi = () => {
                           type="file"
                           accept=".pdf"
                           className="custom-file-input"
-                          name='file'
-                          // onChange={handleChange}
+                          name='document'
+                          onChange={handleFileChange}
                         />
-                        {/* {file !== '' ?
-                        <IconButton
-                          onClick={clearPhoto}>
-                          <ClearOutlinedIcon  item xs={2} className='button-clear'
-                          />
-                        </IconButton>
-                        : ''} */}
                       </Grid>
                       <Grid item xs={12} sm={12}>
                         <FormInputText
                           focused
-                          name='informationName'
+                          name='title_information'
                           className='input-field-crud'
                           placeholder='e.g Fasilitas Poliklinik'
                           label='Information Name *'
@@ -194,34 +177,31 @@ const CreateInfomasi = () => {
                           }}
                         />
                       </Grid>
-                      <Grid item xs={12} sm={12}>  
-                        <Autocomplete                    
-                            disablePortal
-                            id="combo-box-demo"
-                            name="categoryName"
-                            options={optCategory}
-                            sx={{ width: "100%", marginTop: "8px" }}
-                            // value={selectedRole}
-                            // getOptionLabel={(option) => option.name}
-                            // onChange={(event, newValue) => setSelectedRoles(newValue)}
-                            // isOptionEqualToValue={(option, value) => option.value === value.value}
-                            renderInput={(params) => (
-                              <TextField 
-                              {...params} 
-                              InputLabelProps={{ shrink: true }}   
-                              label="Category Information *" 
-                              placeholder="Select Category" 
-                              // {...register('role')}
-                              // error={errors.role !== undefined}
-                              // helperText={errors.role ? errors.role.message : ''}
-                              />
-                            )}
-                          />      
+                      <Grid item xs={12} sm={12}>
+                        <Autocomplete
+                          disablePortal
+                          id="combo-box-demo"
+                          name="category_information_id"
+                          options={optCategory}
+                          sx={{ width: "100%", marginTop: "8px" }}
+                          onChange={(event, newValue) => methods.setValue('category_information_id', newValue ? newValue.id : null)}
+                          getOptionLabel={(option) => option.name} // Menampilkan nama kategori
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              InputLabelProps={{ shrink: true }}
+                              label="Category Information *"
+                              placeholder="Select Category"
+                              error={methods.formState.errors.category_information_id !== undefined}
+                              helperText={methods.formState.errors.category_information_id ? 'Category is required' : ''}
+                            />
+                          )}
+                        />
                       </Grid>
                       <Grid item xs={12} sm={12}>
                         <FormInputText
                           focused
-                          name='desc'
+                          name='description_information'
                           className='input-field-crud'
                           placeholder='e.g Ini adalah fasilitas poliklinik'
                           label='Description*'

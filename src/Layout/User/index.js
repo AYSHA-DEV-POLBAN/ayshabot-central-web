@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
-import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Stack, Switch, Typography } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Stack, Switch, Grid } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import { useNavigate } from "react-router";
 import client from '../../Global/client';
@@ -154,7 +154,7 @@ const User = () => {
   };
 
   const handleToggleVerify = async () => {
-    const isActive = statusVerify.informationStatus === 1
+    const isActive = statusVerify.email_verify === 1
     const id = statusVerify.id;
     const endpoint = isActive
       ? `/users/deactivate_email_operator/${id}`
@@ -165,12 +165,12 @@ const User = () => {
       await client.requestAPI({ method: 'PUT', endpoint });
       getData();
       setDataAlert({
-        message: `Information ${isActive ? 'deactivated' : 'activated'} successfully`,
+        message: `Email ${isActive ? 'deactivated' : 'activated'} successfully`,
         severity: 'success'
       });
     } catch (error) {
       setDataAlert({
-        message: `Failed to ${isActive ? 'deactivate' : 'activate'} information`,
+        message: `Failed to ${isActive ? 'deactivate' : 'activate'} email`,
         severity: 'error'
       });
     }
@@ -246,8 +246,8 @@ const User = () => {
 
   const handleEdit = async (id, isEdit) => {
     localStorage.setItem('id', id)
-    isEdit=(true)
-    navigate("/user/create");
+    // isEdit=(true)
+    navigate("/user/edit");
   };
 
   const handleClose = () => {
@@ -283,22 +283,24 @@ const User = () => {
   return (
     <div>
       <SideBar title='User' >
-      <BreadCumbComp breadcrumbs={dataBread} />
-        <DataTable
-          title='User'
-          data={data}
-          columns={columns}
-          placeSearch="Name, Username, Status, etc"
-          searchTitle="Search By"
-          onAdd={() => onAdd()}
-          onFilter={(dataFilter => onFilter(dataFilter))}
-          handleChangeSearch={handleChangeSearch}
-          onDetail={(id) => handleDetail(id)}
-          onEdit={(id) => handleEdit(id)}
-          onDelete={(id) => handleClickOpen(id)}
-          totalData={totalData}
-          getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
-        />
+        <Grid style={{marginTop:'20px', marginLeft:'10px'}}>
+          <BreadCumbComp breadcrumbs={dataBread} />
+            <DataTable
+              title='User'
+              data={data}
+              columns={columns}
+              placeSearch="Name, Username, Status, etc"
+              searchTitle="Search By"
+              onAdd={() => onAdd()}
+              onFilter={(dataFilter => onFilter(dataFilter))}
+              handleChangeSearch={handleChangeSearch}
+              onDetail={(id) => handleDetail(id)}
+              onEdit={(id) => handleEdit(id)}
+              onDelete={(id) => handleClickOpen(id)}
+              totalData={totalData}
+              getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
+            />
+          </Grid>
         <Dialog
           open={open}
           onClose={handleClose}
@@ -333,7 +335,7 @@ const User = () => {
           </DialogTitle>
           <DialogContent className="dialog-delete-content">
             <DialogContentText className='dialog-delete-text-content' id="alert-dialog-description">
-            Are you sure you want to {currentRow?.userStatus === 1 ? 'deactivate' : 'activate'} this information?
+            Are you sure you want to {currentRow?.userStatus === 1 ? 'deactivate' : 'activate'} this status?
             </DialogContentText>
           </DialogContent>
           <DialogActions className="dialog-delete-actions">
@@ -355,7 +357,7 @@ const User = () => {
           </DialogTitle>
           <DialogContent className="dialog-delete-content">
             <DialogContentText className='dialog-delete-text-content' id="alert-dialog-description">
-            Are you sure you want to {statusVerify?.email_verify === 1 ? 'deactivate' : 'activate'} this information?
+            Are you sure you want to {statusVerify?.email_verify === 1 ? 'deactivate' : 'activate'} this email?
             </DialogContentText>
           </DialogContent>
           <DialogActions className="dialog-delete-actions">

@@ -5,7 +5,7 @@ import Logout from '@mui/icons-material/Logout';
 import Grid from "@mui/material/Grid";
 import { useNavigate } from 'react-router';
 import '../../App.css'
-
+import LockResetOutlinedIcon from '@mui/icons-material/LockResetOutlined';
 
 const Header = ({ title, open }) => { // Terima prop
   const name = localStorage.getItem("name");
@@ -25,32 +25,24 @@ const Header = ({ title, open }) => { // Terima prop
   };
 
   return (
-    <Grid container rowSpacing={5} columnSpacing={3} sx={{ position: 'sticky', top: 0, zIndex: 1100, width: '103.95%', height: '70px', backgroundColor: '#146C94', display: 'flex' }}>
-      <Grid item xs={10.5}>
+    <Grid container rowSpacing={5} columnSpacing={2.5} sx={{ position: 'sticky', top: 0, zIndex: 1100, width: '103.95%', height: '70px', backgroundColor: '#146C94', alignItems: 'center', padding: '0 16px' }}>
+      <Grid item xs={11} display={'flex'} alignItems="center">
         <Grid container className="containerHeader">
-          <Grid item xs={12} sx={{marginLeft: `${open ? 0 : 0}px`, transition: 'margin-left 0.3s ease, width 0.3s ease'}}>
-            <Hidden mdDown>
-              <Typography variant="headerCardMenu" padding={1}>
+          <Grid item xs={12} sx={{marginLeft: `${open ? 0 : -15}px`, transition: 'margin-left 0.3s ease, width 0.3s ease', padding: '0 0', marginTop: '-30px'}}>
+              <Typography variant="headerCardMenu" padding={1} sx={{ paddingBottom: '0', marginTop: '-30px' }}>
                 {`${title}`}
               </Typography>
-            </Hidden>
-
-            <Hidden mdUp>
-              <Typography variant="body2" padding={1} marginTop={1}>
-                {`${title}`}
-              </Typography>
-            </Hidden>
           </Grid>
         </Grid>
       </Grid>
       
-      <Grid item xs={1.5}>
-        <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+      <Grid item xs={1} display="flex" justifyContent="flex-start" alignItems="center" sx={{ padding: '0 0', marginTop: '-20px' }}>
+        {/* <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}> */}
           <Tooltip title="Account settings">
             <IconButton
               onClick={handleClick}
               size="small"
-              sx={{ ml: 2 }}
+              sx={{ ml: 2, padding: '0', marginTop: '-20px' }}
               aria-controls={openMenu ? 'account-menu' : undefined}
               aria-haspopup="true"
               aria-expanded={openMenu ? 'true' : undefined}
@@ -59,7 +51,7 @@ const Header = ({ title, open }) => { // Terima prop
               {/* <Typography>dada</Typography> */}
             </IconButton>
           </Tooltip>
-        </Box>
+        {/* </Box> */}
 
         <Menu
           anchorEl={anchorEl}
@@ -74,12 +66,12 @@ const Header = ({ title, open }) => { // Terima prop
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
           <MenuItem>
-            <Avatar /> NAMA USER
+            <Avatar /> {name}
           </MenuItem>
           <Divider />
           <MenuItem onClick={handleClose}>
             <ListItemIcon>
-              <PersonAdd fontSize="small" />
+              <LockResetOutlinedIcon fontSize="small" />
             </ListItemIcon>
             Change Password
           </MenuItem>

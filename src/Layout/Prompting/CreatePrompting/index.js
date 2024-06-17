@@ -15,7 +15,7 @@ import { AlertContext } from '../../../Context';
 
 import axios from "axios";
 
-const CreatePrompting = (isEdit) => {
+const CreatePrompting = () => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [sendData, setData] = useState({})
@@ -35,7 +35,7 @@ const CreatePrompting = (isEdit) => {
     },
     {
       href: "/command/create",
-      title: isEdit ? "Edit Command" : "Create New Command",
+      title: "Create New Command",
       current: true,
     },
   ];
@@ -105,112 +105,12 @@ const CreatePrompting = (isEdit) => {
     }
   }
 
-  const onSaveEdit = async () => {
-    if(!isSave){
-      setOpen(false)
-    } else{
-        const data = {
-          ...sendData
-        }
-        console.log(data)
-
-        const id = localStorage.getItem("id")
-        const res = await client.requestAPI({
-          method: 'PUT',
-          endpoint: `/command/edit/${id}`,
-          data
-        })
-        console.log(res)
-
-        
-        if (!res.isError) {
-          setDataAlert({
-            severity: 'success',
-            open: true,
-            message: res.message
-          })
-          setTimeout(() => {
-            navigate('/command')
-          }, 3000)
-        } else {
-          setDataAlert({
-            severity: 'error',
-            message: res.error.detail,
-            open: true
-          })
-        }
-        setOpen(false)
-    }
-  }
-
   return (
     <div>
       <SideBar title='Command' >
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           <Grid item xs={12}>
-            {isEdit ? (
-            <FormProvider {...methods}>
-              <form onSubmit={methods.handleSubmit(confirmSave)}>
-                <div className='card-container'>
-                    <Grid 
-                      item 
-                      container 
-                      columnSpacing={3.79}
-                      rowSpacing={3.79}
-                      xs={12}
-                    >
-                        <Grid item xs={12} sm={12}>
-                        <FormInputText
-                          focused
-                          name='name_command'
-                          className='input-field-crud'
-                          placeholder='e.g Cek Dokter'
-                          label='Command Name *'
-                          inputProps={{
-                            maxLength: 50,
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={12}>
-                        <FormInputText
-                          focused
-                          name='response_command'
-                          className='input-field-crud'
-                          placeholder='e.g Jadwal Dokter Hari Ini'
-                          label='Response Command*'
-                          inputProps={{
-                            maxLength: 100,
-                          }}
-                        />
-                      </Grid>
-                    </Grid>
-                    
-                <Grid container spacing={2} justifyContent="flex-end" mt={3.5}>
-                <Grid item xs={12} sm={2} textAlign="right">
-                  <Button
-                    fullWidth
-                    variant="cancelButton"
-                    onClick={() => cancelData()}
-                  >
-                    Cancel Data
-                  </Button>
-                </Grid>
-                <Grid item xs={12} sm={2} textAlign="right">
-                  <Button 
-                    fullWidth
-                    variant="saveButton"
-                    type="submit"
-                    // onClick={() => confirmSave()}
-                  >
-                    Save Data
-                  </Button>
-                </Grid>
-              </Grid>
-                </div>
-              </form>
-            </FormProvider>
-            ) : (
               <FormProvider {...methods}>
               <form onSubmit={methods.handleSubmit(confirmSave)}>
                 <div className='card-container'>
@@ -271,7 +171,6 @@ const CreatePrompting = (isEdit) => {
                 </div>
               </form>
             </FormProvider>
-            )}
           </Grid>
         </Grid>
         <Dialog
@@ -291,7 +190,7 @@ const CreatePrompting = (isEdit) => {
           </DialogContent>
           <DialogActions className="dialog-delete-actions">
             <Button onClick={handleClose} variant='outlined' className="button-text">{isSave ? 'Back' : 'Cancel without saving'}</Button>
-            <Button onClick={isEdit ? onSaveEdit : onSave} variant='saveButton'>{isSave ? 'Save Data' : 'Back'}</Button>
+            <Button onClick={onSave} variant='saveButton'>{isSave ? 'Save Data' : 'Back'}</Button>
           </DialogActions>
         </Dialog>
     </SideBar>

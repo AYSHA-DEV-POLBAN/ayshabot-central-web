@@ -20,7 +20,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import client from "../../Global/client";
 import { useNavigate } from 'react-router';
-import axios from "axios";
 import { AlertContext } from "../../Context";
 // import CustomAlert from "../../Component/Alert";
 
@@ -53,44 +52,32 @@ const Login = ({ changeStat }) => {
   const handleLogin = async (data) => {
     setIsLoading(true)
     console.log('ini data', data)
-    // const res = await client.requestAPI({
-    //   method: 'POST',
-    //   endpoint: `/auth/signin`,
-    //   data,
-    //   isLogin: true
-    // })    
-    // console.log(res)
-    // if (!res.isError) {
-    //   localStorage.setItem('token', res.token)
-    //   // localStorage.setItem("userId", res.userId)      
-    //   // localStorage.setItem("employeeName", res.employeeName)
-    //   // localStorage.setItem("position", res.position)
-    //   // localStorage.setItem("rememberMe", rememberMe)
-    //   setDataAlert({
-    //     severity: 'success',
-    //     open: true,
-    //     message: "Login successful!"
-    //   })
-    //   // const currentUserId = localStorage.getItem("id");
-    //   // const resUser = await client.requestAPI({
-    //   //   method: "GET",
-    //   //   endpoint: `/users/get_user_by_id/${currentUserId}`,
-    //   // });
-    //   // console.log("data user",resUser)
-    //   // if (!resUser.isError) {
-    //   //   localStorage.setItem("name", resUser.name);
-    //   // }
-    //   navigate('/dashboard')
-    //   setIsLoading(false);
-    // }else{
-    //   setDataAlert({
-    //     severity: 'error',
-    //     open: true,
-    //     message: res.error.message
-    //   })   
-    //   setIsLoading(false);    
-    // }   
-    navigate('/dashboard')
+    const res = await client.requestAPI({
+      method: 'POST',
+      endpoint: `/auth/signin`,
+      data,
+      isLogin: true
+    })    
+    console.log(res)
+    if (!res.isError) {
+      localStorage.setItem('token', res.data.token)
+      localStorage.setItem('userId', res.role_id)
+      console.log("cek token", res.data.token)
+      setDataAlert({
+        severity: 'success',
+        open: true,
+        message: "Login successful!"
+      })
+      navigate('/dashboard')
+      setIsLoading(false);
+    }else{
+      setDataAlert({
+        severity: 'error',
+        open: true,
+        message: res.error.message
+      })   
+      setIsLoading(false);    
+    }   
   };
 
 
@@ -101,7 +88,9 @@ const Login = ({ changeStat }) => {
     <Grid container paddingTop={12}>
       <Grid item xs={12} textAlign={"center"}>
         <Typography variant="signinText">SIGN IN</Typography>
-        {/* <Typography variant="body3">Ayshabot Central Web 👋</Typography> */}
+      </Grid>
+      <Grid item xs={12} paddingTop={1} textAlign={"center"}>
+        <Typography variant="body4">Ayshabot Central Web</Typography>
       </Grid>
       <Grid item xs={12} paddingTop={1} textAlign={"center"}>
         <Typography variant="body4">Please sign in to continue</Typography>

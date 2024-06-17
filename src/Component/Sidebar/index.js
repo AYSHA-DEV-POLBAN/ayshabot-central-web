@@ -6,20 +6,14 @@ import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import IconButton from "@mui/material/IconButton";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import "./index.css";
 import '../../App.css'
-import logoAysha from "../../assets/logoAysha.png";
-import minilogoAysha from "../../assets/minilogoAysha.png";
-import { Avatar, Typography, Hidden } from "@mui/material";
 import { useNavigate } from "react-router";
-import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
-import { closedRoutes, FinalRoutes } from "../../routes";
+import { FinalRoutes } from "../../routes";
 // import CustomAlert from "../Alert";
 // import { convertBase64 } from "../../global/convertBase64";
 import { useLocation } from "react-router-dom";
@@ -78,25 +72,17 @@ const Drawer = styled(MuiDrawer, {
 
 export default function SideBar({ children, title }) {
   const navigate = useNavigate();
-
-  const photoProfile = localStorage.getItem("photoProfile");
-  const username = localStorage.getItem("employeeName");
-  const position = localStorage.getItem("position");
-
-  const handleDrawerClose = () => {
-    setOpen(!open);
-  };
+  const location = useLocation();
+  const userId = localStorage.getItem("userId");
   const currentMenu = JSON.parse(localStorage.getItem("currentMenu") || null);
   const [open, setOpen] = useState(currentMenu ? currentMenu.open : false);
   const [selectedIndex, setSelectedIndex] = React.useState(
     parseInt(currentMenu ? currentMenu.idx : 0)
   );
-  // const dataRoute = FinalRoutes().filter((res) => res.icon);
-  const dataRoute = closedRoutes().filter((res) => res.icon);
+  const dataRoute = FinalRoutes().filter((res) => res.icon);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    // navigate("/login");
+  const handleDrawerClose = () => {
+    setOpen(!open);
   };
 
   const handleDirectPath = (path, idx) => {
@@ -108,7 +94,6 @@ export default function SideBar({ children, title }) {
     setSelectedIndex(idx);
     navigate(path);
   };
-  const location = useLocation();
 
   const clearStringPath = (string) =>{
     return string.split("/")[1].toLowerCase().replace(/[^A-Za-z0-9]/g,"");
@@ -170,26 +155,6 @@ export default function SideBar({ children, title }) {
               </ListItemButton>
             </ListItem>
           ))}
-        </List>
-        <List className="list-menu-container-footer">
-          <ListItem className="footer-logout-container">
-            <ListItemButton
-              className="footer-logout-button"
-              onClick={() => handleLogout()}
-            >
-              <ListItemIcon
-                className="logout-button"
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <PowerSettingsNewIcon />
-              </ListItemIcon>
-              {open && <span className="logout-text">Log Out</span>}
-            </ListItemButton>
-          </ListItem>
         </List>
       </Drawer>
       <Box

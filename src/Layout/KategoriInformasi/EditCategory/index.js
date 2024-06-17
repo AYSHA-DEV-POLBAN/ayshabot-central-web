@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Grid from "@mui/material/Grid";
 import SideBar from '../../../Component/Sidebar';
 import Breadcrumbs from "../../../Component/DataBread";
@@ -11,15 +11,16 @@ import FormInputText from '../../../Component/FormInputText';
 // import schemacompany from '../shema';
 import client from '../../../Global/client';
 import { AlertContext } from '../../../Context';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
 
-const CreateUser = () => {
+const EditCategory = (isEdit) => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [sendData, setData] = useState({})
   const [isSave, setIsSave] = useState(false)
   const { setDataAlert } = useContext(AlertContext)
+  const [categoryName, setCategoryName] = useState('');
+  const [categoryDescription, setCategoryDescription] = useState('');
+
   const dataBread = [
     {
       href: "/",
@@ -27,26 +28,17 @@ const CreateUser = () => {
       current: false,
     },
     {
-      href: "/user",
-      title: "User",
+      href: "/command",
+      title: "Category Information",
       current: false,
     },
     {
-      href: "/user/create",
-      title: "Create New Operator",
+      href: "/category_information/create",
+      title: "Edit Category Information",
       current: true,
     },
   ];
 
-  const optStatus = [
-    {label: "Active"},
-    {label: "Non Active"}
-  ]
-
-  const optLevel = [
-    {label: "Admin"},
-    {label: "Operator"}
-  ]
 
   const cancelData = () => {
     setIsSave(false)
@@ -59,59 +51,88 @@ const CreateUser = () => {
     setData(data)
   }
 
+  useEffect(() => {
+    const id = localStorage.getItem('id');
+    if (id) {
+      fetchData(id);
+    } else {
+      navigate('/category_information');
+    }
+  }, []);
+
+  const fetchData = async (id) => {
+    try {
+      const res = await client.requestAPI({
+        method: 'GET',
+        endpoint: `/category-information/get_category_information_by_id/${id}`, 
+      });
+      setCategoryName(res.data.name_category_information);
+      setCategoryDescription(res.data.description_category_information);
+
+      methods.setValue('name_category_information', res.data.name_category_information);
+      methods.setValue('description_category_information', res.data.description_category_information);
+    } catch (error) {
+      console.error('Failed to fetch category data:', error);
+    }
+  };
+
   const methods = useForm({
     // resolver: yupResolver(schemacompany),
     defaultValues: {
-      name: '',
-      email: '',
+        name_category_information: '',
+        description_category_information:''
     }
   })
 
   const handleClose = () => {
     if (!isSave) {
-      navigate('/user')
+      navigate('/category_information')
     }
     setOpen(false)
   }
-  const onSave = async () => {
+
+  const onSaveEdit = async () => {
     if(!isSave){
       setOpen(false)
     } else{
-    const data = {
-      ...sendData,
-    }
-    console.log(data)
-    const res = await client.requestAPI({
-      method: 'POST',
-      endpoint: '/users/add_operator',
-      data
-    })
-    console.log(res)
-    if (!res.isError) {
-      setDataAlert({
-        severity: 'success',
-        open: true,
-        message: res.status
-      })
-      setTimeout(() => {
-        navigate('/user')
-      }, 3000)
-    } else {
-      setDataAlert({
-        severity: 'error',
-        message: res.error.detail,
-        open: true
-      })
-    }
+        const data = {
+            ...sendData
+        }
+        console.log(data)
+
+        const id = localStorage.getItem("id")
+        const res = await client.requestAPI({
+          method: 'PUT',
+          endpoint: `/category-information/edit/${id}`,
+          data
+        })
+        console.log(res)
+
+        
+        if (!res.isError) {
+          setDataAlert({
+            severity: 'success',
+            open: true,
+            message: res.message
+          })
+          setTimeout(() => {
+            navigate('/category_information')
+          }, 3000)
+        } else {
+          setDataAlert({
+            severity: 'error',
+            message: res.error.detail,
+            open: true
+          })
+        }
         setOpen(false)
+    //   }
     }
   }
 
-
   return (
-    // <SideBar>
     <div>
-      <SideBar title='User' >
+      <SideBar title='Category Information' >
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           <Grid item xs={12}>
@@ -128,24 +149,25 @@ const CreateUser = () => {
                         <Grid item xs={12} sm={12}>
                         <FormInputText
                           focused
-                          name='name'
+                          name='name_category_information'
                           className='input-field-crud'
-                          placeholder='e.g Aslan Islan'
-                          label='Name *'
+                          placeholder='e.g Cek Dokter'
+                          label='Category Name *'
                           inputProps={{
                             maxLength: 50,
                           }}
+                          
                         />
                       </Grid>
                       <Grid item xs={12} sm={12}>
                         <FormInputText
                           focused
-                          name='email'
+                          name='description_category_information'
                           className='input-field-crud'
-                          placeholder='e.g aslanislan@gmail.com'
-                          label='Email *'
+                          placeholder='e.g Jadwal Dokter Hari Ini'
+                          label='Description *'
                           inputProps={{
-                            maxLength: 25,
+                            maxLength: 100,
                           }}
                         />
                       </Grid>
@@ -166,6 +188,7 @@ const CreateUser = () => {
                     fullWidth
                     variant="saveButton"
                     type="submit"
+                    // onClick={() => confirmSave()}
                   >
                     Save Data
                   </Button>
@@ -193,13 +216,13 @@ const CreateUser = () => {
           </DialogContent>
           <DialogActions className="dialog-delete-actions">
             <Button onClick={handleClose} variant='outlined' className="button-text">{isSave ? 'Back' : 'Cancel without saving'}</Button>
-            <Button onClick={onSave} variant='saveButton'>{isSave ? 'Save Data' : 'Back'}</Button>
+            <Button onClick={onSaveEdit} variant='saveButton'>{isSave ? 'Save Data' : 'Back'}</Button>
           </DialogActions>
         </Dialog>
-     </SideBar>
+    </SideBar>
         </div>
   )
 
 }
 
-export default CreateUser
+export default EditCategory

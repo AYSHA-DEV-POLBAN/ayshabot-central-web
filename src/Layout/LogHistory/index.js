@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
-import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box, Grid } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import BreadCumbComp from '../../Component/DataBread';
-// import { useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import client from '../../Global/client';
 // import { AlertContext } from "../../context";
 import axios from 'axios';
@@ -58,17 +58,15 @@ const LogHistory = () => {
   
   const [open, setOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
-//   const navigate = useNavigate();
-  const [data, setData] = useState([
-    // { id:1, no: 1, user: 'Fasilitas', client: 'UGD', tableName: 'abcd.pdf', actionName: 'active' },
-  ]);
+  const navigate = useNavigate();
+  const [data, setData] = useState([]);
   const [idHapus,setidHapus] = useState();
   const [totalData, setTotalData] = useState();
 //   const { setDataAlert } = useContext(AlertContext)
   const [filter, setFilter] = useState({
     page: 0,
     size: 10,
-    sortName: 'taskName',
+    sortName: 'user',
     sortType: 'asc',
     search: ''
   })
@@ -104,14 +102,35 @@ const LogHistory = () => {
         actionName: value.action_name,
       }
     })    
+
+    // if (filter.sortName && filter.sortType) {
+    //   temp.sort((a, b) => {
+    //     const valueA = (typeof a[filter.sortName] === 'string') ? a[filter.sortName].toLowerCase() : '';
+    //     const valueB = (typeof b[filter.sortName] === 'string') ? b[filter.sortName].toLowerCase() : '';
+    //     if (filter.sortType === 'asc') {
+    //       return valueA > valueB ? 1 : -1;
+    //     } else {
+    //       return valueA < valueB ? 1 : -1;
+    //     }
+    //   });
+    // }
+
+    // if (filter.search) {
+    //   temp = temp.filter(item =>
+    //     // item.user.toLowerCase().includes(filter.search.toLowerCase()) ||
+    //     // item.client.toLowerCase().includes(filter.search.toLowerCase()) ||
+    //     item.tableName.toLowerCase().includes(filter.search.toLowerCase()) ||
+    //     item.actionName.toLowerCase().includes(filter.search.toLowerCase())
+    //   );
+    // }
     setData([...temp])
-    // setTotalData(resData.meta.page.totalElements)
+    setTotalData(resData.data.length)
   }
   
 
   const handleDetail = async (id) => {
-    // localStorage.setItem('idBacklog', id)
-    // navigate("/masterbacklog/detail");
+    localStorage.setItem('id', id)
+    navigate("/logHistory/detail");
   };
 
   const handleChangeSearch = (event) => {
@@ -127,28 +146,43 @@ const LogHistory = () => {
     setFilter({
       page: dataFilter.page,
       size: dataFilter.pageSize,
-      sortName: dataFilter.sorting.field !== '' ? dataFilter.sorting[0].field : 'taskName',
+      sortName: dataFilter.sorting.field !== '' ? dataFilter.sorting[0].field : 'user',
       sortType: dataFilter.sorting.sort !== '' ? dataFilter.sorting[0].sort : 'asc',
       search: filter.search
     })
   }
 
+  const handleChangePage = (event, newPage) => {
+    setFilter({ ...filter, page: newPage });
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    const newSize = parseInt(event.target.value, 10);
+    setFilter({ ...filter, size: newSize, page: 0 });
+  };
+
   return (
     <div>
       <SideBar title='Log History' >
-      <BreadCumbComp breadcrumbs={dataBread} />
-        <DataTable
-          title='Log History'
-          data={data}
-          columns={columns}
-          placeSearch="Project Name, task code, etc"
-          searchTitle="Search By"
-          onFilter={(dataFilter => onFilter(dataFilter))}
-          handleChangeSearch={handleChangeSearch}
-          onDetail={(id) => handleDetail(id)}
-          totalData={totalData}
-          getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
-        />
+      <Grid style={{marginTop:'20px', marginLeft:'10px'}}>
+        <BreadCumbComp breadcrumbs={dataBread} />
+          <DataTable
+            title='Log History'
+            data={data}
+            columns={columns}
+            placeSearch="Project Name, task code, etc"
+            searchTitle="Search By"
+            onFilter={(dataFilter => onFilter(dataFilter))}
+            handleChangeSearch={handleChangeSearch}
+            onDetail={(id) => handleDetail(id)}
+            totalData={totalData}
+            pageSize={filter.size}
+            onChangePage={handleChangePage}
+            onChangePageSize={handleChangeRowsPerPage}
+            getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
+            hideAddButton={true}
+          />
+        </Grid>
       </SideBar>
     </div>
   )

@@ -36,6 +36,7 @@ const DataTable = ({
   totalData,
   onEmployee,
   loading = false,
+  hideAddButton=false
 }) => {
   const [pagination, setPagination] = useState({ page: 0, pageSize: 10 });
   const [sorting, setSort] = useState([]);
@@ -174,7 +175,7 @@ const DataTable = ({
           </Grid>
         )}
 
-        {!onUpload && (
+        {!onUpload && !hideAddButton && (
           <Grid item xs={12} sm={4} mt={1} alignSelf="center" sx={{textAlign: {xs: "start", sm:"end"}}}
           >
             <Button
@@ -187,12 +188,14 @@ const DataTable = ({
           </Grid>
         )}
       </Grid>
+      
       {data.length > 0 ? (
         <Grid item xs={12}>
           <DataGrid
             rows={data}
             columns={dataColumns}
             disableRowSelectionOnClick
+            pageSize={10}
             pageSizeOptions={[10, 25, 50, 100]}
             paginationMode="server"
             paginationModel={{ ...pagination }}

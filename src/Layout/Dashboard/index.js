@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Grid, Typography } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
-import { LineChart } from '@mui/x-charts/LineChart';
-import { PieChart } from '@mui/x-charts/PieChart';
-import Header from '../../Component/Header';
 import BreadCumbComp from '../../Component/DataBread';
+import client from '../../Global/client';
+import DataTable from '../../Component/DataTable';
+import { useNavigate } from "react-router";
 
 
 const Dashboard = () => {
 
-
-  const [data, setData] = useState([]);
-  const [totalData, setTotalData] = useState();
+  const [dataNumber, setDataNumber] = useState([]);
+  const [dataHistoryPerDay, setDataHistoryPerDay] = useState([]);
+  const [dataHistoryPerMonth, setDataHistoryPerMonth] = useState([]);
+  const navigate = useNavigate();
   const dataBread = [
     {
       href: "/",
@@ -21,58 +22,77 @@ const Dashboard = () => {
   ];
 
   useEffect(() => {
-    // getData()
+    getDataNumberPerDay()
+    getHistoryPerDay()
+    getHistoryPerMonth()
   }, [])
 
-  const getData = async () => {
-    // const res = await client.requestAPI({
-    //   method: 'GET',
-    //   endpoint: `/backlog?page=${filter.page}&size=${filter.size}&sort=${filter.sortName},${filter.sortType}&search=${filter.search}`
-    // })
-    // rebuildData(res)
-  }  
+  const getDataNumberPerDay = async () => {
+    const res = await client.requestAPI({
+      method: 'GET',
+      endpoint: `/client/count-day`
+    })
+    setDataNumber(res.data)
+  } 
+  
+  const getHistoryPerDay = async () => {
+    const res = await client.requestAPI({
+      method: 'GET',
+      endpoint: `/conversation/count-day`
+    })
+    setDataHistoryPerDay(res.data.conversationCount)
+  } 
+
+  const getHistoryPerMonth = async () => {
+    const res = await client.requestAPI({
+      method: 'GET',
+      endpoint: `/conversation/count-month`
+    })
+    setDataHistoryPerMonth(res.data)
+  } 
+
 
   const [openSide, setOpenSide] = useState(false);
-  const handleDrawerClose = () => { // Fungsi untuk menutup/membuka Sidebar
+  const handleDrawerClose = () => {
     setOpenSide(!openSide);
   };
 
   return (
     <div>
       <SideBar title='Dashboard' >
-        <BreadCumbComp breadcrumbs={dataBread} />
-        <Grid container style={{marginTop: '20px'}}>
-          <Grid container item md={5} sm={6} xs={6} className='card-container'>
-            <Typography>Lorem</Typography>
-            <LineChart
-              xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
-              series={[
-                {
-                  data: [2, 5.5, 2, 8.5, 1.5, 5],
-                },
-              ]}
-              width={500}
-              height={300}
-            />
-          </Grid>
-          <Grid container item md={6} sm={6} xs={6} marginLeft={3} className='card-container'>
-          <Typography>Lorem</Typography>
-          <div style={{marginTop: '60px'}}>
-            <PieChart
-              series={[
-                {
-                  data: [
-                    { id: 0, value: 10, label: 'series A' },
-                    { id: 1, value: 15, label: 'series B' },
-                    { id: 2, value: 20, label: 'series C' },
-                    { id: 3, value: 20, label: 'series D' },
-                  ],
-                },
-              ]}
-              width={400}
-              height={200}
-            />
-            </div>
+        <Grid container style={{marginTop: '20px', marginLeft: '10px'}}>
+          <BreadCumbComp breadcrumbs={dataBread} />
+          <Grid container spacing={2}>
+          <Grid item md={3.8} sm={6} xs={12} marginLeft={1} className='card-container'>
+              <Grid container direction="column">
+                <Grid item>
+                  <Typography fontWeight={'bold'} fontSize={20}>Total Question Per Day</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography textAlign={'center'} fontSize={100}>{dataHistoryPerDay !== null ? dataHistoryPerDay : 'Loading...'}</Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item md={3.8} sm={6} xs={12} marginLeft={1} className='card-container'>
+              <Grid container direction="column">
+                <Grid item>
+                  <Typography fontWeight={'bold'} fontSize={20}>Total Number Per Day</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography textAlign={'center'} fontSize={100}>{dataNumber !== null ? dataNumber : 'Loading...'}</Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item md={3.8} sm={6} xs={12} marginLeft={1} className='card-container'>
+              <Grid container direction="column">
+                <Grid item>
+                  <Typography fontWeight={'bold'} fontSize={20}>Total Question Per Month</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography textAlign={'center'} fontSize={100}>{dataHistoryPerMonth !== null ? dataHistoryPerMonth : 'Loading...'}</Typography>
+                </Grid>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </SideBar>

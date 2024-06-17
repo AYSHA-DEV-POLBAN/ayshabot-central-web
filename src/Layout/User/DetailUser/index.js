@@ -67,10 +67,10 @@ const DetailUser = () => {
                       <Grid item xs={12} sm={12}>
                           <Grid container>
                             <Grid item xs={6} sm={6}>
-                              <Typography variant='labelHeaderDetail'>Name</Typography>
+                              <Typography variant='labelHeaderDetail' fontWeight={'bold'}>Name</Typography>
                             </Grid>
                             <Grid item xs={6}>
-                            <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{detail.name}</Typography>
+                            <Typography variant='labelHeaderDetail' style={{ wordBreak: 'break-word' }}>{detail.name}</Typography>
                                 {/* <Typography>Bagas</Typography> */}
                               {/* <Typography variant='inputDetail' style={{ wordBreak: 'break-word' }}>{dataDetail.companyName}</Typography> */}
                             </Grid>
@@ -80,33 +80,33 @@ const DetailUser = () => {
                       <Grid item xs={12} sm={12}>
                           <Grid container>
                             <Grid item xs={6} sm={6}>
-                              <Typography variant='labelHeaderDetail'>Email</Typography>
+                              <Typography variant='labelHeaderDetail' fontWeight={'bold'}>Email</Typography>
                             </Grid>
                             <Grid item xs={6}>
                                 {/* <Typography>bagass@gmail.com</Typography> */}
-                              <Typography variant='inputDetail'>{detail.email}</Typography>
+                              <Typography variant='labelHeaderDetail'>{detail.email}</Typography>
                             </Grid>
                           </Grid>
                       </Grid>
                       <Grid item xs={12} sm={12}>
                           <Grid container>
                             <Grid item xs={6} sm={6}>
-                              <Typography variant='labelHeaderDetail'>User Level</Typography>
+                              <Typography variant='labelHeaderDetail' fontWeight={'bold'}>User Level</Typography>
                             </Grid>
                             <Grid item xs={6}>
                                 {/* <Typography>Admin</Typography> */}
-                              <Typography variant='inputDetail'>{detail.role_id}</Typography>
+                              <Typography variant='labelHeaderDetail'>{detail.role_id}</Typography>
                             </Grid>
                           </Grid>
                       </Grid>
                       <Grid item xs={12} sm={12}>
                           <Grid container>
                             <Grid item xs={6} sm={6}>
-                              <Typography variant='labelHeaderDetail'>User Status</Typography>
+                              <Typography variant='labelHeaderDetail' fontWeight={'bold'}>User Status</Typography>
                             </Grid>
                             <Grid item xs={6}>
                                 {/* <Typography>Active</Typography> */}
-                              <Typography variant='inputDetail'>{detail.status}</Typography>
+                              <Typography variant='labelHeaderDetail'>{detail.status}</Typography>
                             </Grid>
                           </Grid>
                       </Grid>

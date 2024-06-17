@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
-import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Typography, Box } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Typography, Box, Grid } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import { useNavigate } from "react-router";
 import client from '../../Global/client';
@@ -59,7 +59,15 @@ const Informasi = () => {
       field: 'file',
       headerName: 'File',
       flex: 1 ,
-      minWidth: 180
+      minWidth: 180,
+      renderCell: (params) => {
+        const fileName = params.value.split('/').pop();
+        return(
+        <a href={params.value} target="_blank" rel="noopener noreferrer">
+         {fileName}
+        </a>
+        )
+      },
     },
     {
       field: 'informationStatus',
@@ -163,8 +171,30 @@ const Informasi = () => {
         informationStatus: value.status_information
       }
     })    
+
+    if (filter.sortName && filter.sortType) {
+      temp.sort((a, b) => {
+        const valueA = (typeof a[filter.sortName] === 'string') ? a[filter.sortName].toLowerCase() : '';
+        const valueB = (typeof b[filter.sortName] === 'string') ? b[filter.sortName].toLowerCase() : '';
+        if (filter.sortType === 'asc') {
+          return valueA > valueB ? 1 : -1;
+        } else {
+          return valueA < valueB ? 1 : -1;
+        }
+      });
+    }
+
+    if (filter.search) {
+      temp = temp.filter(item =>
+        // item.user.toLowerCase().includes(filter.search.toLowerCase()) ||
+        // item.client.toLowerCase().includes(filter.search.toLowerCase()) ||
+        item.desc.toLowerCase().includes(filter.search.toLowerCase()) ||
+        item.file.toLowerCase().includes(filter.search.toLowerCase())
+      );
+    }
+
     setData([...temp])
-    // setTotalData(resData.meta.page.totalElements)
+    setTotalData(resData.data.length)
   }
   
   const deleteData = async (id) => {
@@ -237,7 +267,8 @@ const Informasi = () => {
   return (
     <div>
       <SideBar title='Information' >
-      <BreadCumbComp breadcrumbs={dataBread} />
+        <Grid style={{marginTop:'20px', marginLeft:'10px'}}>
+          <BreadCumbComp breadcrumbs={dataBread} />
         <DataTable
           title='Information'
           data={data}
@@ -252,6 +283,8 @@ const Informasi = () => {
           totalData={totalData}
           getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
         />
+        
+        </Grid>
         <Dialog
           open={open}
           onClose={handleClose}

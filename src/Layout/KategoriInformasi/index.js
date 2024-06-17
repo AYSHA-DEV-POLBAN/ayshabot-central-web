@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
-import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Grid } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import Header from '../../Component/Header';
 import { useNavigate } from "react-router";
@@ -131,8 +131,8 @@ const CategoryInformation = () => {
   const handleEdit = async (id, isEdit) => {
     localStorage.setItem('id', id)
     console.log(id)
-    isEdit=(true)
-    navigate("/category_information/create");
+    // isEdit=(true)
+    navigate("/category_information/edit");
   };
 
   const handleClose = () => {
@@ -168,22 +168,24 @@ const CategoryInformation = () => {
   return (
     <div>
       <SideBar title='Category Information' >
-      <BreadCumbComp breadcrumbs={dataBread} />
-        <DataTable
-          title='Category Information'
-          data={data}
-          columns={columns}
-          placeSearch="Name, Username, Status, etc"
-          searchTitle="Search By"
-          onAdd={() => onAdd()}
-          onFilter={(dataFilter => onFilter(dataFilter))}
-          handleChangeSearch={handleChangeSearch}
-          onDetail={(id) => handleDetail(id)}
-          onEdit={(id) => handleEdit(id)}
-          onDelete={(id) => handleClickOpen(id)}
-          totalData={totalData}
-          getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
-        />
+        <Grid style={{marginTop:'20px', marginLeft:'10px'}}>
+          <BreadCumbComp breadcrumbs={dataBread} />
+            <DataTable
+              title='Category Information'
+              data={data}
+              columns={columns}
+              placeSearch="Name, Username, Status, etc"
+              searchTitle="Search By"
+              onAdd={() => onAdd()}
+              onFilter={(dataFilter => onFilter(dataFilter))}
+              handleChangeSearch={handleChangeSearch}
+              onDetail={(id) => handleDetail(id)}
+              onEdit={(id) => handleEdit(id)}
+              onDelete={(id) => handleClickOpen(id)}
+              totalData={totalData}
+              getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
+            />
+        </Grid>
         <Dialog
           open={open}
           onClose={handleClose}

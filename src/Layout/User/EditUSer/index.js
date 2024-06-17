@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Grid from "@mui/material/Grid";
 import SideBar from '../../../Component/Sidebar';
 import Breadcrumbs from "../../../Component/DataBread";
@@ -14,12 +14,14 @@ import { AlertContext } from '../../../Context';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
-const CreateUser = () => {
+const EditUser = () => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [sendData, setData] = useState({})
   const [isSave, setIsSave] = useState(false)
   const { setDataAlert } = useContext(AlertContext)
+  const [categoryName, setCategoryName] = useState('');
+  const [categoryDescription, setCategoryDescription] = useState('');
   const dataBread = [
     {
       href: "/",
@@ -33,20 +35,11 @@ const CreateUser = () => {
     },
     {
       href: "/user/create",
-      title: "Create New Operator",
+      title: "Edit Operator",
       current: true,
     },
   ];
 
-  const optStatus = [
-    {label: "Active"},
-    {label: "Non Active"}
-  ]
-
-  const optLevel = [
-    {label: "Admin"},
-    {label: "Operator"}
-  ]
 
   const cancelData = () => {
     setIsSave(false)
@@ -58,6 +51,31 @@ const CreateUser = () => {
     setOpen(true)
     setData(data)
   }
+
+  useEffect(() => {
+    const id = localStorage.getItem('id');
+    if (id) {
+      fetchData(id);
+    } else {
+      navigate('/category_information');
+    }
+  }, []);
+
+  const fetchData = async (id) => {
+    try {
+      const res = await client.requestAPI({
+        method: 'GET',
+        endpoint: `/users/get_user_by_id/${id}`, 
+      });
+      setCategoryName(res.data.name);
+      setCategoryDescription(res.data.email);
+
+      methods.setValue('name', res.data.name);
+      methods.setValue('email', res.data.email);
+    } catch (error) {
+      console.error('Failed to fetch category data:', error);
+    }
+  };
 
   const methods = useForm({
     // resolver: yupResolver(schemacompany),
@@ -73,7 +91,8 @@ const CreateUser = () => {
     }
     setOpen(false)
   }
-  const onSave = async () => {
+
+  const onSaveEdit = async () => {
     if(!isSave){
       setOpen(false)
     } else{
@@ -81,9 +100,10 @@ const CreateUser = () => {
       ...sendData,
     }
     console.log(data)
+    const id = localStorage.getItem("id")
     const res = await client.requestAPI({
-      method: 'POST',
-      endpoint: '/users/add_operator',
+      method: 'PUT',
+      endpoint: `/users/edit/${id}`,
       data
     })
     console.log(res)
@@ -193,7 +213,7 @@ const CreateUser = () => {
           </DialogContent>
           <DialogActions className="dialog-delete-actions">
             <Button onClick={handleClose} variant='outlined' className="button-text">{isSave ? 'Back' : 'Cancel without saving'}</Button>
-            <Button onClick={onSave} variant='saveButton'>{isSave ? 'Save Data' : 'Back'}</Button>
+            <Button onClick={onSaveEdit} variant='saveButton'>{isSave ? 'Save Data' : 'Back'}</Button>
           </DialogActions>
         </Dialog>
      </SideBar>
@@ -202,4 +222,4 @@ const CreateUser = () => {
 
 }
 
-export default CreateUser
+export default EditUser
