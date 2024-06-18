@@ -74,6 +74,9 @@ const EditInformasi = () => {
     setDescriptionInformation(res.data.description_information)
     setDataCategory(res.data.category_information_id)
    
+    methods.setValue('title_information', res.data.title_information);
+    methods.setValue('description_information', res.data.description_information);
+    methods.setValue('category_information_id', res.data.category_information_id);
     console.log('data detail', res)
   }
 
@@ -143,23 +146,30 @@ const EditInformasi = () => {
     }
   };
 
+
+  const [errorText, setErrorText] = useState('');
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFile(file);
-    setFilePath(file.name);
-    setSendData(prevData => ({
-      ...prevData,
-      document: file
-    }));
-
+    const uploadedFile = e.target.files[0];
+    if (uploadedFile) {
+      if (uploadedFile.type === 'application/pdf') {
+        setFile(uploadedFile);
+        setFilePath(uploadedFile.name);
+        setSendData(prevData => ({
+          ...prevData,
+          document: file
+        }));
+        setErrorText('');
+      } else {
+        setErrorText('File harus berupa file PDF');
+        setFile(null);
+        setFilePath('');
+      }
+    } else {
+      setErrorText('File tidak boleh kosong');
+      setFile(null);
+      setFilePath('');
+    }
   };
-
-  const handleChange = (event, newValue) => {
-    const {name, value} = event.target
-    const temp = {...sendData}
-    temp[name] = event.target.value
-    setSendData(temp)
-  }
 
   return (
     <div>
@@ -178,9 +188,11 @@ const EditInformasi = () => {
                         accept=".pdf"
                         className="custom-file-input"
                         name='document'
+                        // value={file}
                         onChange={handleFileChange}
                       />
                     </Grid>
+                    <Grid marginLeft={5}>{errorText && <p style={{ color: 'red' }}>{errorText}</p>}</Grid>
                     <Grid item xs={12} sm={12}>
                     <Controller
                       name='title_information'
@@ -251,7 +263,7 @@ const EditInformasi = () => {
                           className='input-field-crud'
                           placeholder='e.g Fasilitas Poliklinik'
                           label='Description *'
-                          inputProps={{ maxLength: 50 }}
+                          inputProps={{ maxLength: 501 }}
                           value={description}
                           onChange={(e) => {
                             field.onChange(e.target.value);
