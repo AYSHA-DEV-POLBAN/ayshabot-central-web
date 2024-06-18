@@ -10,6 +10,7 @@ import client from '../../../Global/client';
 import { AlertContext } from '../../../Context';
 import { yupResolver } from '@hookform/resolvers/yup';
 import validateInput from '../validate';
+import axios from 'axios';
 
 const EditInformasi = () => {
   const navigate = useNavigate();
@@ -20,11 +21,10 @@ const EditInformasi = () => {
   const [file, setFile] = useState(null);
   const [filePath, setFilePath] = useState('');
   const [optCategory, setOptCategory] = useState([]);
-  const [titleInformation, setTitleInformation] = useState('')
-  const [description, setDescriptionInformation] = useState('')
-  const [dataCategory, setDataCategory] = useState('')
-  
-  
+  const [titleInformation, setTitleInformation] = useState('');
+  const [description, setDescriptionInformation] = useState('');
+  const [dataCategory, setDataCategory] = useState('');
+
   const MAX_SIZE_FILE = 3145728; // 3 MB
 
   const dataBread = [
@@ -56,26 +56,38 @@ const EditInformasi = () => {
 
   useEffect(() => {
     getCategory();
-
-    const id= localStorage.getItem('id')
-    if(id){
-        getDataDetail(id)
-    } else{
-        navigate('/information')
+    const id = localStorage.getItem('id');
+    if (id) {
+      getDataDetail(id);
+    } else {
+      navigate('/informasi');
     }
   }, []);
 
   const getDataDetail = async (id) => {
-    const res = await client.requestAPI({
-      method: 'GET',
-      endpoint: `/information/get_information_by_id/${id}`
-    })
-    setTitleInformation(res.data.title_information)
-    setDescriptionInformation(res.data.description_information)
-    setDataCategory(res.data.category_information_id)
-   
-    console.log('data detail', res)
-  }
+    try {
+      const res = await client.requestAPI({
+        method: 'GET',
+        endpoint: `/information/get_information_by_id/${id}`
+      });
+      const data = res.data;
+      setTitleInformation(data.title_information);
+      setDescriptionInformation(data.description_information);
+      setDataCategory(data.category_information_id);
+      setFilePath(data.file_path_information);
+
+      methods.setValue('title_information', res.data.title_information);
+      methods.setValue('description_information', res.data.description_information);
+      methods.setValue('category_information_id', res.data.category_information_id);
+
+    } catch (error) {
+      setDataAlert({
+        severity: 'error',
+        message: 'Failed to fetch information details',
+        open: true
+      });
+    }
+  };
 
   const handleClose = () => {
     if (!isSave) {
@@ -85,60 +97,66 @@ const EditInformasi = () => {
   };
 
   const getCategory = async () => {
-    const res = await client.requestAPI({
-      method: 'GET',
-      endpoint: '/category-information/',
-    });
-    const data = res.data.map(item => ({ id: item.id, name: item.name_category_information }));
-    setOptCategory(data);
-
-    console.log('data categori', res)
+    try {
+      const res = await client.requestAPI({
+        method: 'GET',
+        endpoint: '/category-information/',
+      });
+      const data = res.data.map(item => ({ id: item.id, name: item.name_category_information }));
+      setOptCategory(data);
+    } catch (error) {
+      setDataAlert({
+        severity: 'error',
+        message: 'Failed to fetch categories',
+        open: true
+      });
+    }
   };
 
-  const onSave = async (form) => {
-    if (!isSave) {
-      setOpen(false);
+  const onSave = async () => {
+    if (file && file.size >= MAX_SIZE_FILE) {
+      setDataAlert({
+        severity: 'error',
+        message: 'Max File Size is 3 MB',
+        open: true
+      });
     } else {
-      if (file && file.size >= MAX_SIZE_FILE) {
+      const id = localStorage.getItem('id');
+      const formData = new FormData();
+      formData.append('document', file);
+      formData.append('title_information', sendData.title_information);
+      formData.append('category_information_id', sendData.category_information_id);
+      formData.append('description_information', sendData.description_information);
+      
+      try {
+        const res = await axios.put(`http://localhost:8001/api/v1/information/edit_with_upload_file/${id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        if (!res.isError) {
+          setDataAlert({
+            severity: 'success',
+            open: true,
+            message: res.data.message
+          });
+          setTimeout(() => {
+            navigate('/informasi');
+          }, 3000);
+        } else {
+          setDataAlert({
+            severity: 'error',
+            message: res.data.message || 'Error uploading file',
+            open: true
+          });
+        }
+      } catch (error) {
         setDataAlert({
           severity: 'error',
-          message: 'Max File Size is 3 MB',
+          message: 'Failed to update file',
           open: true
         });
-      } else {
-        const data = {
-          ...sendData,
-          document : file
-        }
-
-        console.log("ini data perubahannya", data)
-            const id = localStorage.getItem('id');
-            const res = await client.requestAPI({
-              method: 'PUT',
-              endpoint: `/information/edit_with_upload_file/${id}`,
-              data,
-            })
-
-            console.log('data edit', res)
-
-          if (!res.isError) {
-            setDataAlert({
-              severity: 'success',
-              open: true,
-              message: res.data.message
-            });
-            setTimeout(() => {
-              navigate('/informasi');
-            }, 3000);
-          } else {
-            setDataAlert({
-              severity: 'error',
-              message: res.data.message || 'Error uploading file',
-              open: true
-            });
-          }
-        
-        setOpen(false);
       }
     }
   };
@@ -147,19 +165,7 @@ const EditInformasi = () => {
     const file = e.target.files[0];
     setFile(file);
     setFilePath(file.name);
-    setSendData(prevData => ({
-      ...prevData,
-      document: file
-    }));
-
   };
-
-  const handleChange = (event, newValue) => {
-    const {name, value} = event.target
-    const temp = {...sendData}
-    temp[name] = event.target.value
-    setSendData(temp)
-  }
 
   return (
     <div>
@@ -182,62 +188,62 @@ const EditInformasi = () => {
                       />
                     </Grid>
                     <Grid item xs={12} sm={12}>
-                    <Controller
-                      name='title_information'
-                      control={methods.control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          focused
-                          name='title_information'
-                          className='input-field-crud'
-                          placeholder='e.g Fasilitas Poliklinik'
-                          label='Information Name *'
-                          inputProps={{ maxLength: 50 }}
-                          value={titleInformation}
-                          onChange={(e) => {
-                            field.onChange(e.target.value);
-                            setTitleInformation(e.target.value); 
-                            setSendData(prevData => ({
-                              ...prevData,
-                              title_information: e.target.value
-                            }));
-                          }}
-                          error={!!methods.formState.errors.title_information}
-                          helperText={methods.formState.errors.title_information ? 'Title is required' : ''}
-                        />
-                      )}
-                    />
+                      <Controller
+                        name='title_information'
+                        control={methods.control}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            focused
+                            name='title_information'
+                            className='input-field-crud'
+                            placeholder='e.g Fasilitas Poliklinik'
+                            label='Information Name *'
+                            inputProps={{ maxLength: 50 }}
+                            value={titleInformation}
+                            onChange={(e) => {
+                              field.onChange(e.target.value);
+                              setTitleInformation(e.target.value);
+                              setSendData(prevData => ({
+                                ...prevData,
+                                title_information: e.target.value
+                              }));
+                            }}
+                            error={!!methods.formState.errors.title_information}
+                            helperText={methods.formState.errors.title_information ? 'Title is required' : ''}
+                          />
+                        )}
+                      />
                     </Grid>
                     <Grid item xs={12} sm={12}>
-                          <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            name="category_information_id"
-                            options={optCategory}
-                            value={optCategory.find((option) => option.id === dataCategory) || null}
-                            sx={{ width: "100%", marginTop: "8px" }}
-                            onChange={(_event, newValue) => {
-                              if (newValue) {
-                                setDataCategory(newValue.id)
-                                setSendData(prevData => ({
-                                  ...prevData,
-                                  category_information_id: newValue.id
-                                }));
-                              }
-                            }}
-                            getOptionLabel={(option) => option.name}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                InputLabelProps={{ shrink: true }}
-                                label="Category Information *"
-                                placeholder="Select Category"
-                                error={methods.formState.errors.category_information_id !== undefined}
-                                helperText={methods.formState.errors.category_information_id ? 'Category is required' : ''}
-                              />
-                            )}
+                      <Autocomplete
+                        disablePortal
+                        id="combo-box-demo"
+                        name="category_information_id"
+                        options={optCategory}
+                        value={optCategory.find((option) => option.id === dataCategory) || null}
+                        sx={{ width: "100%", marginTop: "8px" }}
+                        onChange={(_event, newValue) => {
+                          if (newValue) {
+                            setDataCategory(newValue.id)
+                            setSendData(prevData => ({
+                              ...prevData,
+                              category_information_id: newValue.id
+                            }));
+                          }
+                        }}
+                        getOptionLabel={(option) => option.name}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            InputLabelProps={{ shrink: true }}
+                            label="Category Information *"
+                            placeholder="Select Category"
+                            error={methods.formState.errors.category_information_id !== undefined}
+                            helperText={methods.formState.errors.category_information_id ? 'Category is required' : ''}
                           />
+                        )}
+                      />
                     </Grid>
                     <Grid item xs={12} sm={12}>
                     <Controller
