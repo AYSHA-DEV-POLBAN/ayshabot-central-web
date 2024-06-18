@@ -1,31 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-import { Typography, Button, IconButton, TextField } from "@mui/material";
+import { Typography, Button, IconButton,  } from "@mui/material";
 import SearchBar from "../Searchbar";
 import AddIcon from "@mui/icons-material/Add";
 import { DataGrid } from "@mui/x-data-grid";
-import PreviewIcon from "@mui/icons-material/Preview";
-import InfoIcon from '@mui/icons-material/Info';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from "@mui/icons-material/Delete";
-// import blanktable from "../../assets/blanktable.png";
-// import "../../App.css";
 import "../../App.css"
-import SyncOutlinedIcon from "@mui/icons-material/SyncOutlined";
 import { EditOutlined, UploadFileOutlined } from "@mui/icons-material";
-// import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-// import dayjs from "dayjs";
 
 const DataTable = ({
   title,
   data,
   columns,
   handleChangeSearch,
-  handleChangeMonthFilter,
-  handleChangeYearFilter,
-  placeSearch,
   searchTitle,
   onAdd,
   onEdit,
@@ -34,7 +22,6 @@ const DataTable = ({
   onDelete,
   onFilter,
   totalData,
-  onEmployee,
   loading = false,
   hideAddButton=false
 }) => {
@@ -126,7 +113,6 @@ const DataTable = ({
         {!onUpload ? (
           <Grid item xs={6} sm={3} alignSelf="center" sx={{textAlign: {xs: "start", sm:"end"}}}>
             <SearchBar
-              // placeholder={placeSearch}
               label={searchTitle}
               onChange={handleChangeSearch}
             />
@@ -144,36 +130,6 @@ const DataTable = ({
           </Grid>
         )
         }
-
-        {onUpload && (
-          <Grid
-            container
-            direction="row"
-            item
-            xs={12}
-            sm={6}
-            mt={1}
-            gap={1}
-            alignItems="center"
-            sx={{justifyContent: {xs: "start", sm:"end"}}}
-          >
-            <Button
-              variant="contained"
-              onClick={() => onAdd()}
-              startIcon={<AddIcon />}
-            >
-              {title}
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={() => onUpload()}
-              startIcon={<UploadFileOutlined />}
-              sx={{ paddingY: 1 }}
-            >
-              Upload Holiday
-            </Button>
-          </Grid>
-        )}
 
         {!onUpload && !hideAddButton && (
           <Grid item xs={12} sm={4} mt={1} alignSelf="center" sx={{textAlign: {xs: "start", sm:"end"}}}
@@ -195,10 +151,18 @@ const DataTable = ({
             rows={data}
             columns={dataColumns}
             disableRowSelectionOnClick
-            pageSize={10}
+            // pageSize={10}
+            // pageSize={pagination.pageSize}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 10,
+                },
+              },
+            }}
             pageSizeOptions={[10, 25, 50, 100]}
-            paginationMode="server"
-            paginationModel={{ ...pagination }}
+            // paginationMode="server"
+            // paginationModel={{ ...pagination }}
             onPaginationModelChange={(model) => changePagination(model)}
             onSortModelChange={(model) => changeSort(model)}
             disableColumnFilter
@@ -222,7 +186,6 @@ const DataTable = ({
           textAlign="center"
         >
           <Grid item xs={12} pb={3.75}>
-            {/* <img src={blanktable} alt="blank-table" style={{ maxWidth: '100%', height: 'auto' }} /> */}
           </Grid>
           <Grid item xs={12}>
             <Typography variant="noDataTable">

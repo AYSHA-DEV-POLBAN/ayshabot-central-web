@@ -151,7 +151,14 @@ const Informasi = () => {
   const getData = async () => {
     const res = await client.requestAPI({
       method: 'GET',
-      endpoint: `/information/`
+      endpoint: `/information/`,
+      params: {
+        page: filter.page,
+        size: filter.size,
+        sortName: filter.sortName,
+        sortType: filter.sortType,
+        search: filter.search
+      }
     })
     console.log(res)
     rebuildData(res)
@@ -172,22 +179,11 @@ const Informasi = () => {
       }
     })    
 
-    if (filter.sortName && filter.sortType) {
-      temp.sort((a, b) => {
-        const valueA = (typeof a[filter.sortName] === 'string') ? a[filter.sortName].toLowerCase() : '';
-        const valueB = (typeof b[filter.sortName] === 'string') ? b[filter.sortName].toLowerCase() : '';
-        if (filter.sortType === 'asc') {
-          return valueA > valueB ? 1 : -1;
-        } else {
-          return valueA < valueB ? 1 : -1;
-        }
-      });
-    }
+    temp.sort((a, b) => a.no - b.no);
 
     if (filter.search) {
       temp = temp.filter(item =>
-        // item.user.toLowerCase().includes(filter.search.toLowerCase()) ||
-        // item.client.toLowerCase().includes(filter.search.toLowerCase()) ||
+        item.informationName.toLowerCase().includes(filter.search.toLowerCase()) ||
         item.desc.toLowerCase().includes(filter.search.toLowerCase()) ||
         item.file.toLowerCase().includes(filter.search.toLowerCase())
       );
@@ -232,7 +228,7 @@ const Informasi = () => {
     localStorage.setItem('id', id)
     console.log(id)
     isEdit=(true)
-    navigate("/informasi/create");
+    navigate("/informasi/edit");
   };
 
   const handleClose = () => {

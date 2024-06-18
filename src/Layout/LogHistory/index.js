@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import DataTable from '../../Component/DataTable';
-import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import BreadCumbComp from '../../Component/DataBread';
 import { useNavigate } from "react-router";
 import client from '../../Global/client';
 // import { AlertContext } from "../../context";
-import axios from 'axios';
 
 
 const LogHistory = () => {
@@ -84,7 +83,15 @@ const LogHistory = () => {
   const getData = async () => {
     const res = await client.requestAPI({
       method: 'GET',
-      endpoint: `/log-history/`
+      endpoint: `/log-history/`,
+      
+      params: {
+        page: filter.page,
+        size: filter.size,
+        sortName: filter.sortName,
+        sortType: filter.sortType,
+        search: filter.search
+      }
     })
     rebuildData(res)
   }
@@ -103,26 +110,12 @@ const LogHistory = () => {
       }
     })    
 
-    // if (filter.sortName && filter.sortType) {
-    //   temp.sort((a, b) => {
-    //     const valueA = (typeof a[filter.sortName] === 'string') ? a[filter.sortName].toLowerCase() : '';
-    //     const valueB = (typeof b[filter.sortName] === 'string') ? b[filter.sortName].toLowerCase() : '';
-    //     if (filter.sortType === 'asc') {
-    //       return valueA > valueB ? 1 : -1;
-    //     } else {
-    //       return valueA < valueB ? 1 : -1;
-    //     }
-    //   });
-    // }
-
-    // if (filter.search) {
-    //   temp = temp.filter(item =>
-    //     // item.user.toLowerCase().includes(filter.search.toLowerCase()) ||
-    //     // item.client.toLowerCase().includes(filter.search.toLowerCase()) ||
-    //     item.tableName.toLowerCase().includes(filter.search.toLowerCase()) ||
-    //     item.actionName.toLowerCase().includes(filter.search.toLowerCase())
-    //   );
-    // }
+    if (filter.search) {
+      temp = temp.filter(item =>
+        item.tableName.toLowerCase().includes(filter.search.toLowerCase()) ||
+        item.actionName.toLowerCase().includes(filter.search.toLowerCase())
+      );
+    }
     setData([...temp])
     setTotalData(resData.data.length)
   }
@@ -152,14 +145,6 @@ const LogHistory = () => {
     })
   }
 
-  const handleChangePage = (event, newPage) => {
-    setFilter({ ...filter, page: newPage });
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    const newSize = parseInt(event.target.value, 10);
-    setFilter({ ...filter, size: newSize, page: 0 });
-  };
 
   return (
     <div>
@@ -176,9 +161,6 @@ const LogHistory = () => {
             handleChangeSearch={handleChangeSearch}
             onDetail={(id) => handleDetail(id)}
             totalData={totalData}
-            pageSize={filter.size}
-            onChangePage={handleChangePage}
-            onChangePageSize={handleChangeRowsPerPage}
             getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
             hideAddButton={true}
           />

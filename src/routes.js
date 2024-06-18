@@ -13,6 +13,7 @@ const Dashboard = lazy(() => import("./Layout/Dashboard"));
 const Informasi = lazy(() => import("./Layout/Informasi"))
 const CreateInfomasi = lazy(() => import("./Layout/Informasi/CreateInformasi"))
 const DetailInformasi = lazy(() => import("./Layout/Informasi/DetailInformasi"))
+const EditInformasi = lazy(() => import("./Layout/Informasi/EditInformasi"))
 const LogHistory = lazy(() => import("./Layout/LogHistory"))
 const Command = lazy(() => import("./Layout/Prompting"))
 const CreatePrompting = lazy(() => import("./Layout/Prompting/CreatePrompting"))
@@ -63,6 +64,11 @@ export const closedRoutes = (userId) => {
       path: "/informasi/detail",
       element: <DetailInformasi />,
       key: "detail informasi",
+    },
+    {
+      path: "/informasi/edit",
+      element: <EditInformasi />,
+      key: "edit informasi",
     },
     {
       path: "/category_information",

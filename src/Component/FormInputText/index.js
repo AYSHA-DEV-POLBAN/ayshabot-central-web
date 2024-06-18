@@ -21,6 +21,10 @@ const FormInputText = ({ name, ...otherProps }) => {
           helperText={
             errors[name] ? errors[name].message : ''
           }
+          onChange={(e) => {
+            field.onChange(e);
+            if (otherProps.onChange) otherProps.onChange(e);
+          }}
         />
       )}
     />

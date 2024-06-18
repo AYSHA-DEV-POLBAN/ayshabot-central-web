@@ -184,12 +184,19 @@ const User = () => {
 
   useEffect(() => {
     getData()
-  }, [])
+  }, [filter])
 
   const getData = async () => {
     const res = await client.requestAPI({
       method: 'GET',
       endpoint: `/users/`,
+      params: {
+        page: filter.page,
+        size: filter.size,
+        sortName: filter.sortName,
+        sortType: filter.sortType,
+        search: filter.search
+      }
     })
     rebuildData(res)
   }
@@ -208,8 +215,14 @@ const User = () => {
         userStatus: value.status
       }
     })    
+
+    if (filter.search) {
+      temp = temp.filter(item =>
+        item.name.toLowerCase().includes(filter.search.toLowerCase()) ||
+        item.email.toLowerCase().includes(filter.search.toLowerCase())
+      );
+    }
     setData([...temp])
-    // setTotalData(resData.meta.page.totalElements)
     setTotalData(resData.data.length)
   }
   
