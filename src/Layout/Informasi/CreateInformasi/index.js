@@ -120,17 +120,40 @@ const CreateInfomasi = () => {
             open: true
           });
         }
-        navigate('/informasi');
+        // navigate('/informasi');
         setOpen(false);
       }
     }
   };
 
+  // const handleFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file && file.type === 'application/pdf') {
+  //     setFile(file);
+  //     setFilePath(file.name);
+  //   }
+  // };
+
+  const [errorText, setErrorText] = useState('');
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFile(file);
-    setFilePath(file.name);
+    const uploadedFile = e.target.files[0];
+    if (uploadedFile) {
+      if (uploadedFile.type === 'application/pdf') {
+        setFile(uploadedFile);
+        setFilePath(uploadedFile.name);
+        setErrorText(''); 
+      } else {
+        setErrorText('File harus berupa file PDF');
+        setFile(null);
+        setFilePath('');
+      }
+    } else {
+      setErrorText('File tidak boleh kosong');
+      setFile(null);
+      setFilePath('');
+    }
   };
+
 
   return (
     <div>
@@ -152,6 +175,7 @@ const CreateInfomasi = () => {
                         onChange={handleFileChange}
                       />
                     </Grid>
+                    <Grid marginLeft={5}>{errorText && <p style={{ color: 'red' }}>{errorText}</p>}</Grid>
                     <Grid item xs={12} sm={12}>
                       <FormInputText
                         focused
@@ -190,7 +214,7 @@ const CreateInfomasi = () => {
                         className='input-field-crud'
                         placeholder='e.g Ini adalah fasilitas poliklinik'
                         label='Description*'
-                        inputProps={{ maxLength: 100 }}
+                        inputProps={{ maxLength: 501 }}
                       />
                     </Grid>
                   </Grid>

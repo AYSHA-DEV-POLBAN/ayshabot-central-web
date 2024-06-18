@@ -161,6 +161,8 @@ const EditInformasi = () => {
     }
   };
 
+
+  const [errorText, setErrorText] = useState('');
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFile(file);
@@ -184,9 +186,11 @@ const EditInformasi = () => {
                         accept=".pdf"
                         className="custom-file-input"
                         name='document'
+                        // value={file}
                         onChange={handleFileChange}
                       />
                     </Grid>
+                    <Grid marginLeft={5}>{errorText && <p style={{ color: 'red' }}>{errorText}</p>}</Grid>
                     <Grid item xs={12} sm={12}>
                       <Controller
                         name='title_information'
@@ -257,7 +261,7 @@ const EditInformasi = () => {
                           className='input-field-crud'
                           placeholder='e.g Fasilitas Poliklinik'
                           label='Description *'
-                          inputProps={{ maxLength: 50 }}
+                          inputProps={{ maxLength: 501 }}
                           value={description}
                           onChange={(e) => {
                             field.onChange(e.target.value);
