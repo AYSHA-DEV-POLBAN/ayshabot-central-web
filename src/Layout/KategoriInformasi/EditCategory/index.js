@@ -5,14 +5,14 @@ import Breadcrumbs from "../../../Component/DataBread";
 import { Dialog, Button, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import '../../../App.css'
 import { useNavigate } from 'react-router';
-// import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from "react-hook-form";
 import FormInputText from '../../../Component/FormInputText';
-// import schemacompany from '../shema';
 import client from '../../../Global/client';
 import { AlertContext } from '../../../Context';
+import { yupResolver } from '@hookform/resolvers/yup';
+import validateInput from '../validate';
 
-const EditCategory = (isEdit) => {
+const EditCategory = () => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [sendData, setData] = useState({})
@@ -77,7 +77,7 @@ const EditCategory = (isEdit) => {
   };
 
   const methods = useForm({
-    // resolver: yupResolver(schemacompany),
+    resolver: yupResolver(validateInput),
     defaultValues: {
         name_category_information: '',
         description_category_information:''
@@ -167,7 +167,7 @@ const EditCategory = (isEdit) => {
                           placeholder='e.g Jadwal Dokter Hari Ini'
                           label='Description *'
                           inputProps={{
-                            maxLength: 100,
+                            maxLength: 501,
                           }}
                         />
                       </Grid>

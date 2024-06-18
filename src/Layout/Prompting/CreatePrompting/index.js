@@ -2,18 +2,17 @@ import React, { useContext, useState } from 'react';
 import Grid from "@mui/material/Grid";
 import SideBar from '../../../Component/Sidebar';
 import Breadcrumbs from "../../../Component/DataBread";
-import Header from '../../../Component/Header'
 import { Dialog, Button, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import '../../../App.css'
 import { useNavigate } from 'react-router';
-// import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from "react-hook-form";
 import FormInputText from '../../../Component/FormInputText';
-// import schemacompany from '../shema';
 import client from '../../../Global/client';
 import { AlertContext } from '../../../Context';
+import { yupResolver } from '@hookform/resolvers/yup';
+import validateInput from '../validate';
 
-import axios from "axios";
+
 
 const CreatePrompting = () => {
   const navigate = useNavigate()
@@ -53,7 +52,7 @@ const CreatePrompting = () => {
   }
 
   const methods = useForm({
-    // resolver: yupResolver(schemacompany),
+    resolver: yupResolver(validateInput),
     defaultValues: {
       name_command: '',
       response_command:''
@@ -141,7 +140,7 @@ const CreatePrompting = () => {
                           placeholder='e.g Jadwal Dokter Hari Ini'
                           label='Response Command*'
                           inputProps={{
-                            maxLength: 100,
+                            maxLength: 501,
                           }}
                         />
                       </Grid>

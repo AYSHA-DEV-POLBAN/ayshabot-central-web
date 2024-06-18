@@ -5,14 +5,14 @@ import Breadcrumbs from "../../../Component/DataBread";
 import { Dialog, Button, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import '../../../App.css'
 import { useNavigate } from 'react-router';
-// import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from "react-hook-form";
 import FormInputText from '../../../Component/FormInputText';
-// import schemacompany from '../shema';
 import client from '../../../Global/client';
 import { AlertContext } from '../../../Context';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
+import validateInput from '../validate';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+
 
 const EditUser = () => {
   const navigate = useNavigate()
@@ -78,7 +78,7 @@ const EditUser = () => {
   };
 
   const methods = useForm({
-    // resolver: yupResolver(schemacompany),
+    resolver: yupResolver(validateInput),
     defaultValues: {
       name: '',
       email: '',

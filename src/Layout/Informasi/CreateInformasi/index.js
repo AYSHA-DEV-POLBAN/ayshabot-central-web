@@ -9,7 +9,10 @@ import { FormProvider, useForm } from "react-hook-form";
 import FormInputText from '../../../Component/FormInputText';
 import client from '../../../Global/client';
 import { AlertContext } from '../../../Context';
+import validateInput from '../validate';
+
 import axios from 'axios';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const CreateInfomasi = () => {
   const navigate = useNavigate();
@@ -41,6 +44,7 @@ const CreateInfomasi = () => {
   };
 
   const methods = useForm({
+    resolver: yupResolver(validateInput),
     defaultValues: {
       document: '',
       title_information: '',
@@ -99,9 +103,9 @@ const CreateInfomasi = () => {
               open: true,
               message: res.data.meta.message
             });
-            setTimeout(() => {
+            // setTimeout(() => {
               navigate('/informasi');
-            }, 3000);
+            // }, 3000);
           } else {
             setDataAlert({
               severity: 'error',

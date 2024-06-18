@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router';
 import { FormProvider, useForm, Controller } from "react-hook-form";
 import client from '../../../Global/client';
 import { AlertContext } from '../../../Context';
+import { yupResolver } from '@hookform/resolvers/yup';
+import validateInput from '../validate';
 
 const EditInformasi = () => {
   const navigate = useNavigate();
@@ -43,6 +45,7 @@ const EditInformasi = () => {
   };
 
   const methods = useForm({
+    resolver: yupResolver(validateInput),
     defaultValues: {
       document: '',
       title_information: '',
