@@ -157,6 +157,7 @@ const Command = () => {
       method: 'DELETE',
       endpoint: `/command/delete/${id}`
     })
+    console.log("data delete", res)
     setOpenAlert(true);
     getData()
     if (!res.isError) {
@@ -271,7 +272,9 @@ const Command = () => {
           </DialogTitle>
           <DialogContent className="dialog-delete-content">
             <DialogContentText className='dialog-delete-text-content' id="alert-dialog-description">
-            Are you sure you want to {currentRow?.informationStatus === 1 ? 'deactivate' : 'activate'} this command?
+              
+            Are you sure you want to {currentRow?.informationStatus != 0 ? 'deactivate' : 'activate'} this command?
+            {/* Are you sure you want to {currentRow?.informationStatus === 1 ? 'deactivate' : 'activate'} this command? */}
             </DialogContentText>
           </DialogContent>
           <DialogActions className="dialog-delete-actions">

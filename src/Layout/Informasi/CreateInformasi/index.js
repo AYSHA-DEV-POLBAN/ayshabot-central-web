@@ -120,19 +120,11 @@ const CreateInfomasi = () => {
             open: true
           });
         }
-        // navigate('/informasi');
+        navigate('/informasi');
         setOpen(false);
       }
     }
   };
-
-  // const handleFileChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file && file.type === 'application/pdf') {
-  //     setFile(file);
-  //     setFilePath(file.name);
-  //   }
-  // };
 
   const [errorText, setErrorText] = useState('');
   const handleFileChange = (e) => {
@@ -202,7 +194,7 @@ const CreateInfomasi = () => {
                             label="Category Information *"
                             placeholder="Select Category"
                             error={methods.formState.errors.category_information_id !== undefined}
-                            helperText={methods.formState.errors.category_information_id ? 'Category is required' : ''}
+                            helperText={methods.formState.errors.category_information_id ? 'Please input category' : ''}
                           />
                         )}
                       />

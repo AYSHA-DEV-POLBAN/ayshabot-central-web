@@ -1,9 +1,6 @@
 import Grid from '@mui/material/Grid';
 import React from 'react';
 import conversation from '../../assets/conversation.png'
-// import rightBackground from '../../assets/frame79.png'
-// import logo from '../../assets/logo.png'
-// import Forgot from './forgot';
 import Login from './login';
 import "../../App.css";
 import { Hidden, Typography } from '@mui/material';
@@ -18,9 +15,7 @@ const LoginScreen = () => {
     let dom = null
     if (stat === 'login') {
       dom = <Login changeStat={changeStat} />
-    } else if (stat === 'forgot') {
-    //   dom = <Forgot changeStat={changeStat} />
-    }
+    } 
     return dom
   }
   return(
@@ -28,17 +23,6 @@ const LoginScreen = () => {
         <Grid container height="100%">
           <Grid item xs={12} sm={6} height="100%" display="flex" flexDirection="column">
             <Grid item xs={12}>
-            {/* <Grid
-              item
-              xs={12}
-              paddingTop={{xs: 6, sm: 4}}
-              paddingLeft={{xs: 0, sm: 9}}
-              display={{ xs: 'flex', sm: 'block' }}
-              justifyContent={{ xs: 'center', sm: 'flex-start' }}
-              alignItems={{ xs: 'center' }}
-            >
-                <img alt="leftImage" src={''} style={{ maxWidth: '100%', height: 'auto' }}/>
-              </Grid> */}
               <Grid item xs={12} 
                 paddingLeft={{xs:3, md:12, lg:25}} 
                 paddingRight={{xs:3, md:12, lg:25}} 

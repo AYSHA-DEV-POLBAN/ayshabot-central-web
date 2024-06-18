@@ -214,7 +214,7 @@ const EditInformasi = () => {
                               }));
                             }}
                             error={!!methods.formState.errors.title_information}
-                            helperText={methods.formState.errors.title_information ? 'Title is required' : ''}
+                            helperText={methods.formState.errors.title_information ? 'Please input category' : ''}
                           />
                         )}
                       />

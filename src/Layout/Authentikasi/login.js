@@ -7,9 +7,6 @@ import {
   InputAdornment,
   TextField,
   Typography,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
   CircularProgress
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -21,7 +18,6 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import client from "../../Global/client";
 import { useNavigate } from 'react-router';
 import { AlertContext } from "../../Context";
-// import CustomAlert from "../../Component/Alert";
 
 const Login = ({ changeStat }) => {
   const navigate = useNavigate()
@@ -33,15 +29,15 @@ const Login = ({ changeStat }) => {
 
   const validationSchema = yup.object().shape({
     email: yup.string().required("Please input your email").email("Invalid email address"),
-    // password: yup
-    //   .integer()
-    //   .required("Please input your password")
-    //   .min(8, "Password must be at least 8 characters")
-    //   .max(16, "Password must not exceed 16 characters")
-    //   .matches(
-    //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?& #^_\-+=()<>,./|\[\]{}~])[A-Za-z\d@$!%*?& #^_\-+=()<>,./|\[\]{}~]*$/,
-    //     "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-    //   ),
+    password: yup
+      .string()
+      .required("Please input your password")
+      .min(8, "Password must be at least 8 characters")
+      .max(16, "Password must not exceed 16 characters")
+      // .matches(
+      //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?& #^_\-+=()<>,./|\[\]{}~])[A-Za-z\d@$!%*?& #^_\-+=()<>,./|\[\]{}~]*$/,
+      //   "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+      // ),
   });
 
   const { handleSubmit, formState: { errors }, register } = useForm({
@@ -83,7 +79,6 @@ const Login = ({ changeStat }) => {
 
   return (
     <>
-    {/* <CustomAlert /> */}
     <form onSubmit={handleSubmit(handleLogin)}>
     <Grid container paddingTop={12}>
       <Grid item xs={12} textAlign={"center"}>
