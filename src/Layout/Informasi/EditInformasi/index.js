@@ -6,10 +6,8 @@ import { Dialog, Button, DialogTitle, DialogContent, DialogContentText, DialogAc
 import '../../../App.css';
 import { useNavigate } from 'react-router';
 import { FormProvider, useForm, Controller } from "react-hook-form";
-import FormInputText from '../../../Component/FormInputText';
 import client from '../../../Global/client';
 import { AlertContext } from '../../../Context';
-import axios from 'axios';
 
 const EditInformasi = () => {
   const navigate = useNavigate();
@@ -46,7 +44,7 @@ const EditInformasi = () => {
 
   const methods = useForm({
     defaultValues: {
-      file_path_information: '',
+      document: '',
       title_information: '',
       category_information_id: '',
       description_information: ''
@@ -107,15 +105,15 @@ const EditInformasi = () => {
       } else {
         const data = {
           ...sendData,
-          file
+          document : file
         }
 
-        console.log("ini data perubahannya", sendData)
+        console.log("ini data perubahannya", data)
             const id = localStorage.getItem('id');
             const res = await client.requestAPI({
               method: 'PUT',
-              endpoint: `/information/edit/${id}`,
-              data
+              endpoint: `/information/edit_with_upload_file/${id}`,
+              data,
             })
 
             console.log('data edit', res)
@@ -148,7 +146,7 @@ const EditInformasi = () => {
     setFilePath(file.name);
     setSendData(prevData => ({
       ...prevData,
-      file_path_information: file.name
+      document: file
     }));
 
   };
@@ -176,7 +174,7 @@ const EditInformasi = () => {
                         type="file"
                         accept=".pdf"
                         className="custom-file-input"
-                        name='file_path_information'
+                        name='document'
                         onChange={handleFileChange}
                       />
                     </Grid>
@@ -209,10 +207,6 @@ const EditInformasi = () => {
                     />
                     </Grid>
                     <Grid item xs={12} sm={12}>
-                    <Controller
-                      name="category_information_id"
-                      control={methods.control}
-                      render={({ field }) => (
                           <Autocomplete
                             disablePortal
                             id="combo-box-demo"
@@ -220,18 +214,13 @@ const EditInformasi = () => {
                             options={optCategory}
                             value={optCategory.find((option) => option.id === dataCategory) || null}
                             sx={{ width: "100%", marginTop: "8px" }}
-                            // onChange={(event, newValue) => methods.setValue('category_information_id', newValue ? newValue.id : null)}
-                            // onChange={(_event, newValue) => {
-                            //   if(newValue){
-                            //     handleChange({target : { name : 'category_information_id', value: newValue.id }}, newValue)
-                            //     // setDataCategory(newValue.id)
-                            //     field.onChange(newValue.id);
-                            //   }
-                            // }}
                             onChange={(_event, newValue) => {
                               if (newValue) {
-                                handleChange({ target: { name: 'category_information_id', value: newValue.id } }, newValue);
-                                field.onChange(newValue.id);
+                                setDataCategory(newValue.id)
+                                setSendData(prevData => ({
+                                  ...prevData,
+                                  category_information_id: newValue.id
+                                }));
                               }
                             }}
                             getOptionLabel={(option) => option.name}
@@ -246,8 +235,6 @@ const EditInformasi = () => {
                               />
                             )}
                           />
-                        )}
-                      />
                     </Grid>
                     <Grid item xs={12} sm={12}>
                     <Controller
