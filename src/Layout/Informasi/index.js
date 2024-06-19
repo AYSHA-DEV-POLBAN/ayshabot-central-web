@@ -172,7 +172,7 @@ const Informasi = () => {
         no: number + (index + 1),
         id: value.id,
         informationName: value.title_information,
-        categoryInformation: value.category_information_id,
+        categoryInformation: value.CategoryInformation.name_category_information,
         desc: value.description_information,
         file: value.file_path_information,
         informationStatus: value.status_information

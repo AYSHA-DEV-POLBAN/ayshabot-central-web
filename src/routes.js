@@ -135,7 +135,7 @@ export const closedRoutes = (userId) => {
       key: "detail history_conversation",
     },
   ]
-  if (userId != 2) {
+  if (userId !== 2) {
     routes.push(
       {
         path: "/user",

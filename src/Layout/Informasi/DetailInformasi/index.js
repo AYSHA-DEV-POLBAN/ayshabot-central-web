@@ -87,7 +87,7 @@ const DetailInformasi = () => {
                               <Typography variant='labelHeaderDetail'  fontWeight={'bold'}>Category Information :</Typography>
                             </Grid>
                             <Grid item xs={6}>
-                              <Typography variant='labelHeaderDetail' style={{ wordBreak: 'break-word' }}>{detail.category_information_id}</Typography>
+                              <Typography variant='labelHeaderDetail' style={{ wordBreak: 'break-word' }}>{detail.CategoryInformation.name_category_information}</Typography>
                             </Grid>
                           </Grid>
                       </Grid>

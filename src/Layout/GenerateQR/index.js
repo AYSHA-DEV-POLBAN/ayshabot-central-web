@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import DataTable from '../../Component/DataTable';
-import { Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Button, Box, Grid } from '@mui/material';
+import { Typography, Grid, Button, CircularProgress } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
-import Header from '../../Component/Header';
-import Rating from '@mui/material/Rating';
-import { useNavigate } from "react-router";
-// import client from "../../global/client";
+import client from '../../Global/client';
 import { AlertContext } from "../../Context";
 import BreadCumbComp from '../../Component/DataBread';
-
+import axios from 'axios';
 
 const GenerateQR = () => {
   const dataBread = [
@@ -24,84 +20,68 @@ const GenerateQR = () => {
     },
   ];
 
-  const [open, setOpen] = useState(false);
-  const [openAlert, setOpenAlert] = useState(false);
-  const navigate = useNavigate();
   const [data, setData] = useState([]);
-  const [totalData, setTotalData] = useState();
-  const { setDataAlert } = useContext(AlertContext)
-
-  const handleClickOpen = async (id) => {
-    //setId
-    // setidHapus(id)
-    setOpen(true)
-  };
+  const { setDataAlert } = useContext(AlertContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showQR, setShowQR] = useState(false);
 
   useEffect(() => {
-    // getData()
-  }, [])
+    // getData();
+  }, []);
 
   const getData = async () => {
-    // const res = await client.requestAPI({
-    //   method: 'GET',
-    //   endpoint: `/backlog?page=${filter.page}&size=${filter.size}&sort=${filter.sortName},${filter.sortType}&search=${filter.search}`
-    // })
-    // rebuildData(res)
-  }
-
-  const rebuildData = (resData) => {
-    let temp = []
-    // let number = filter.page * filter.size
-    temp = resData.data.map((value, index) => {
-      return {
-        // no: number + (index + 1),
-        id: value.id,
-        projectName: value.attributes.projectName,
-        taskCode: value.attributes.taskCode,
-        taskName: value.attributes.taskName,
-        priority: value.attributes.priority,
-        status: value.attributes.status,
-        assignedTo: value.attributes.assignedTo
-      }
-    })    
-    setData([...temp])
-  }
-
-  const handleClose = () => {
-    setOpen(false);
+    setIsLoading(true);
+    
+    setShowQR(true)
+    const res = await axios.get('http://localhost:8002/create-session', {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+      },
+    });
+    setData(res);
+    setIsLoading(false);
+    console.log(res)
   };
-
 
   return (
     <div>
-      <SideBar title='Generate QR' >
-        <Grid container style={{marginTop: '20px', marginLeft: '10px'}}>
+      <SideBar title='Generate QR'>
+        <Grid style={{ marginTop: '20px', marginLeft: '10px' }}>
           <BreadCumbComp breadcrumbs={dataBread} />
+
+          <Grid container spacing={2} alignItems={'center'}>
+            <Grid item md={12} sm={12} xs={12} marginLeft={1} className='card-container'>
+              <Grid container direction="column" alignItems={'center'}>
+                <Grid item>
+                  <Typography fontWeight={'bold'} fontSize={30} marginTop={5}>
+                    Scan QR Code Berikut untuk Mengaktifkan Whatsapp Chatbot
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Button variant="contained" onClick={getData} fullWidth>
+                  Generate QR Code
+                </Button>
+              </Grid>
+              {showQR && data && (
+                <Grid item xs={12} height="100%" style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: '20px'
+                }}>
+                  <img src={'http://localhost:8002/uploads/qr_wa/qr_code_image.png'} style={{
+                    width: '30%',
+                    minHeight: '30%',
+                  }} />
+                </Grid>
+              )}
+            </Grid>
+          </Grid>
         </Grid>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-          className="dialog-delete"
-        >
-          <DialogTitle id="alert-dialog-title" className='dialog-delete-header'>
-            {"Delete Data"}
-          </DialogTitle>
-          <DialogContent className="dialog-delete-content">
-            <DialogContentText className='dialog-delete-text-content' id="alert-dialog-description">
-              Warning: Deleting this data is irreversible. Are you sure you want to proceed?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions className="dialog-delete-actions">
-            <Button onClick={handleClose} variant='outlined' className="button-text">Cancel</Button>
-            {/* <Button onClick={() => deleteData(idHapus)} className='delete-button button-text'>Delete Data</Button> */}
-            {/* <Button onClick={() => onDelete(idHapus)} className='delete-button button-text'>Delete Data</Button> */}
-          </DialogActions>
-        </Dialog>
       </SideBar>
     </div>
-  )
+  );
 }
 
-export default GenerateQR
+export default GenerateQR;
