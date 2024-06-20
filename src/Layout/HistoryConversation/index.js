@@ -89,7 +89,7 @@ const HistoryConversation = () => {
       return {
         no: number + (index + 1),
         id: value.id,
-        phoneNumber: value.client_id,
+        phoneNumber: value.Client.whatsapp_number,
         question: value.question_client,
         answer: value.response_system,
         bill: value.bill,

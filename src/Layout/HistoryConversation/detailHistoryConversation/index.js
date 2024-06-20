@@ -40,7 +40,7 @@ const DetailHistoryConversation = () => {
     })
     console.log(res)
     if (res.data) {
-      setDetail(res.data) 
+      setDetail({...res.data, whatsapp: res.data.Client.whatsapp_number}) 
     }
   }
 
@@ -66,7 +66,7 @@ const DetailHistoryConversation = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 {/* <Typography variant='textDetail'>0812342131234</Typography> */}
-                              <Typography variant='labelHeaderDetail' style={{ wordBreak: 'break-word' }}>{detail.client_id}</Typography>
+                              <Typography variant='labelHeaderDetail' style={{ wordBreak: 'break-word' }}>{detail.whatsapp}</Typography>
                             </Grid>
                           </Grid>
                       </Grid>

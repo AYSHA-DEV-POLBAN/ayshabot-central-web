@@ -80,6 +80,7 @@ export default function SideBar({ children, title }) {
     parseInt(currentMenu ? currentMenu.idx : 0)
   );
   const dataRoute = FinalRoutes().filter((res) => res.icon);
+  console.log(dataRoute);
 
   const handleDrawerClose = () => {
     setOpen(!open);

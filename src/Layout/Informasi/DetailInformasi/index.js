@@ -41,9 +41,11 @@ const DetailInformasi = () => {
       method: 'GET',
       endpoint: `/information/get_information_by_id/${id}`
     })
+    console.log(res.data.CategoryInformation.name_category_information)
+    
 
     if (res.data) {
-      setDetail(res.data) 
+      setDetail({...res.data, nameInformation: res.data.CategoryInformation.name_category_information}) 
     }
   }
   
@@ -52,6 +54,8 @@ const DetailInformasi = () => {
   const handleDrawerClose = () => {
     setOpenSide(!openSide);
   };
+
+ 
 
   return (
     // <SideBar>
@@ -87,7 +91,7 @@ const DetailInformasi = () => {
                               <Typography variant='labelHeaderDetail'  fontWeight={'bold'}>Category Information :</Typography>
                             </Grid>
                             <Grid item xs={6}>
-                              <Typography variant='labelHeaderDetail' style={{ wordBreak: 'break-word' }}>{detail.CategoryInformation.name_category_information}</Typography>
+                              <Typography variant='labelHeaderDetail' style={{ wordBreak: 'break-word' }}>{detail.nameInformation}</Typography>
                             </Grid>
                           </Grid>
                       </Grid>
