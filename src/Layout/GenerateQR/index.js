@@ -24,6 +24,8 @@ const GenerateQR = () => {
   const { setDataAlert } = useContext(AlertContext);
   const [isLoading, setIsLoading] = useState(false);
   const [showQR, setShowQR] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(Date.now());
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     // getData();
@@ -39,9 +41,20 @@ const GenerateQR = () => {
       },
     });
     setData(res);
+    setMessage(res.data.message)
     setIsLoading(false);
     console.log(res)
   };
+
+  useEffect(() => {
+    if (showQR) {
+      const timer = setInterval(() => {
+        setRefreshKey(Date.now());
+      }, 5000);
+
+      return () => clearInterval(timer); 
+    }
+  }, [showQR]);
 
   return (
     <div>
@@ -58,11 +71,27 @@ const GenerateQR = () => {
                   </Typography>
                 </Grid>
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12}  style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: '20px'
+                }}>
                 <Button variant="contained" onClick={getData} fullWidth>
                   Generate QR Code
                 </Button>
               </Grid>
+
+            {message && (
+              <Grid item xs={12} style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: '20px'
+              }}>
+                <Typography variant="body1">{message}</Typography>
+              </Grid>
+            )}
               {showQR && data && (
                 <Grid item xs={12} height="100%" style={{
                   display: 'flex',
@@ -70,7 +99,7 @@ const GenerateQR = () => {
                   alignItems: 'center',
                   marginTop: '20px'
                 }}>
-                  <img src={'http://localhost:8002/uploads/qr_wa/qr_code_image.png'} style={{
+                  <img src={`http://localhost:8002/uploads/qr_wa/qr_code_image.png?timestamp=${refreshKey}`} style={{
                     width: '30%',
                     minHeight: '30%',
                   }} />
