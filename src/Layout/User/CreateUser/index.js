@@ -102,6 +102,7 @@ const CreateUser = () => {
     // <SideBar>
     <div>
       <SideBar title='User' >
+      <Grid style={{marginTop:'20px', marginLeft:'10px'}}>
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           <Grid item xs={12}>
@@ -165,6 +166,7 @@ const CreateUser = () => {
               </form>
             </FormProvider>
           </Grid>
+        </Grid>
         </Grid>
         <Dialog
           open={open}

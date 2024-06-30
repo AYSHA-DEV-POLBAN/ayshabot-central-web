@@ -53,6 +53,7 @@ const DetailUser = () => {
   return (
     <div>
       <SideBar title='User' > 
+      <Grid style={{marginTop:'20px', marginLeft:'10px'}}>
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           <Grid item xs={12}>
@@ -95,7 +96,7 @@ const DetailUser = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 {/* <Typography>Admin</Typography> */}
-                              <Typography variant='labelHeaderDetail'>{detail.role_id}</Typography>
+                              <Typography variant='labelHeaderDetail'>{detail.role_id === 1 ? "Superadmin" : "Operator"}</Typography>
                             </Grid>
                           </Grid>
                       </Grid>
@@ -106,13 +107,14 @@ const DetailUser = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 {/* <Typography>Active</Typography> */}
-                              <Typography variant='labelHeaderDetail'>{detail.status}</Typography>
+                              <Typography variant='labelHeaderDetail'>{detail.status === 1 ? "Active" : "Non-Active"}</Typography>
                             </Grid>
                           </Grid>
                       </Grid>
                     </Grid>
                 </div>
           </Grid>
+        </Grid>
         </Grid>
      </SideBar>
         </div>

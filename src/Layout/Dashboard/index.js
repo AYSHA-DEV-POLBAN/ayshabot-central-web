@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import SideBar from '../../Component/Sidebar';
 import BreadCumbComp from '../../Component/DataBread';
 import client from '../../Global/client';
-import DataTable from '../../Component/DataTable';
 import { useNavigate } from "react-router";
 
 
@@ -12,6 +11,7 @@ const Dashboard = () => {
   const [dataNumber, setDataNumber] = useState([]);
   const [dataHistoryPerDay, setDataHistoryPerDay] = useState([]);
   const [dataHistoryPerMonth, setDataHistoryPerMonth] = useState([]);
+  const [dateNumberPerMonth, setDataNumberPerMonth] = useState([])
   const [data, setData] = useState([]);
   const [totalData, setTotalData] = useState();
   const navigate = useNavigate();
@@ -49,13 +49,13 @@ const Dashboard = () => {
       field: 'question',
       headerName: 'Question',
       flex: 1,
-      minWidth: 240,
+      minWidth: 520,
     },
     {
       field: 'answer',
       headerName: 'Answer',
       flex: 1 ,
-      minWidth: 100
+      minWidth: 520
     },
     {
       field: 'bill',
@@ -69,6 +69,7 @@ const Dashboard = () => {
     getDataNumberPerDay()
     getHistoryPerDay()
     getHistoryPerMonth()
+    getDataNumberPerMonth()
     getData()
   }, [filter])
 
@@ -96,6 +97,14 @@ const Dashboard = () => {
     setDataHistoryPerMonth(res.data)
   } 
 
+  const getDataNumberPerMonth = async () => {
+    const res = await client.requestAPI({
+      method: 'GET',
+      endpoint: `/client/count-month`
+    })
+    setDataNumberPerMonth(res.data)
+  } 
+
   const getData = async () => {
     const res = await client.requestAPI({
       method: 'GET',
@@ -109,40 +118,21 @@ const Dashboard = () => {
     let number = filter.page * filter.size
     temp = resData.data.map((value, index) => {
       return {
-        no: number + (index + 1),
+        no: index + 1,
         id: value.id,
-        phoneNumber: value.client_id,
+        phoneNumber: value.Client.whatsapp_number,
         question: value.question_client,
         answer: value.response_system,
         bill: value.bill,
       }
     })    
-
-    if (filter.sortName && filter.sortType) {
-      temp.sort((a, b) => {
-        const valueA = (typeof a[filter.sortName] === 'string') ? a[filter.sortName].toLowerCase() : '';
-        const valueB = (typeof b[filter.sortName] === 'string') ? b[filter.sortName].toLowerCase() : '';
-        if (filter.sortType === 'asc') {
-          return valueA > valueB ? 1 : -1;
-        } else {
-          return valueA < valueB ? 1 : -1;
-        }
-      });
-    }
-
     setData([...temp])
     setTotalData(resData.data.length)
   }
 
-  const onFilter = (dataFilter) => {
-    setFilter({
-      page: dataFilter.page,
-      size: dataFilter.pageSize,
-      sortName: dataFilter.sorting.field !== '' ? dataFilter.sorting[0].field : 'question',
-      sortType: dataFilter.sorting.sort !== '' ? dataFilter.sorting[0].sort : 'asc',
-      search: filter.search
-    })
-  }
+  const showMore = () => {
+    navigate("/history_conversation");
+  };
 
   const [openSide, setOpenSide] = useState(false);
   const handleDrawerClose = () => {
@@ -152,11 +142,11 @@ const Dashboard = () => {
   return (
     <div>
       <SideBar title='Dashboard' >
-        <Grid container style={{marginTop: '20px', marginLeft: '10px'}}>
+        <Grid container style={{marginTop: '20px', marginLeft: '30px'}}>
           <BreadCumbComp breadcrumbs={dataBread} />
           
-            <Grid container spacing={2}>
-              <Grid item md={3.8} sm={6} xs={12} marginLeft={1} className='card-container'>
+            <Grid container spacing={3} mt={0.2}>
+              <Grid item md={2.8} sm={6} xs={12} marginLeft={1} className='card-container'>
                   <Grid container direction="column">
                     <Grid item>
                       <Typography fontWeight={'bold'} fontSize={20}>Total Question Per Day</Typography>
@@ -166,7 +156,7 @@ const Dashboard = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item md={3.8} sm={6} xs={12} marginLeft={1} className='card-container'>
+                <Grid item md={2.8} sm={6} xs={12} marginLeft={1} className='card-container'>
                   <Grid container direction="column">
                     <Grid item>
                       <Typography fontWeight={'bold'} fontSize={20}>Total Number Per Day</Typography>
@@ -176,7 +166,7 @@ const Dashboard = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item md={3.8} sm={6} xs={12} marginLeft={1} className='card-container'>
+                <Grid item md={2.8} sm={6} xs={12} marginLeft={1} className='card-container'>
                   <Grid container direction="column">
                     <Grid item>
                       <Typography fontWeight={'bold'} fontSize={20}>Total Question Per Month</Typography>
@@ -186,23 +176,54 @@ const Dashboard = () => {
                     </Grid>
                   </Grid>
                 </Grid>
+                <Grid item md={2.8} sm={6} xs={12} marginLeft={1} className='card-container'>
+                  <Grid container direction="column">
+                    <Grid item>
+                      <Typography fontWeight={'bold'} fontSize={20}>Total Number Per Month</Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography textAlign={'center'} fontSize={100}>{dateNumberPerMonth !== null ? dateNumberPerMonth : 'Loading...'}</Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
             </Grid>
           
 
             <Grid container style={{ marginTop: '20px', marginLeft: '10px', maxWidth: '100%' }}>
-              {/* <Grid item md={12} sm={12} xs={12} className='data-table-container'> */}
-                <DataTable
-                data={data}
-                columns={columns}
-                onFilter={(dataFilter => onFilter(dataFilter))}
-                totalData={totalData}
-                getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
-                hideAddButton={true}
-                autoHeight
-                autoWidth
-              />
-              {/* </Grid> */}
+              <Grid item xs={12} sm={7.5} mt={1}>
+                <Typography fontWeight={'bold'} fontSize={24}>History Conversation</Typography>
+              </Grid>
+              <Grid item xs={12} sm={4} mt={1} alignSelf="center" sx={{textAlign: {xs: "start", sm:"end"}}}>
+                <Button
+                  variant="contained"
+                  onClick={() => showMore()}
+                >
+                  Show More
+                </Button>
+              </Grid>
+
+              <Grid container style={{ marginTop: '20px', marginLeft: '10px', maxWidth: '100%' }}>
+                <Grid container spacing={2} style={{ fontWeight: 'bold', padding: '10px', borderBottom: '1px solid #ccc' }}>
+                  {columns.map((col, index) => (
+                    <Grid item key={index} xs={col.flex} style={{ minWidth: col.minWidth }}>
+                      {col.headerName}
+                    </Grid>
+                  ))}
+                </Grid>
+
+                {data.slice(-5).map((item, idx) => (
+                  <Grid container key={idx} spacing={2} style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>
+                    {columns.map((col, index) => (
+                      <Grid item key={index} xs={col.flex} style={{ minWidth: col.minWidth }}>
+                        {col.field === 'no' ? idx + 1 : item[col.field]}
+                      </Grid>
+                    ))}
+                  </Grid>
+                ))}
+              </Grid>
+              
             </Grid>
+
         </Grid>
       </SideBar>
     </div>

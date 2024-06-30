@@ -20,6 +20,7 @@ import { useLocation } from "react-router-dom";
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import Header from "../Header";
+import miniLogoAysha from "../../assets/minilogoAysha.png"
 
 const drawerWidth = 300;
 
@@ -110,7 +111,18 @@ export default function SideBar({ children, title }) {
         <DrawerHeader className="drawer-header-container">
           <div className="drawer-header">
             <Grid container>
-              <Grid item xs={4} className="list-menu-container">
+              {/* <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              
+              </Grid> */}
+              <Grid sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {open ? (
+                  <>
+                    <img src={miniLogoAysha} alt="icon" style={{ width: 50, height: 50 }}/>
+                  </>
+                ) : ""}
+                </Grid>
+              <Grid item xs={4} className="list-menu-container" >
+                
                   <IconButton onClick={handleDrawerClose} sx={{color: '#AFD3E2'}}>
                     {!open ? <MenuIcon /> : <MenuOpenIcon />}
                   </IconButton>

@@ -107,6 +107,7 @@ const CreatePrompting = () => {
   return (
     <div>
       <SideBar title='Command' >
+      <Grid style={{marginTop:'20px', marginLeft:'10px'}}>
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           <Grid item xs={12}>
@@ -170,6 +171,7 @@ const CreatePrompting = () => {
                 </div>
               </form>
             </FormProvider>
+          </Grid>
           </Grid>
         </Grid>
         <Dialog

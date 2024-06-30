@@ -121,7 +121,7 @@ const DetailInformasi = () => {
                               <Typography variant='labelHeaderDetail' fontWeight={'bold'}>Information Status :</Typography>
                             </Grid>
                             <Grid item xs={6}>
-                              <Typography variant='labelHeaderDetail'>{detail.status_information}</Typography>
+                              <Typography variant='labelHeaderDetail'>{detail.status_information === 1 ? 'Active' : 'Non-active'}</Typography>
                             </Grid>
                           </Grid>
                       </Grid>

@@ -135,7 +135,7 @@ export const closedRoutes = (userId) => {
       key: "detail history_conversation",
     },
   ]
-  if (userId !== 2) {
+  if (userId = 1) {
     routes.push(
       {
         path: "/user",
@@ -199,6 +199,8 @@ export const FinalRoutes = () => {
 
   if (token && userId) {
     return closedRoutes(userId);
+    // const routes = closedRoutes(userId);
+    // return userId == 1 ? routes : routes.filter(route => route.key !== "restricted_route_key");
   } else {
     return openRoutes;
   }

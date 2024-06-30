@@ -103,7 +103,7 @@ const LogHistory = () => {
       return {
         no: number + (index + 1),
         id: value.id,
-        user: value.user_id,
+        user: value.user_id === 1 ? "Superadmin" : "Operator",
         client: value.client_id,
         tableName: value.table_name,
         actionName: value.action_name,

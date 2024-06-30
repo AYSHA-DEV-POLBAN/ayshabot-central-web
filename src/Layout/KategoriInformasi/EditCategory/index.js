@@ -133,6 +133,7 @@ const EditCategory = () => {
   return (
     <div>
       <SideBar title='Category Information' >
+      <Grid style={{marginTop:'20px', marginLeft:'10px'}}>
       <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           <Grid item xs={12}>
@@ -197,6 +198,7 @@ const EditCategory = () => {
                 </div>
               </form>
             </FormProvider>
+          </Grid>
           </Grid>
         </Grid>
         <Dialog

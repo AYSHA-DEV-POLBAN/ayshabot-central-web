@@ -87,7 +87,7 @@ const DetailPrompting = () => {
                             <Typography variant='labelHeaderDetail' fontWeight={'bold'}>Command Status :</Typography>
                           </Grid>
                           <Grid item xs={6}>
-                            <Typography variant='labelHeaderDetail'>{detail.status_command}</Typography>
+                            <Typography variant='labelHeaderDetail'>{detail.status_command === 1 ? 'Active' : 'Non-active'}</Typography>
                           </Grid>
                         </Grid>
                     </Grid>

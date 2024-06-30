@@ -5,6 +5,7 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router';
 import globalTheme from './Theme';
 import { FinalRoutes } from './routes';
 import { AlertContext } from './Context';
+import { Grid, Typography } from '@mui/material';
 
 const App = () => {
   const navigate = useNavigate()
@@ -50,6 +51,11 @@ const App = () => {
             })}
           </Routes>
         </Suspense>
+        <Grid item xs={12} paddingLeft={100} display="flex" alignItems="flex-end">
+          <Typography className='text-files-sizes' color='#8a8a8a' fontSize="0.875rem">
+            &copy; {new Date().getFullYear()} RS Islam Aysha Bogor
+          </Typography>
+        </Grid>
       </AlertContext.Provider>
     </ThemeProvider>
   );

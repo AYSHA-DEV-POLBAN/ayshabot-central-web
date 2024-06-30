@@ -75,7 +75,7 @@ const DetailLogHistory = () => {
                             <Typography variant='labelHeaderDetail' fontWeight={'bold'}>User :</Typography>
                           </Grid>
                           <Grid item xs={6}>
-                            <Typography variant='labelHeaderDetail' style={{ wordBreak: 'break-word' }}>{detail.user_id}</Typography>
+                            <Typography variant='labelHeaderDetail' style={{ wordBreak: 'break-word' }}>{detail.user_id === 1 ? "Superadmin" : "Operator"}</Typography>
                           </Grid>
                         </Grid>
                     </Grid>

@@ -32,7 +32,7 @@ const User = () => {
     {
       field: 'userLevel',
       headerName: 'Role',
-      flex: 0.3 ,
+      flex: 0.7 ,
       minWidth: 100
     },
     {
@@ -204,14 +204,14 @@ const User = () => {
   const rebuildData = (resData) => {
     let temp = []
     let number = filter.page * filter.size
-    temp = resData.data.map((value, index) => {
+    temp = resData.data.filter(value => value.id === 2).map((value, index) => {
       return {
         no: number + (index + 1),
         id: value.id,
         name: value.name,
         email: value.email,
         email_verify: value.verify_email,
-        userLevel: value.role_id,
+        userLevel: value.role_id === 1 ? "Superadmin" : "Operator",
         userStatus: value.status
       }
     })    

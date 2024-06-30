@@ -172,6 +172,7 @@ const EditInformasi = () => {
   return (
     <div>
       <SideBar title='Informasi'>
+        <Grid style={{marginTop:'20px', marginLeft:'10px'}}>
         <Breadcrumbs breadcrumbs={dataBread} />
         <Grid container>
           <Grid item xs={12}>
@@ -293,6 +294,7 @@ const EditInformasi = () => {
                 </div>
               </form>
             </FormProvider>
+          </Grid>
           </Grid>
         </Grid>
         <Dialog
