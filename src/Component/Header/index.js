@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Typography, IconButton, Button, Avatar, Menu, MenuItem, ListItemIcon, Divider, Tooltip, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions } from "@mui/material";
+import { Typography, IconButton, Button, Avatar, Menu, MenuItem, ListItemIcon, Divider, Tooltip, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, Alert,DialogActions } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import LockResetOutlinedIcon from '@mui/icons-material/LockResetOutlined';
 import { useForm, FormProvider, Controller } from "react-hook-form";
@@ -20,6 +20,11 @@ const Header = ({ title, open }) => {
   const [isSave, setIsSave] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const openMenu = Boolean(anchorEl);
+  const [alertState, setAlertState] = useState({
+    open: false,
+    message: '',
+    severity: '',
+  });
 
   const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -66,29 +71,41 @@ const Header = ({ title, open }) => {
       const data = {
         ...sendData,
       };
-      console.log(data)
-      const id = localStorage.getItem("userID");
+      console.log(localStorage.getItem("id_login"))
+      const id = localStorage.getItem("id_login");
       const token = localStorage.getItem("token")
       const res = await axios.put(`http://localhost:8001/api/v1/users/change_password/${id}`, sendData, {
         headers: {
           'Content-Type': 'application/json; charset=utf-8',
-          // 'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`
         },
       });
       if (!res.isError) {
-        setDataAlert({
-          severity: 'success',
-          open: true,
-          message: res.status
-        });
+        if(res.data.message == "Update Password User Successfully"){
+          setDataAlert({
+            severity: 'success',
+            open: true,
+            message: res.status
+          });
+        }
+        else{
+          setAlertState({
+            open: true,
+            message: res.data.message,
+            severity: 'error',
+          });
+        }
+        console.log("ya")
+        console.log("ini", res)
+
         setTimeout(() => {
           navigate('/');
         }, 3000);
       } else {
-        setDataAlert({
+        setAlertState({
+          open: true,
+          message: 'Failed to change password',
           severity: 'error',
-          message: res.error.detail,
-          open: true
         });
       }
     }
@@ -152,8 +169,8 @@ const Header = ({ title, open }) => {
       </Grid>
 
       <Dialog
-        open={openChange} 
-        onClose={cancelChange}     
+        open={openChange}
+        onClose={cancelChange}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         className="dialog-delete dialog-task"
@@ -163,11 +180,16 @@ const Header = ({ title, open }) => {
           Change Password
         </DialogTitle>
         <DialogContent className="dialog-task-content">
+          {alertState.open && (
+            <Alert severity={alertState.severity} onClose={() => setAlertState({ ...alertState, open: false })} sx={{ typography: 'body1', fontSize: '1rem' }}>
+              {alertState.message}
+            </Alert>
+          )}
           <DialogContentText
             className="dialog-delete-text-content"
             id="alert-dialog-description"
           >
-            Are you sure want to change your password?
+            Are you sure you want to change your password?
           </DialogContentText>
 
           <Grid item xs={12}>
@@ -183,7 +205,7 @@ const Header = ({ title, open }) => {
                           {...field}
                           focused
                           className='input-field-crud'
-                          placeholder='e.g Fasilitas Poliklinik'
+                          placeholder='Old Password'
                           label='Old Password *'
                           inputProps={{ maxLength: 50 }}
                         />
@@ -194,13 +216,21 @@ const Header = ({ title, open }) => {
                     <Controller
                       name='password_new'
                       control={methods.control}
-                      render={({ field }) => (
+                      rules={{
+                        validate: (value) => {
+                          const { password_new_confirmation } = methods.getValues();
+                          return value === password_new_confirmation || "Passwords do not match";
+                        },
+                      }}
+                      render={({ field, fieldState }) => (
                         <TextField
                           {...field}
                           focused
                           className='input-field-crud'
-                          placeholder='e.g Fasilitas Poliklinik'
+                          placeholder='New Password'
                           label='New Password *'
+                          error={!!fieldState.error}
+                          helperText={fieldState.error?.message}
                           inputProps={{ maxLength: 50 }}
                         />
                       )}
@@ -210,13 +240,15 @@ const Header = ({ title, open }) => {
                     <Controller
                       name='password_new_confirmation'
                       control={methods.control}
-                      render={({ field }) => (
+                      render={({ field, fieldState }) => (
                         <TextField
                           {...field}
                           focused
                           className='input-field-crud'
-                          placeholder='e.g Fasilitas Poliklinik'
-                          label='Confirmation New Password *'
+                          placeholder='Confirm New Password'
+                          label='Confirm New Password *'
+                          error={!!fieldState.error}
+                          helperText={fieldState.error?.message}
                           inputProps={{ maxLength: 50 }}
                         />
                       )}
