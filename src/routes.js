@@ -134,8 +134,9 @@ export const closedRoutes = (userId) => {
       name: "History Conversation Detail",
       key: "detail history_conversation",
     },
-  ]
-  if (userId = 1) {
+  ];
+
+  if (userId === "1") { // Adjust this condition based on how userId is stored in localStorage
     routes.push(
       {
         path: "/user",
@@ -169,12 +170,14 @@ export const closedRoutes = (userId) => {
       {
         path: "/logHistory/detail",
         element: <DetailLogHistory />,
-        key: "log history",
+        key: "log history detail",
       },
-    )
+    );
   }
-  return routes
-}
+
+  return routes;
+};
+
 
  
 
@@ -182,6 +185,7 @@ export const closedRoutes = (userId) => {
 export const FinalRoutes = () => {
   const navigate = useNavigate();
   const openRoutes = [{ path: "/", element: <LoginScreen /> }];
+  console.log(localStorage)
   const userId = localStorage.getItem("userId") || null;
   const token = localStorage.getItem("token");
 

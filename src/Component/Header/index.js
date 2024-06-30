@@ -11,6 +11,7 @@ import axios from "axios";
 
 const Header = ({ title, open }) => {
   const name = localStorage.getItem("name");
+  console.log(name)
   const navigate = useNavigate();
   const { setDataAlert } = useContext(AlertContext);
 
@@ -150,7 +151,7 @@ const Header = ({ title, open }) => {
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
           <MenuItem>
-            <Avatar /> {name}
+            <Avatar sx={{ marginRight: 1 }}/> {name}
           </MenuItem>
           <Divider />
           <MenuItem onClick={changePass}>

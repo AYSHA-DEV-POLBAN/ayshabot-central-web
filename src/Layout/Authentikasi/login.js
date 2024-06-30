@@ -57,8 +57,9 @@ const Login = ({ changeStat }) => {
     console.log(res)
     if (!res.isError) {
       localStorage.setItem('token', res.data.token)
-      localStorage.setItem('userId', res.role_id)
+      localStorage.setItem('userId', res.data.role_id)
       localStorage.setItem('id_login', res.data.user_id)
+      localStorage.setItem('name', res.data.name)
       console.log("cek token", res.data.token)
       setDataAlert({
         severity: 'success',
