@@ -88,6 +88,7 @@ const Header = ({ title, open }) => {
             open: true,
             message: res.status
           });
+          navigate("/")
         }
         else{
           setAlertState({

@@ -204,7 +204,7 @@ const User = () => {
   const rebuildData = (resData) => {
     let temp = []
     let number = filter.page * filter.size
-    temp = resData.data.filter(value => value.id === 2).map((value, index) => {
+    temp = resData.data.filter(value => value.role_id === 2).map((value, index) => {
       return {
         no: number + (index + 1),
         id: value.id,
