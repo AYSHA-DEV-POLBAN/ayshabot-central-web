@@ -99,9 +99,6 @@ const Header = ({ title, open }) => {
         console.log("ya")
         console.log("ini", res)
 
-        setTimeout(() => {
-          navigate('/');
-        }, 3000);
       } else {
         setAlertState({
           open: true,
