@@ -53,13 +53,13 @@ const Informasi = () => {
       field: 'desc',
       headerName: 'Description',
       flex: 0.7,
-      minWidth: 240,
+      minWidth: 200,
     },
     {
       field: 'file',
       headerName: 'File',
       flex: 1 ,
-      minWidth: 180,
+      minWidth: 170,
       renderCell: (params) => {
         const fileName = params.value.split('/').pop();
         return(
@@ -73,7 +73,7 @@ const Informasi = () => {
       field: 'informationStatus',
       headerName: 'Status',
       flex: 1.5 ,
-      minWidth: 150,
+      minWidth: 50,
       renderCell: (data) => {
         const isActive = data.row.informationStatus === 1;
   

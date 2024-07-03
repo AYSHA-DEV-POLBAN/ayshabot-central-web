@@ -49,19 +49,19 @@ const Dashboard = () => {
       field: 'question',
       headerName: 'Question',
       flex: 1,
-      minWidth: 520,
+      minWidth: 300,
     },
     {
       field: 'answer',
       headerName: 'Answer',
       flex: 1 ,
-      minWidth: 520
+      minWidth: 300
     },
     {
       field: 'bill',
       headerName: 'Bill',
       flex: 1 ,
-      minWidth: 100
+      minWidth: 80
     },
   ];
 
@@ -146,7 +146,7 @@ const Dashboard = () => {
           <BreadCumbComp breadcrumbs={dataBread} />
           
             <Grid container spacing={3} mt={0.2}>
-              <Grid item md={2.8} sm={6} xs={12} marginLeft={1} className='card-container'>
+              <Grid item md={2.8} sm={6} xs={12} mt={2} marginLeft={1} className='card-container'>
                   <Grid container direction="column">
                     <Grid item>
                       <Typography fontWeight={'bold'} fontSize={20}>Total Question Per Day</Typography>
@@ -156,7 +156,7 @@ const Dashboard = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item md={2.8} sm={6} xs={12} marginLeft={1} className='card-container'>
+                <Grid item md={2.8} sm={6} xs={12} mt={2} marginLeft={1} className='card-container'>
                   <Grid container direction="column">
                     <Grid item>
                       <Typography fontWeight={'bold'} fontSize={20}>Total Number Per Day</Typography>
@@ -166,7 +166,7 @@ const Dashboard = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item md={2.8} sm={6} xs={12} marginLeft={1} className='card-container'>
+                <Grid item md={2.8} sm={6} xs={12} mt={2} marginLeft={1} className='card-container'>
                   <Grid container direction="column">
                     <Grid item>
                       <Typography fontWeight={'bold'} fontSize={20}>Total Question Per Month</Typography>
@@ -176,7 +176,7 @@ const Dashboard = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item md={2.8} sm={6} xs={12} marginLeft={1} className='card-container'>
+                <Grid item md={2.8} sm={6} xs={12} mt={2} marginLeft={1} className='card-container'>
                   <Grid container direction="column">
                     <Grid item>
                       <Typography fontWeight={'bold'} fontSize={20}>Total Number Per Month</Typography>

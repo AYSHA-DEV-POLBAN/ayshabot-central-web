@@ -85,7 +85,8 @@ const HistoryConversation = () => {
   const rebuildData = (resData) => {
     let temp = []
     let number = filter.page * filter.size
-    temp = resData.data.map((value, index) => {
+    const sortedData = resData.data.sort((a, b) => b.id - a.id);
+    temp = sortedData.map((value, index) => {
       return {
         no: number + (index + 1),
         id: value.id,
@@ -96,17 +97,17 @@ const HistoryConversation = () => {
       }
     })    
 
-    if (filter.sortName && filter.sortType) {
-      temp.sort((a, b) => {
-        const valueA = (typeof a[filter.sortName] === 'string') ? a[filter.sortName].toLowerCase() : '';
-        const valueB = (typeof b[filter.sortName] === 'string') ? b[filter.sortName].toLowerCase() : '';
-        if (filter.sortType === 'asc') {
-          return valueA > valueB ? 1 : -1;
-        } else {
-          return valueA < valueB ? 1 : -1;
-        }
-      });
-    }
+    // if (filter.sortName && filter.sortType) {
+    //   temp.sort((a, b) => {
+    //     const valueA = (typeof a[filter.sortName] === 'string') ? a[filter.sortName].toLowerCase() : '';
+    //     const valueB = (typeof b[filter.sortName] === 'string') ? b[filter.sortName].toLowerCase() : '';
+    //     if (filter.sortType === 'asc') {
+    //       return valueA > valueB ? 1 : -1;
+    //     } else {
+    //       return valueA < valueB ? 1 : -1;
+    //     }
+    //   });
+    // }
 
     if (filter.search) {
       temp = temp.filter(item =>

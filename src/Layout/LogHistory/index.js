@@ -19,26 +19,26 @@ const LogHistory = () => {
     {
       field: 'user',
       headerName: 'User',
-      flex: 0.7,
-      minWidth: 200,
+      flex: 0.,
+      minWidth: 180,
     },
     {
       field: 'client',
       headerName: 'Client',
-      flex: 0.7,
-      minWidth: 200,
+      flex: 0.6,
+      minWidth: 180,
     },
     {
       field: 'tableName',
       headerName: 'Table Name',
       flex: 1 ,
-      minWidth: 240
+      minWidth: 200
     },
     {
       field: 'actionName',
       headerName: 'Action Name',
       flex: 1 ,
-      minWidth: 240
+      minWidth: 200
     },
   ];
 
@@ -70,11 +70,7 @@ const LogHistory = () => {
     search: ''
   })
 
-  const handleClickOpen = async (id) => {
-    //setId
-    // setidHapus(id)
-    setOpen(true)
-  };
+
 
   useEffect(() => {
     getData()
