@@ -33,11 +33,11 @@ const LoginScreen = () => {
               </Grid>
             </Grid>
 
-            <Grid item xs={12} paddingLeft={1.875} display="flex" alignItems="flex-end">
+            {/* <Grid item xs={12} paddingLeft={1.875} display="flex" alignItems="flex-end">
               <Typography className='text-files-sizes' color='#8a8a8a' fontSize="0.875rem">
                 &copy; {new Date().getFullYear()} RS Islam Aysha Bogor
               </Typography>
-            </Grid>
+            </Grid> */}
           </Grid>
           <Hidden smDown>
           <Grid item xs={6} height="100%" style={{

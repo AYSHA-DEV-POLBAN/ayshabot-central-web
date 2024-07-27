@@ -51,7 +51,7 @@ const App = () => {
             })}
           </Routes>
         </Suspense>
-        <Grid item xs={12} paddingLeft={100} display="flex" alignItems="flex-end">
+        <Grid item xs={12} sm={6} justifyContent="center" display="flex" alignItems="flex-end">
           <Typography className='text-files-sizes' color='#8a8a8a' fontSize="0.875rem">
             &copy; {new Date().getFullYear()} RS Islam Aysha Bogor
           </Typography>

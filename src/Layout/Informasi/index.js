@@ -264,22 +264,21 @@ const Informasi = () => {
     <div>
       <SideBar title='Information' >
         <Grid style={{marginTop:'20px', marginLeft:'10px'}}>
-          <BreadCumbComp breadcrumbs={dataBread} />
-        <DataTable
-          title='Information'
-          data={data}
-          columns={columns}
-          searchTitle="Search By"
-          onAdd={() => onAdd()}
-          onFilter={(dataFilter => onFilter(dataFilter))}
-          handleChangeSearch={handleChangeSearch}
-          onDetail={(id) => handleDetail(id)}
-          onEdit={(id) => handleEdit(id)}
-          onDelete={(id) => handleClickOpen(id)}
-          totalData={totalData}
-          getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
-        />
-        
+            <BreadCumbComp breadcrumbs={dataBread} />
+            <DataTable
+              title='Information'
+              data={data}
+              columns={columns}
+              searchTitle="Search By"
+              onAdd={() => onAdd()}
+              onFilter={(dataFilter => onFilter(dataFilter))}
+              handleChangeSearch={handleChangeSearch}
+              onDetail={(id) => handleDetail(id)}
+              onEdit={(id) => handleEdit(id)}
+              onDelete={(id) => handleClickOpen(id)}
+              totalData={totalData}
+              getRowHeight={() => 'auto'} getEstimatedRowHeight={() => 200}
+            />
         </Grid>
         <Dialog
           open={open}

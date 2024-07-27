@@ -112,7 +112,7 @@ const Header = ({ title, open }) => {
 
   return (
     <Grid container rowSpacing={5} columnSpacing={2.5} sx={{ position: 'sticky', top: 0, zIndex: 1100, width: { xs: '110%', sm: '103.95%' }, height: '70px', backgroundColor: '#146C94', alignItems: 'center', padding: '0 16px' }}>
-      <Grid item xs={11} sm={11} display={'flex'} alignItems="center">
+      <Grid item xs={10} sm={11} display={'flex'} alignItems="center">
         <Grid container className="containerHeader">
           <Grid item xs={12} sx={{marginLeft: `${open ? 0 : -15}px`, transition: 'margin-left 0.3s ease, width 0.3s ease', padding: '0 0', marginTop: '-30px'}}>
             <Typography variant="headerCardMenu" padding={1} sx={{ paddingBottom: '0', marginTop: '-30px' }}>
@@ -122,7 +122,7 @@ const Header = ({ title, open }) => {
         </Grid>
       </Grid>
 
-      <Grid item xs={1} display="flex" justifyContent="flex-start" alignItems="center" sx={{ padding: '0 0', marginTop: '-20px' }}>
+      <Grid item xs={2} sm={1} display="flex" justifyContent="flex-end" alignItems="center" sx={{ padding: '0 0', marginTop: '-20px' }}>
         <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}
